@@ -1,1 +1,4 @@
 .DS_Store
+
+# Leftover nested clone from earlier submodule layout; site root is this repo.
+portfolio/
