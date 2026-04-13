@@ -106,9 +106,11 @@ nav.scrolled {
 .cs-hero {
   min-height: 72vh;
   display: flex; flex-direction: column; justify-content: flex-end;
+  align-items: center;
   padding: 0 3rem 5rem;
   position: relative; overflow: hidden;
   border-bottom: 1px solid var(--border);
+  text-align: center;
 }
 .cs-hero::before {
   content: '';
@@ -151,15 +153,18 @@ nav.scrolled {
   line-height: 1.0; letter-spacing: -.025em;
   color: var(--text-primary);
   max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 2.5rem;
   opacity: 0; animation: fadeUp .8s .3s var(--ease-out) forwards;
 }
 .cs-hero h1 em { font-style: italic; color: var(--accent); }
 .cs-meta-row {
   display: flex; gap: 3rem; flex-wrap: wrap;
+  justify-content: center;
   opacity: 0; animation: fadeUp .7s .45s var(--ease-out) forwards;
 }
-.cs-meta-item { display: flex; flex-direction: column; gap: .25rem; }
+.cs-meta-item { display: flex; flex-direction: column; gap: .25rem; align-items: center; }
 .cs-meta-label {
   font-family: var(--font-mono); font-size: .6rem;
   letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted);

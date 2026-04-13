@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Disney Parks Digital Dining — Lyon Huang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/case-study-shared.css" />
+
+<style>
+/* ── ON THIS PAGE (TOC) ── */
+.toc {
+  margin: 3rem 0 1rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.toc .cs-section-label { margin-bottom: 1.25rem; }
+.toc-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem 1.25rem;
+}
+.toc-links a {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: .75rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: background .2s, border-color .2s, color .2s, transform .2s var(--ease-out);
+}
+.toc-links a:hover {
+  background: var(--accent-dim);
+  border-color: rgba(245,183,49,0.3);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ── CHAPTERS ── */
+.chapter { display: block; }
+
+/* ── CHAPTER HEADER ── */
+.ch-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.ch-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+}
+.ch-title em { font-style: italic; color: var(--accent); }
+
+/* ── THREE-CARD GRID ── */
+.ch-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin: 2.5rem 0;
+}
+.ch-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: border-color .25s, background .25s;
+}
+.ch-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+.ch-card-tag {
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: .3rem .7rem;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: .75rem;
+}
+.tag-problem  { background: rgba(210,80,50,.12);  color: #e07050; }
+.tag-process  { background: rgba(80,130,210,.12); color: #6a9fd8; }
+.tag-outcome  { background: rgba(80,180,100,.12); color: #60c070; }
+.ch-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: .5rem;
+  line-height: 1.3;
+}
+.ch-card p {
+  font-size: .875rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ── ROLE BLOCK ── */
+.ch-role {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 1.25rem 1.5rem;
+  margin-top: 2.5rem;
+}
+.ch-role-label {
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .5rem;
+}
+.ch-role p {
+  font-size: .9rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+.ch-role p strong { color: var(--text-primary); font-weight: 400; }
+
+/* ── INTRO TEXT WITHIN CHAPTER ── */
+.ch-intro {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+.ch-intro em { font-style: italic; color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .toc { padding: 1.25rem; }
+  .toc-links { grid-template-columns: 1fr; }
+  .ch-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<nav id="nav">
+  <a class="nav-logo" href="../index.html">Lyon<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#work">Work</a></li>
+    <li><a href="../index.html#skills">Skills</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="cs-hero">
+  <div class="cs-hero-num">01</div>
+  <a class="cs-back" href="../index.html#work">← Back to work</a>
+  <div class="cs-client-badge">Disney Parks</div>
+  <h1>Digital <em>Dining</em></h1>
+  <div class="cs-meta-row">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Client</span>
+      <span class="cs-meta-value">Disneyland &amp; Walt Disney World</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Team</span>
+      <span class="cs-meta-value">Food &amp; Beverage, Digital</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Platforms</span>
+      <span class="cs-meta-value">iOS · Android · Web</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">Years</span>
+      <span class="cs-meta-value">2017 – 2020</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="cs-body">
+
+  <!-- Hero image -->
+  <figure class="cs-img reveal">
+    <div class="cs-img-placeholder" style="aspect-ratio:21/9;">
+      <span>Hero / Cover Screenshot</span>
+    </div>
+    <figcaption>Disney Parks Digital Dining — 2017–2020</figcaption>
+  </figure>
+
+  <!-- Overview -->
+  <p class="cs-lead reveal">
+    For three years I worked on Disney Parks' Food &amp; Beverage digital team,
+    shipping four products that changed how <em>tens of millions of guests</em>
+    order and reserve food at the parks.
+  </p>
+
+  <p class="cs-p reveal">
+    Disneyland Resort and Walt Disney World together welcome nearly 87 million guests
+    a year. My team sat at the intersection of hospitality and mobile product —
+    designing experiences for guests who are hungry, on their feet, and surrounded
+    by more exciting things than their phones. That constraint shaped everything we built.
+  </p>
+
+  <!-- Stats bar -->
+  <div class="cs-stats reveal-group">
+    <div class="cs-stat">
+      <span class="stat-num">87M</span>
+      <span class="stat-label">Annual park guests</span>
+    </div>
+    <div class="cs-stat">
+      <span class="stat-num">4</span>
+      <span class="stat-label">Products shipped</span>
+    </div>
+    <div class="cs-stat">
+      <span class="stat-num">40+</span>
+      <span class="stat-label">Dining locations</span>
+    </div>
+  </div>
+
+  <!-- ── ON THIS PAGE ── -->
+  <div class="toc reveal">
+    <div class="cs-section-label">On this page</div>
+    <div class="toc-links" aria-label="On this page">
+      <a href="#ch0">01 — Mobile Order launch</a>
+      <a href="#ch1">02 — Menu redesign</a>
+      <a href="#ch2">03 — State enhancements</a>
+      <a href="#ch3">04 — Dine reservation add-ons</a>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       CHAPTER 01 — MO LAUNCH
+  ════════════════════════════ -->
+  <div id="ch0" class="chapter active cs-section reveal">
+
+    <p class="ch-eyebrow">Chapter 01 · iOS · Android · 2017</p>
+    <h2 class="ch-title">Mobile Order <em>Launch</em></h2>
+
+    <p class="ch-intro">
+      As park attendance climbed, so did food lines. My team saw an opportunity
+      to let guests order ahead from their phones — and ship it fast.
+    </p>
+
+    <p class="cs-p">
+      Quick-service restaurant wait times were among the top guest complaints at
+      both parks. My team identified mobile ordering as a high-leverage opportunity
+      to reduce friction and free up guest time — without adding operational complexity
+      for park restaurants.
+    </p>
+
+    <div class="cs-hmw reveal">
+      <div class="cs-hmw-label">Design challenge</div>
+      <p>How might we improve the in-park dining experience?</p>
+    </div>
+
+    <div class="ch-cards reveal-group">
+      <div class="ch-card">
+        <span class="ch-card-tag tag-problem">Problem</span>
+        <h4>Lines eating into park time</h4>
+        <p>With 28.6M Disneyland visitors and 58.4M at Walt Disney World annually, even short food waits added up — pulling guests away from what they came for.</p>
+      </div>
+      <div class="ch-card">
+        <span class="ch-card-tag tag-process">Process</span>
+        <h4>MVP-first, iterate fast</h4>
+        <p>Focused priorities on getting core ordering functionality shipped. Finalized UX deliverables, supported engineering handoff, and led QA before launch. Additional features queued in the backlog.</p>
+      </div>
+      <div class="ch-card">
+        <span class="ch-card-tag tag-outcome">Outcome</span>
+        <h4>Consistent month-over-month growth</h4>
+        <p>Mobile Order launched in 2017 and grew steadily at both parks. Guests reported saving significant time by ordering while in ride queues or moving between attractions.</p>
+      </div>
+    </div>
+
+    <figure class="cs-img reveal">
+      <div class="cs-img-placeholder" style="aspect-ratio:16/8;">
+        <span>Launch Screens / Flow</span>
+      </div>
+      <figcaption>End-to-end Mobile Order flow — launch (2017)</figcaption>
+    </figure>
+
+    <div class="ch-role reveal">
+      <div class="ch-role-label">My role</div>
+      <p>
+        <strong>Interaction Designer</strong> — UX flows, comps, and documentation.
+        Engineering support and QA before go-live. First major project at Disney;
+        used it to internalize the design principles and strategies behind Disney's consumer products.
+      </p>
+    </div>
+
+  </div><!-- /ch0 -->
+
+  <!-- ════════════════════════════
+       CHAPTER 02 — MENU REDESIGN
+  ════════════════════════════ -->
+  <div id="ch1" class="chapter cs-section reveal">
+
+    <p class="ch-eyebrow">Chapter 02 · iOS · Android · 2018–2019</p>
+    <h2 class="ch-title">Mobile Order <em>Menu Redesign</em></h2>
+
+    <p class="ch-intro">
+      Post-launch data had a clear verdict: the menu was broken.
+      No navigation, no images, no way to browse quickly on the move.
+    </p>
+
+    <p class="cs-p">
+      After launch, my team began tracking user data and feedback. Guests pointed to
+      the Menu as the biggest pain point — it lacked both navigation and food photography.
+      The only way to see what an item looked like was to tap into its detail page, a
+      frustrating pattern for anyone browsing in a busy park.
+    </p>
+
+    <div class="cs-hmw reveal">
+      <div class="cs-hmw-label">Design challenge</div>
+      <p>How might we make mobile ordering easier and more enjoyable for our guests?</p>
+    </div>
+
+    <h3>Finding the focus</h3>
+    <p class="cs-p">A workshop and audit of the existing menu aligned us on three priorities:</p>
+
+    <ol class="cs-numbered reveal-group">
+      <li>
+        <span class="num">01</span>
+        <span class="num-text"><strong>Navigation</strong> — Users should be able to easily browse between all menu items and category variations across available restaurants.</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span class="num-text"><strong>Visuals</strong> — The MVP had no food photography on the menu. Without images, fast browsing — especially on the move — was nearly impossible.</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span class="num-text"><strong>Brand identity</strong> — Mobile Order should feel fun and whimsical. We wanted to bring a distinctly Disney quality into the product itself.</span>
+      </li>
+    </ol>
+
+    <div class="cs-section-label" style="margin-top:3rem;">Concepts</div>
+    <p class="cs-p">I created three interaction patterns to evaluate with leadership and product before narrowing to test:</p>
+
+    <div class="cs-concepts reveal-group">
+      <div class="cs-concept-card">
+        <div class="cc-num">Concept 01</div>
+        <h4>Dropdown</h4>
+        <p>Each menu category becomes a collapsible section — letting users jump between categories without excess scrolling.</p>
+      </div>
+      <div class="cs-concept-card">
+        <div class="cc-num">Concept 02</div>
+        <h4>Carousel</h4>
+        <p>Category navigation anchors to the top of the page as the user scrolls — always present, always one tap away.</p>
+      </div>
+      <div class="cs-concept-card">
+        <div class="cc-num">Concept 03</div>
+        <h4>Hub &amp; Spoke</h4>
+        <p>A hub page lists all categories; tapping one leads to a focused page of items. Cleaner structure, one extra step.</p>
+      </div>
+    </div>
+
+    <figure class="cs-img reveal">
+      <div class="cs-img-placeholder" style="aspect-ratio:16/7;">
+        <span>Concept Wireframes / Prototypes</span>
+      </div>
+      <figcaption>Wireframes across all three concepts</figcaption>
+    </figure>
+
+    <h3>User testing at Walt Disney World</h3>
+    <p class="cs-p">
+      Dropdown was removed for being too similar to Carousel. I built interactive prototypes
+      for the remaining two and loaded them onto iOS devices for in-park testing.
+      My team flew to Walt Disney World to meet guests in their natural environment.
+    </p>
+
+    <div class="cs-stats reveal-group">
+      <div class="cs-stat">
+        <span class="stat-num">14</span>
+        <span class="stat-label">Users tested</span>
+      </div>
+      <div class="cs-stat">
+        <span class="stat-num">14/14</span>
+        <span class="stat-label">Preferred Carousel</span>
+      </div>
+      <div class="cs-stat">
+        <span class="stat-num">Feb 2019</span>
+        <span class="stat-label">Launch date</span>
+      </div>
+    </div>
+
+    <div class="cs-quote reveal">
+      <p>Every single tester chose the Carousel — and for the same reason: it encouraged immediate browsing and made it easy to jump between categories without losing your place.</p>
+      <cite>— Research debrief notes, Walt Disney World</cite>
+    </div>
+
+    <div class="cs-img-pair reveal-group">
+      <figure>
+        <div class="cs-img-placeholder"><span>Menu — Before</span></div>
+        <figcaption>Menu — Before (MVP)</figcaption>
+      </figure>
+      <figure>
+        <div class="cs-img-placeholder"><span>Menu — After (Carousel)</span></div>
+        <figcaption>Menu — After (Carousel redesign)</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-outcome reveal">
+      <div class="cs-outcome-label">Launch &amp; press</div>
+      <p>
+        The Menu Redesign launched at both parks in <strong>February 2019</strong> and was
+        covered by the Disney Parks Blog and WDWNT. Carousel navigation and food photography
+        transformed how guests discovered and ordered food in-park.
+      </p>
+    </div>
+
+    <a href="https://disneyparks.disney.go.com/blog/" class="cs-link-btn" target="_blank" rel="noopener">Disney Parks Blog ↗</a>
+    <a href="https://wdwnt.com" class="cs-link-btn" target="_blank" rel="noopener">WDWNT Post ↗</a>
+
+    <div class="ch-role reveal">
+      <div class="ch-role-label">My role</div>
+      <p>
+        <strong>Lead UX Designer</strong> — owned all deliverables: user flows, concepts, final
+        comps, prototypes, motion studies, and documentation. Established the visual direction
+        for the menu category icon set. Traveled to Orlando for user testing and built
+        the cross-functional relationship with the WDW product and engineering teams.
+        Worked alongside one Lead Designer and one Senior Designer.
+      </p>
+    </div>
+
+  </div><!-- /ch1 -->
+
+  <!-- ════════════════════════════
+       CHAPTER 03 — STATE ENHANCEMENTS
+  ════════════════════════════ -->
+  <div id="ch2" class="chapter cs-section reveal">
+
+    <p class="ch-eyebrow">Chapter 03 · iOS · Android · 2019–2020</p>
+    <h2 class="ch-title">Mobile Order <em>State Enhancements</em></h2>
+
+    <p class="ch-intro">
+      Usage was up. But food was being wasted.
+      Guests weren't picking up their orders — and the pickup flow
+      wasn't communicating clearly enough to help them.
+    </p>
+
+    <p class="cs-p">
+      In 2019, tracking data revealed a pattern: guests weren't collecting orders
+      in time after they were ready. Park restaurants — the Mobile Order stakeholders —
+      reported a surge in unclaimed meals that had to be discarded per health code,
+      creating food waste and operational strain.
+    </p>
+
+    <div class="ch-cards reveal-group">
+      <div class="ch-card">
+        <span class="ch-card-tag tag-problem">Users</span>
+        <h4>Confused by the flow</h4>
+        <p>Guests often didn't understand the pickup instructions or what the progress bar states meant. Even those who understood it said state changes were too subtle.</p>
+      </div>
+      <div class="ch-card">
+        <span class="ch-card-tag tag-problem">Stakeholders</span>
+        <h4>Operational waste</h4>
+        <p>Restaurants reported a spike in unclaimed meals being discarded per health code — waste that scaled directly with Mobile Order's growing usage.</p>
+      </div>
+      <div class="ch-card">
+        <span class="ch-card-tag tag-process">Insight</span>
+        <h4>Make it worth watching</h4>
+        <p>The average Mobile Order completes within minutes. The design challenge: keep guests engaged and watching their status without it feeling like a chore.</p>
+      </div>
+    </div>
+
+    <div class="cs-section-label" style="margin-top:3rem;">Design direction</div>
+    <h3>Storyboarding a narrative</h3>
+    <p class="cs-p">
+      The existing pickup flow used static states for instructions and order status.
+      I proposed replacing it with a <strong>narrative animation</strong> — a short "story" that
+      wove pickup instructions and order status into a single, delightful sequence guests
+      would actually want to watch.
+    </p>
+    <p class="cs-p">
+      Initial storyboards were abstract, but the idea resonated immediately with leadership.
+      I enlisted a Visual Designer to flesh out the storyline and produce the final animations.
+    </p>
+
+    <figure class="cs-img reveal">
+      <div class="cs-img-placeholder" style="aspect-ratio:16/7;">
+        <span>Storyboard Sketches</span>
+      </div>
+      <figcaption>Storyboards for the animated pickup flow</figcaption>
+    </figure>
+
+    <div class="cs-img-pair reveal-group">
+      <figure>
+        <div class="cs-img-placeholder"><span>Pickup State — Before</span></div>
+        <figcaption>Pickup flow — Before</figcaption>
+      </figure>
+      <figure>
+        <div class="cs-img-placeholder"><span>Pickup State — After (Animated)</span></div>
+        <figcaption>Pickup flow — After</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-outcome reveal">
+      <div class="cs-outcome-label">Launched Q1 2020 — then COVID hit</div>
+      <p>
+        State Enhancements shipped in <strong>Q1 2020</strong>. Early feedback confirmed guests
+        found the new experience significantly clearer and more enjoyable. The Parks closed
+        due to COVID-19 within weeks of launch, cutting off the data needed to measure
+        long-term impact on pickup rates and food waste. The work was solid; the timing was not.
+      </p>
+    </div>
+
+    <div class="ch-role reveal">
+      <div class="ch-role-label">My role</div>
+      <p>
+        <strong>Product Designer (solo)</strong> — owned all design from concepting through documentation.
+        Created stakeholder presentations and pitched to leadership. Beyond design, I managed
+        cross-functional coordination: project planning, budgeting projections, resource allocation,
+        and weekly syncs with product and engineering. Collaborated with one Design Lead
+        and one Visual Designer.
+      </p>
+    </div>
+
+  </div><!-- /ch2 -->
+
+  <!-- ════════════════════════════
+       CHAPTER 04 — DINE RESERVATION ADD-ONS
+  ════════════════════════════ -->
+  <div id="ch3" class="chapter cs-section reveal">
+
+    <p class="ch-eyebrow">Chapter 04 · Web · 2019</p>
+    <h2 class="ch-title">Dine Reservation <em>Add-Ons</em></h2>
+
+    <p class="ch-intro">
+      Guests celebrate milestones at Disney every day.
+      But to add a birthday note to their dinner reservation,
+      they had to <em>call us.</em>
+    </p>
+
+    <p class="cs-p">
+      Disneyland and Walt Disney World have 40+ full-service dining locations between
+      them. Reservations are required at nearly all of them — walk-ins aren't accepted
+      at the volume these parks operate. Guests plan months ahead, often around
+      special occasions.
+    </p>
+    <p class="cs-p">
+      The existing online reservation flow only supported date, time, and party size.
+      Any celebration customization — a birthday cake, an anniversary note — required
+      calling Disney directly. That friction hit guests, call centers, and the business.
+    </p>
+
+    <div class="cs-hmw reveal">
+      <div class="cs-hmw-label">Opportunity</div>
+      <p>Enhance the reservation experience by letting guests add celebrations online — reducing call center load and creating a new upsell surface.</p>
+    </div>
+
+    <div class="ch-cards reveal-group">
+      <div class="ch-card">
+        <span class="ch-card-tag tag-problem">For guests</span>
+        <h4>Unnecessary friction</h4>
+        <p>Adding a birthday note to a dinner reservation required a phone call — an extra step that felt out of place in an otherwise digital booking experience.</p>
+      </div>
+      <div class="ch-card">
+        <span class="ch-card-tag tag-problem">For call centers</span>
+        <h4>High volume, low complexity</h4>
+        <p>Agents were fielding a large volume of calls that a self-service flow could handle — pulling capacity away from more complex guest needs.</p>
+      </div>
+      <div class="ch-card">
+        <span class="ch-card-tag tag-outcome">For the business</span>
+        <h4>Untapped upsell revenue</h4>
+        <p>Celebration add-ons are a natural upsell moment. Without a digital path, that revenue potential was left on the table every time a guest called instead of converting online.</p>
+      </div>
+    </div>
+
+    <div class="cs-section-label" style="margin-top:3rem;">Constraint</div>
+    <h3>Designing within an older system</h3>
+    <p class="cs-p">
+      To meet the project's budget requirements, we had to reuse as many existing
+      components as possible — which meant designing within an <strong>older UI platform</strong>
+      with significant constraints. Rather than treating this as a blocker, we used it
+      as a creative constraint: finding elegant solutions within a rigid system.
+    </p>
+
+    <figure class="cs-img reveal">
+      <div class="cs-img-placeholder" style="aspect-ratio:16/8;">
+        <span>Existing UI Components / Constraints</span>
+      </div>
+      <figcaption>Working within the existing component library</figcaption>
+    </figure>
+
+    <div class="cs-img-pair reveal-group">
+      <figure>
+        <div class="cs-img-placeholder"><span>Reservation Flow — Before</span></div>
+        <figcaption>Reservation flow — Before</figcaption>
+      </figure>
+      <figure>
+        <div class="cs-img-placeholder"><span>Reservation Flow — With Add-Ons</span></div>
+        <figcaption>Reservation flow — With add-ons</figcaption>
+      </figure>
+    </div>
+
+    <figure class="cs-img reveal">
+      <div class="cs-img-placeholder" style="aspect-ratio:16/7;">
+        <span>Celebration Add-On Selection UI</span>
+      </div>
+      <figcaption>Celebration add-on selection screens</figcaption>
+    </figure>
+
+    <div class="cs-stats reveal-group">
+      <div class="cs-stat">
+        <span class="stat-num">40+</span>
+        <span class="stat-label">Dining locations supported</span>
+      </div>
+      <div class="cs-stat">
+        <span class="stat-num">Nov 2019</span>
+        <span class="stat-label">Launch date</span>
+      </div>
+      <div class="cs-stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Goals met: UX, ops, revenue</span>
+      </div>
+    </div>
+
+    <div class="cs-outcome reveal">
+      <div class="cs-outcome-label">Outcome</div>
+      <p>
+        Dine Reservation Add-Ons launched in <strong>November 2019</strong>, giving guests
+        the ability to add celebration experiences directly to their reservations online —
+        reducing call center volume, improving the guest experience, and opening a new
+        upsell channel for the parks.
+      </p>
+    </div>
+
+    <div class="ch-role reveal">
+      <div class="ch-role-label">My role</div>
+      <p>
+        <strong>Product Designer</strong> — end-to-end design within a constrained legacy UI platform.
+        Worked closely with stakeholders to scope the feature within budget while maintaining
+        a quality guest experience.
+      </p>
+    </div>
+
+  </div><!-- /ch3 -->
+
+  <!-- ── REFLECTION ── -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label">Reflection</div>
+    <h2>Three years, four products,<br><em>one team.</em></h2>
+    <p class="cs-p">
+      Working on Disney's Food &amp; Beverage digital team meant designing for an audience
+      in motion — guests who were hungry, distracted, and surrounded by more interesting
+      things than their phones. That constraint sharpened everything: every tap had to
+      earn its place, every state had to be unmissable, and the experience had to feel
+      unmistakably Disney.
+    </p>
+    <p class="cs-p">
+      Across four products and three years, my role grew from finalizing someone else's
+      UX work to owning projects end-to-end — from stakeholder alignment and budgeting
+      to in-park user research and engineering handoff. The Disney Parks work is
+      where I became the designer I am.
+    </p>
+  </div>
+
+</div><!-- /cs-body -->
+
+<!-- ── NEXT PROJECT ── -->
+<div class="cs-next">
+  <div>
+    <div class="cs-next-label">Next project</div>
+    <a class="cs-next-link" href="medrepublic.html">
+      <div class="cs-next-title">MedRepublic →</div>
+    </a>
+  </div>
+  <a class="cs-next-link" href="medrepublic.html">
+    <div class="cs-next-arrow">
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+    </div>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-copy">© 2025 Lyon Huang</span>
+  <a href="../index.html" style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;color:var(--text-muted);transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">← All work</a>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function anim(){dot.style.left=mx+'px';dot.style.top=my+'px';rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));});
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60),{passive:true});
+
+/* ── REVEAL ── */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');obs.unobserve(e.target);}}),{threshold:.08});
+document.querySelectorAll('.reveal,.reveal-group').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
