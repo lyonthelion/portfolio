@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#080807;--bg-card:#0f0f0d;--bg-card-hover:#141410;--surface:#1a1a16;--border:rgba(255,255,255,0.07);--border-hover:rgba(255,200,80,0.35);--accent:#f5b731;--accent-dim:rgba(245,183,49,0.12);--text-primary:#e8e6de;--text-secondary:#7a7870;--text-muted:#3d3d38;--font-display:'Instrument Serif',Georgia,serif;--font-sans:'DM Sans',sans-serif;--font-mono:'DM Mono','Courier New',monospace;--ease-out:cubic-bezier(0.16,1,0.3,1);--ease-in-out:cubic-bezier(0.45,0,0.55,1);--radius:6px;--max-w:1100px}
+:root{--bg:#080807;--bg-card:#0f0f0d;--bg-card-hover:#141410;--surface:#1a1a16;--border:rgba(255,255,255,0.07);--border-hover:rgba(255,200,80,0.35);--accent:#f5b731;--accent-dim:rgba(245,183,49,0.12);--text-primary:#e8e6de;--text-secondary:#a3a196;--text-muted:#6b6b63;--font-display:'Instrument Serif',Georgia,serif;--font-sans:'DM Sans',sans-serif;--font-mono:'DM Mono','Courier New',monospace;--ease-out:cubic-bezier(0.16,1,0.3,1);--ease-in-out:cubic-bezier(0.45,0,0.55,1);--radius:6px;--max-w:1100px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:16px}
 body{background-color:var(--bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");color:var(--text-primary);font-family:var(--font-sans);font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none}
@@ -86,7 +86,6 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 
 /* work */
 #work .work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem}
-.work-count{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted);letter-spacing:.1em}
 .project-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.5rem}
 .project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:border-color .3s,transform .35s var(--ease-out),box-shadow .35s var(--ease-out),background .3s}
 .project-card:hover{border-color:var(--border-hover);transform:translateY(-6px);background:var(--bg-card-hover);box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 0 1px rgba(245,183,49,0.08)}
@@ -118,9 +117,6 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .project-tag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);border:1px solid var(--border);padding:.25rem .6rem;border-radius:2px}
 
 /* skills */
-#skills .skills-body{margin-top:4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
-.skill-group-title{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.25rem}
-.skill-tags{display:flex;flex-wrap:wrap;gap:.6rem}
 .skill-tag{font-size:1rem;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);padding:.45rem .9rem;border-radius:var(--radius);transition:color .2s,border-color .2s,background .2s}
 .skill-tag:hover{color:var(--accent);border-color:rgba(245,183,49,0.3);background:var(--accent-dim)}
 
@@ -138,8 +134,8 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 
 @keyframes marqueeLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes marqueeRight{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-.marquee-left{animation:marqueeLeft 44s linear infinite}
-.marquee-right{animation:marqueeRight 44s linear infinite}
+.marquee-left{animation:marqueeLeft 24s linear infinite}
+.marquee-right{animation:marqueeRight 24s linear infinite}
 
 /* contact */
 #contact{text-align:center;padding:7rem 3rem 10rem}
@@ -172,7 +168,6 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
   .about-avatar{max-width:240px}
   .project-grid{grid-template-columns:1fr}
   .project-card:nth-child(n){grid-column:span 1}
-  #skills .skills-body{grid-template-columns:1fr 1fr}
   footer{flex-direction:column;gap:1rem;text-align:center}
 }
 @media(max-width:600px){
@@ -180,7 +175,6 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
   .hero-name{font-size:3.5rem}
   .hero-role{white-space:normal}
   .hero-role-typed{min-height:2.4em}
-  #skills .skills-body{grid-template-columns:1fr}
   .skills-carousel{-webkit-mask-image:none;mask-image:none}
   .contact-headline{font-size:2.5rem}
   #cursor-dot,#cursor-ring{display:none}
@@ -259,7 +253,6 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
       <div class="section-label">Selected work</div>
       <h2 class="section-title">Projects that<br><em>moved</em> the needle.</h2>
     </div>
-    <div class="work-count">02 projects</div>
   </div>
   <div class="project-grid reveal-group">
 
@@ -299,28 +292,22 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
     <div class="skills-carousel" aria-label="Capabilities carousel">
       <div class="skills-track marquee-left">
         <div class="skills-list" role="list">
-          <span class="skill-tag" role="listitem">Product Design</span><span class="skill-tag" role="listitem">UX Research</span>
-          <span class="skill-tag" role="listitem">Interaction Design</span><span class="skill-tag" role="listitem">Information Architecture</span>
-          <span class="skill-tag" role="listitem">Design Systems</span><span class="skill-tag" role="listitem">Prototyping</span>
-          <span class="skill-tag" role="listitem">Usability Testing</span>
-          <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Sketch</span>
-          <span class="skill-tag" role="listitem">Principle</span><span class="skill-tag" role="listitem">Framer</span>
-          <span class="skill-tag" role="listitem">Jira</span><span class="skill-tag" role="listitem">Confluence</span><span class="skill-tag" role="listitem">Miro</span>
-          <span class="skill-tag" role="listitem">Consumer Apps</span><span class="skill-tag" role="listitem">Mobile (iOS/Android)</span>
-          <span class="skill-tag" role="listitem">Enterprise SaaS</span><span class="skill-tag" role="listitem">Health Tech</span>
-          <span class="skill-tag" role="listitem">Hospitality / Travel</span><span class="skill-tag" role="listitem">Cross-Functional Collab</span>
+          <span class="skill-tag" role="listitem">Product Design</span><span class="skill-tag" role="listitem">Design Strategy</span>
+          <span class="skill-tag" role="listitem">Cross-Functional Collaboration</span><span class="skill-tag" role="listitem">Design Systems</span>
+          <span class="skill-tag" role="listitem">Stakeholder Communication</span><span class="skill-tag" role="listitem">Interaction Design</span>
+          <span class="skill-tag" role="listitem">User Research</span><span class="skill-tag" role="listitem">Usability Testing</span>
+          <span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">Accessibility &amp; Inclusive Design</span>
+          <span class="skill-tag" role="listitem">Roadmap &amp; Product Strategy</span>
+          <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Claude</span><span class="skill-tag" role="listitem">Cursor</span>
         </div>
         <div class="skills-list" role="list" aria-hidden="true">
-          <span class="skill-tag" role="listitem">Product Design</span><span class="skill-tag" role="listitem">UX Research</span>
-          <span class="skill-tag" role="listitem">Interaction Design</span><span class="skill-tag" role="listitem">Information Architecture</span>
-          <span class="skill-tag" role="listitem">Design Systems</span><span class="skill-tag" role="listitem">Prototyping</span>
-          <span class="skill-tag" role="listitem">Usability Testing</span>
-          <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Sketch</span>
-          <span class="skill-tag" role="listitem">Principle</span><span class="skill-tag" role="listitem">Framer</span>
-          <span class="skill-tag" role="listitem">Jira</span><span class="skill-tag" role="listitem">Confluence</span><span class="skill-tag" role="listitem">Miro</span>
-          <span class="skill-tag" role="listitem">Consumer Apps</span><span class="skill-tag" role="listitem">Mobile (iOS/Android)</span>
-          <span class="skill-tag" role="listitem">Enterprise SaaS</span><span class="skill-tag" role="listitem">Health Tech</span>
-          <span class="skill-tag" role="listitem">Hospitality / Travel</span><span class="skill-tag" role="listitem">Cross-Functional Collab</span>
+          <span class="skill-tag" role="listitem">Product Design</span><span class="skill-tag" role="listitem">Design Strategy</span>
+          <span class="skill-tag" role="listitem">Cross-Functional Collaboration</span><span class="skill-tag" role="listitem">Design Systems</span>
+          <span class="skill-tag" role="listitem">Stakeholder Communication</span><span class="skill-tag" role="listitem">Interaction Design</span>
+          <span class="skill-tag" role="listitem">User Research</span><span class="skill-tag" role="listitem">Usability Testing</span>
+          <span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">Accessibility &amp; Inclusive Design</span>
+          <span class="skill-tag" role="listitem">Roadmap &amp; Product Strategy</span>
+          <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Claude</span><span class="skill-tag" role="listitem">Cursor</span>
         </div>
       </div>
     </div>
@@ -336,8 +323,6 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
   <a href="mailto:ux@lyonhuang.com" class="contact-email reveal">ux@lyonhuang.com &#8599;</a>
   <div class="contact-socials reveal-group">
     <a href="https://www.linkedin.com/in/lyonhuang" class="social-link" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://twitter.com/LyonHuang_UX" class="social-link" target="_blank" rel="noopener">Twitter</a>
-    <a href="https://dribbble.com/lyonhuang" class="social-link" target="_blank" rel="noopener">Dribbble</a>
   </div>
 </section>
 
@@ -392,7 +377,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
     const phrase=phrases[phraseIdx];
     if(!deleting){
       charIdx=Math.min(charIdx+1, phrase.length);
-      el.textContent=phrase.slice(0,charIdx);
+      el.textContent=phrase.slice(0,charIdx)||'\u200B';
       if(charIdx===phrase.length){
         deleting=true;
         setTimeout(tick, holdMs);
@@ -403,7 +388,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
     }
 
     charIdx=Math.max(charIdx-1, 0);
-    el.textContent=phrase.slice(0,charIdx);
+    el.textContent=phrase.slice(0,charIdx)||'\u200B';
     if(charIdx===0){
       deleting=false;
       phraseIdx=(phraseIdx+1)%phrases.length;
