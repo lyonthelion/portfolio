@@ -9,13 +9,12 @@
   --bg-card:        #0f0f0d;
   --bg-card-hover:  #141410;
   --surface:        #1a1a16;
-  --surface-2:      #111110;
   --border:         rgba(255,255,255,0.07);
+  --border-tag:     rgba(255,255,255,0.14); /* matches index.html .project-tag outline */
   --border-hover:   rgba(255,200,80,0.35);
 
   --accent:         #f5b731;
   --accent-dim:     rgba(245,183,49,0.10);
-  --accent-glow:    rgba(245,183,49,0.22);
 
   --text-primary:   #e8e6de;
   --text-secondary: #a3a196;
@@ -72,12 +71,11 @@ body.cursor-hover #cursor-ring { width: 54px; height: 54px; border-color: var(--
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 1.5rem 3rem;
+  padding: 1rem 3rem;
   background: linear-gradient(to bottom, rgba(8,8,7,.95), transparent);
-  transition: padding .3s var(--ease-out), background .3s;
+  transition: background .3s;
 }
 nav.scrolled {
-  padding: 1rem 3rem;
   background: rgba(8,8,7,.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -118,19 +116,11 @@ nav.scrolled {
   background: radial-gradient(ellipse at 20% 80%, rgba(245,183,49,.05) 0%, transparent 60%);
   pointer-events: none;
 }
-/* large background project number */
-.cs-hero-num {
-  position: absolute; right: 3rem; bottom: 3rem;
-  font-family: var(--font-display); font-style: italic;
-  font-size: clamp(8rem, 18vw, 18rem);
-  color: rgba(255,255,255,.025);
-  line-height: 1; pointer-events: none; user-select: none;
-}
 .cs-back {
   display: inline-flex; align-items: center; gap: .6rem;
   font-family: var(--font-mono); font-size: .7rem;
   letter-spacing: .16em; text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin-bottom: 3.5rem;
   transition: color .2s;
   opacity: 0; animation: fadeUp .6s .1s var(--ease-out) forwards;
@@ -167,7 +157,7 @@ nav.scrolled {
 .cs-meta-item { display: flex; flex-direction: column; gap: .25rem; align-items: center; }
 .cs-meta-label {
   font-family: var(--font-mono); font-size: .6rem;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted);
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text-secondary);
 }
 .cs-meta-value { font-size: .9rem; color: var(--text-primary); }
 
@@ -364,7 +354,7 @@ nav.scrolled {
 .cs-stat .stat-label {
   font-family: var(--font-mono); font-size: .65rem;
   letter-spacing: .14em; text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* outcome/takeaway box */
@@ -406,7 +396,7 @@ nav.scrolled {
 }
 .cs-next-label {
   font-family: var(--font-mono); font-size: .65rem;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted);
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text-secondary);
   margin-bottom: .6rem;
 }
 .cs-next-title {
@@ -416,7 +406,7 @@ nav.scrolled {
 .cs-next-link:hover .cs-next-title { color: var(--accent); }
 .cs-next-arrow {
   width: 56px; height: 56px; border-radius: 50%;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-tag);
   display: flex; align-items: center; justify-content: center;
   transition: background .2s, border-color .2s, transform .3s var(--ease-out);
 }
@@ -461,8 +451,7 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  nav { padding: 1.25rem 1.5rem; }
-  nav.scrolled { padding: .9rem 1.5rem; }
+  nav, nav.scrolled { padding: 1rem 1.5rem; }
   .cs-hero { padding: 0 1.5rem 4rem; }
   .cs-body { padding: 4rem 1.5rem; }
   .cs-concepts { grid-template-columns: 1fr; }
