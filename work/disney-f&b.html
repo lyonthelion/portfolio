@@ -139,6 +139,227 @@
 }
 .ch-intro em { font-style: italic; color: var(--accent); }
 
+/* ── CONCEPT 01 CAROUSEL ── */
+.ch1-concept-card {
+  cursor: pointer;
+  transition: border-color .2s, background .2s, transform .2s var(--ease-out);
+}
+.ch1-concept-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.ch1-concept-card[aria-pressed="true"] {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+.ch1-concept-card[aria-pressed="true"] .cc-num {
+  color: var(--accent);
+}
+
+/* Single slot: placeholder and carousel stack as absolute layers */
+.ch1-concept-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/8.5;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.ch1-concept-media > .ch1-media-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.ch1-concept-media .cs-img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.ch1-carousel {
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+}
+.ch1-carousel-subtitle {
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: .65rem 1rem .35rem;
+  flex-shrink: 0;
+}
+.ch1-carousel-viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 2.8vw, 1.65rem) clamp(1.1rem, 2.4vw, 1.85rem);
+  box-sizing: border-box;
+}
+.ch1-carousel-img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: opacity .25s ease;
+  cursor: zoom-in;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ch1-carousel-img { transition: none; }
+}
+.ch1-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: .65rem 1.25rem .85rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ch1-carousel-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.ch1-carousel-btn:hover {
+  background: var(--accent-dim);
+  border-color: rgba(245,183,49,.3);
+  color: var(--accent);
+}
+.ch1-carousel-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.ch1-carousel-dots { display: flex; gap: .5rem; }
+.ch1-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background .2s;
+}
+.ch1-dot.is-active { background: var(--accent); }
+
+/* ── CH1 LIGHTBOX (carousel image zoom) ── */
+.ch1-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  box-sizing: border-box;
+  background: rgba(5, 5, 4, 0.92);
+  backdrop-filter: blur(8px);
+}
+.ch1-lightbox[hidden] {
+  display: none !important;
+}
+.ch1-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+  z-index: 2;
+}
+.ch1-lightbox-close:hover {
+  background: var(--accent-dim);
+  border-color: rgba(245, 183, 49, 0.35);
+  color: var(--accent);
+}
+.ch1-lightbox-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.ch1-lightbox-subtitle {
+  position: absolute;
+  top: 1.35rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin: 0;
+  max-width: min(90vw, 28rem);
+  padding: 0 3rem;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.ch1-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.ch1-lightbox-nav:hover {
+  background: var(--accent-dim);
+  border-color: rgba(245, 183, 49, 0.3);
+  color: var(--accent);
+}
+.ch1-lightbox-nav:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.ch1-lightbox-prev { left: clamp(0.5rem, 2.5vw, 1.35rem); }
+.ch1-lightbox-next { right: clamp(0.5rem, 2.5vw, 1.35rem); }
+.ch1-lightbox-img {
+  max-width: min(96vw, 1400px);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  position: relative;
+  z-index: 1;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .toc { padding: 1.25rem; }
@@ -347,28 +568,49 @@
     <p class="cs-p">I created three interaction patterns to evaluate with leadership and product before narrowing to test:</p>
 
     <div class="cs-concepts reveal-group">
-      <div class="cs-concept-card">
+      <div class="cs-concept-card ch1-concept-card" id="ch1-concept-card-1" role="button" tabindex="0" aria-pressed="true" aria-label="View Concept 01 — Dropdown wireframes">
         <div class="cc-num">Concept 01</div>
         <h4>Dropdown</h4>
         <p>Each menu category becomes a collapsible section — letting users jump between categories without excess scrolling.</p>
       </div>
-      <div class="cs-concept-card">
+      <div class="cs-concept-card ch1-concept-card" id="ch1-concept-card-2" role="button" tabindex="0" aria-pressed="false" aria-label="View Concept 02 — Carousel wireframes">
         <div class="cc-num">Concept 02</div>
         <h4>Carousel</h4>
         <p>Category navigation anchors to the top of the page as the user scrolls — always present, always one tap away.</p>
       </div>
-      <div class="cs-concept-card">
+      <div class="cs-concept-card ch1-concept-card" id="ch1-concept-card-3" role="button" tabindex="0" aria-pressed="false" aria-label="View Concept 03 — Hub and Spoke wireframes">
         <div class="cc-num">Concept 03</div>
         <h4>Hub &amp; Spoke</h4>
         <p>A hub page lists all categories; tapping one leads to a focused page of items. Cleaner structure, one extra step.</p>
       </div>
     </div>
 
-    <figure class="cs-img reveal">
-      <div class="cs-img-placeholder" style="aspect-ratio:16/7;">
-        <span>Concept Wireframes / Prototypes</span>
+    <figure class="cs-img reveal" id="ch1-concept-figure">
+      <div class="ch1-concept-media" id="ch1-concept-media">
+        <div class="cs-img-placeholder ch1-media-layer" id="ch1-concept-placeholder" hidden>
+          <span>Concept Wireframes / Prototypes</span>
+        </div>
+        <div class="ch1-carousel ch1-media-layer" id="ch1-carousel" aria-label="Concept wireframe carousel" role="region">
+          <p class="ch1-carousel-subtitle" id="ch1-carousel-subtitle">Concept 1</p>
+          <div class="ch1-carousel-viewport">
+            <img class="ch1-carousel-img" id="ch1-carousel-img" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/concept-1-1.png" alt="Concept 01 — Dropdown wireframe, screen 1" role="button" tabindex="0" aria-label="Open enlarged wireframe" />
+          </div>
+          <div class="ch1-carousel-controls">
+          <button type="button" class="ch1-carousel-btn" id="ch1-prev" aria-label="Previous slide">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+          </button>
+          <div class="ch1-carousel-dots" aria-hidden="true">
+            <span class="ch1-dot is-active"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+          </div>
+          <button type="button" class="ch1-carousel-btn" id="ch1-next" aria-label="Next slide">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+        </div>
+        </div>
       </div>
-      <figcaption>Wireframes across all three concepts</figcaption>
+      <figcaption id="ch1-concept-caption">Concept 01 — Dropdown: wireframes across three screens</figcaption>
     </figure>
 
     <h3>User testing at Walt Disney World</h3>
@@ -687,6 +929,18 @@
   <a class="footer-all-work" href="../index.html">← All work</a>
 </footer>
 
+<div id="ch1-lightbox" class="ch1-lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="ch1-lightbox-subtitle">
+  <button type="button" class="ch1-lightbox-close" id="ch1-lightbox-close" aria-label="Close enlarged view">&times;</button>
+  <p class="ch1-lightbox-subtitle" id="ch1-lightbox-subtitle" aria-live="polite"></p>
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-prev" id="ch1-lightbox-prev" aria-label="Previous wireframe">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15,18 9,12 15,6"/></svg>
+  </button>
+  <img class="ch1-lightbox-img" id="ch1-lightbox-img" src="" alt="" />
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-next" id="ch1-lightbox-next" aria-label="Next wireframe">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9,18 15,12 9,6"/></svg>
+  </button>
+</div>
+
 <script>
 /* ── CURSOR ── */
 const dot=document.getElementById('cursor-dot'),ring=document.getElementById('cursor-ring');
@@ -701,6 +955,154 @@ window.addEventListener('scroll',()=>document.getElementById('nav').classList.to
 /* ── REVEAL ── */
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');obs.unobserve(e.target);}}),{threshold:.08});
 document.querySelectorAll('.reveal,.reveal-group').forEach(el=>obs.observe(el));
+
+/* ── CH1 CONCEPT CAROUSELS (shared figure) ── */
+(function(){
+  const base='https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/';
+  const CONCEPTS={
+    1:{
+      subtitle:'Concept 1',
+      caption:'Concept 01 — Dropdown: wireframes across three screens',
+      slides:[
+        {src:base+'concept-1-1.png',alt:'Concept 01 — Dropdown wireframe, screen 1'},
+        {src:base+'concept-1-2.png',alt:'Concept 01 — Dropdown wireframe, screen 2'},
+        {src:base+'concept-1-3.png',alt:'Concept 01 — Dropdown wireframe, screen 3'}
+      ]
+    },
+    2:{
+      subtitle:'Concept 2',
+      caption:'Concept 02 — Carousel: wireframes across three screens',
+      slides:[
+        {src:base+'concept-2-1.png',alt:'Concept 02 — Carousel wireframe, screen 1'},
+        {src:base+'concept-2-2.png',alt:'Concept 02 — Carousel wireframe, screen 2'},
+        {src:base+'concept-2-3.png',alt:'Concept 02 — Carousel wireframe, screen 3'}
+      ]
+    },
+    3:{
+      subtitle:'Concept 3',
+      caption:'Concept 03 — Hub & Spoke: wireframes across three screens',
+      slides:[
+        {src:base+'concept-3-1.png',alt:'Concept 03 — Hub & Spoke wireframe, screen 1'},
+        {src:base+'concept-3-2.png',alt:'Concept 03 — Hub & Spoke wireframe, screen 2'},
+        {src:base+'concept-3-3.png',alt:'Concept 03 — Hub & Spoke wireframe, screen 3'}
+      ]
+    }
+  };
+
+  const cards=[1,2,3].map(n=>document.getElementById('ch1-concept-card-'+n));
+  const placeholder=document.getElementById('ch1-concept-placeholder');
+  const carousel=document.getElementById('ch1-carousel');
+  const img=document.getElementById('ch1-carousel-img');
+  const subtitle=document.getElementById('ch1-carousel-subtitle');
+  const prevBtn=document.getElementById('ch1-prev');
+  const nextBtn=document.getElementById('ch1-next');
+  const dots=document.querySelectorAll('#ch1-carousel .ch1-dot');
+  const caption=document.getElementById('ch1-concept-caption');
+  const lightbox=document.getElementById('ch1-lightbox');
+  const lightboxImg=document.getElementById('ch1-lightbox-img');
+  const lightboxClose=document.getElementById('ch1-lightbox-close');
+  const lightboxPrev=document.getElementById('ch1-lightbox-prev');
+  const lightboxNext=document.getElementById('ch1-lightbox-next');
+  const lightboxSubtitle=document.getElementById('ch1-lightbox-subtitle');
+  if(cards.some(c=>!c)||!carousel||!img||!subtitle) return;
+
+  let active=1;
+  let idx=0;
+  let focusBeforeLightbox=null;
+
+  function slideList(){return CONCEPTS[active].slides;}
+
+  function syncLightboxFromCarousel(){
+    if(!lightbox||!lightboxImg||lightbox.hidden) return;
+    lightboxImg.src=img.src;
+    lightboxImg.alt=img.alt;
+    if(lightboxSubtitle) lightboxSubtitle.textContent=CONCEPTS[active].subtitle;
+  }
+
+  function openLightbox(){
+    if(!lightbox||!lightboxImg) return;
+    focusBeforeLightbox=document.activeElement;
+    lightbox.hidden=false;
+    document.body.style.overflow='hidden';
+    syncLightboxFromCarousel();
+    if(lightboxClose) lightboxClose.focus({preventScroll:true});
+  }
+
+  function closeLightbox(){
+    if(!lightbox) return;
+    lightbox.hidden=true;
+    document.body.style.overflow='';
+    const el=focusBeforeLightbox;
+    focusBeforeLightbox=null;
+    if(el&&typeof el.focus==='function') el.focus({preventScroll:true});
+  }
+
+  function goTo(n){
+    const s=slideList();
+    idx=(n+s.length)%s.length;
+    img.src=s[idx].src;
+    img.alt=s[idx].alt;
+    dots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    syncLightboxFromCarousel();
+  }
+
+  function activate(which){
+    active=which;
+    cards.forEach((c,i)=>c.setAttribute('aria-pressed',i+1===which?'true':'false'));
+    placeholder.hidden=true;
+    carousel.hidden=false;
+    subtitle.textContent=CONCEPTS[which].subtitle;
+    caption.textContent=CONCEPTS[which].caption;
+    goTo(0);
+  }
+
+  cards.forEach((card,i)=>{
+    const which=i+1;
+    card.addEventListener('click',()=>activate(which));
+    card.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();activate(which);}
+    });
+    card.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    card.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+
+  if(prevBtn) prevBtn.addEventListener('click',()=>goTo(idx-1));
+  if(nextBtn) nextBtn.addEventListener('click',()=>goTo(idx+1));
+
+  [prevBtn,nextBtn].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+
+  img.addEventListener('click',openLightbox);
+  img.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox();}
+  });
+  img.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  img.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  if(lightbox){
+    lightbox.addEventListener('click',e=>{if(e.target===lightbox) closeLightbox();});
+  }
+  if(lightboxClose){
+    lightboxClose.addEventListener('click',closeLightbox);
+    lightboxClose.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    lightboxClose.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  }
+  [lightboxPrev,lightboxNext].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();goTo(btn===lightboxPrev?idx-1:idx+1);});
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+  document.addEventListener('keydown',e=>{
+    if(!lightbox||lightbox.hidden) return;
+    if(e.key==='Escape'){e.preventDefault();closeLightbox();return;}
+    if(e.key==='ArrowLeft'){e.preventDefault();goTo(idx-1);return;}
+    if(e.key==='ArrowRight'){e.preventDefault();goTo(idx+1);return;}
+  });
+
+  activate(1);
+})();
 </script>
 </body>
 </html>
