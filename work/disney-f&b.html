@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/grain.css" />
 <link rel="stylesheet" href="../assets/case-study-shared.css" />
+<script src="../assets/nav-active.js" defer></script>
 
 <style>
 /* ── HERO — MOSE device grid + scrims (this page only) ── */
@@ -112,6 +113,11 @@
   transition: border-color .25s, background .25s;
 }
 .ch-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+#ch0 .ch-card:hover,
+#ch3 .ch-card:hover {
+  border-color: var(--border);
+  background: var(--bg-card);
+}
 .ch-card-tag {
   font-family: var(--font-mono);
   font-size: .58rem;
@@ -162,6 +168,33 @@
 }
 .ch-role p strong { color: var(--text-primary); font-weight: 400; }
 
+/* ── BODY: overview hero video (match app UI white; video fills inset width) ── */
+.cs-img.cs-img--hero-video {
+  background: #fff;
+}
+.cs-img--hero-video .cs-hero-video-frame {
+  aspect-ratio: 21 / 9;
+  background: #fff;
+  box-sizing: border-box;
+  padding: clamp(0.75rem, 2.2vw, 1.75rem);
+  display: grid;
+}
+.cs-img--hero-video .cs-hero-video-inset {
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-img--hero-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 /* ── INTRO TEXT WITHIN CHAPTER ── */
 .ch-intro {
   font-family: var(--font-display);
@@ -193,7 +226,8 @@
 .ch1-concept-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/8.5;
+  /* Taller frame so carousel images read larger (viewport stays flex-centered) */
+  aspect-ratio: 16/10;
   border-radius: var(--radius);
   overflow: hidden;
 }
@@ -289,6 +323,31 @@
   transition: background .2s;
 }
 .ch1-dot.is-active { background: var(--accent); }
+
+#ch0-carousel .ch1-carousel-dots {
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: min(100%, 14rem);
+  row-gap: 0.35rem;
+}
+
+#ch0-lightbox .ch0-lightbox-dots,
+#ch1-lightbox .ch1-lightbox-dots {
+  position: absolute;
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: min(90vw, 14rem);
+  row-gap: 0.35rem;
+  pointer-events: auto;
+}
+#ch0-lightbox .ch0-lightbox-dots .ch1-dot,
+#ch1-lightbox .ch1-lightbox-dots .ch1-dot {
+  cursor: pointer;
+}
 
 /* ── CH1 LIGHTBOX (carousel image zoom) ── */
 .ch1-lightbox {
@@ -409,10 +468,10 @@
 <nav id="nav">
   <a class="nav-logo" href="../index.html">LH<span>.</span></a>
   <ul class="nav-links">
-    <li><a href="../index.html#about">About</a></li>
-    <li><a href="../index.html#work">Work</a></li>
-    <li><a href="../index.html#skills">Skills</a></li>
-    <li><a href="../index.html#contact">Contact</a></li>
+    <li><a href="../index.html#about" data-nav="about">About</a></li>
+    <li><a href="../index.html#work" data-nav="work">Work</a></li>
+    <li><a href="../index.html#skills" data-nav="skills">Skills</a></li>
+    <li><a href="../index.html#contact" data-nav="contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -444,12 +503,22 @@
 <!-- ══ BODY ══ -->
 <div class="cs-body">
 
-  <!-- Hero image -->
-  <figure class="cs-img reveal">
-    <div class="cs-img-placeholder" style="aspect-ratio:21/9;">
-      <span>Hero / Cover Screenshot</span>
+  <!-- Hero video -->
+  <figure class="cs-img cs-img--hero-video reveal">
+    <div class="cs-hero-video-frame">
+      <div class="cs-hero-video-inset">
+        <video
+          src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/videos/mobile-order-redesign.mp4"
+          playsinline
+          muted
+          loop
+          autoplay
+          controls
+          preload="metadata"
+          aria-label="Disney Parks mobile order redesign screen recording"
+        ></video>
+      </div>
     </div>
-    <figcaption>Disney Parks Digital Dining — 2017–2020</figcaption>
   </figure>
 
   <!-- Overview -->
@@ -537,8 +606,36 @@
     </div>
 
     <figure class="cs-img reveal">
-      <div class="cs-img-placeholder" style="aspect-ratio:16/8;">
-        <span>Launch Screens / Flow</span>
+      <div class="ch1-concept-media" id="ch0-launch-media">
+        <div class="ch1-carousel ch1-media-layer" id="ch0-carousel" aria-label="Launch screen flow carousel" role="region">
+          <p class="ch1-carousel-subtitle" id="ch0-carousel-subtitle">Launch screens / flow</p>
+          <div class="ch1-carousel-viewport">
+            <img class="ch1-carousel-img" id="ch0-carousel-img" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-mvp-1-mockup.png" alt="Mobile Order MVP launch — screen 1" role="button" tabindex="0" aria-label="Open enlarged mockup" />
+          </div>
+          <div class="ch1-carousel-controls">
+          <button type="button" class="ch1-carousel-btn" id="ch0-prev" aria-label="Previous slide">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+          </button>
+          <div class="ch1-carousel-dots" aria-hidden="true">
+            <span class="ch1-dot is-active"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+            <span class="ch1-dot"></span>
+          </div>
+          <button type="button" class="ch1-carousel-btn" id="ch0-next" aria-label="Next slide">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </button>
+        </div>
+        </div>
       </div>
       <figcaption>End-to-end Mobile Order flow — launch (2017)</figcaption>
     </figure>
@@ -675,11 +772,39 @@
 
     <div class="cs-img-pair reveal-group">
       <figure>
-        <div class="cs-img-placeholder"><span>Menu — Before</span></div>
+        <div class="ch1-concept-media" id="ch1-menu-before-media">
+          <div class="ch1-carousel ch1-media-layer" id="ch1-menu-before-carousel" aria-label="Menu before MVP mockup" role="region">
+            <div class="ch1-carousel-viewport">
+              <img
+                class="ch1-carousel-img"
+                id="ch1-menu-before-img"
+                src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-mvp-3-mockup.png"
+                alt="Mobile Order MVP — Build Your Order menu at Galactic Grill, Disneyland (before redesign)"
+                role="button"
+                tabindex="0"
+                aria-label="Open enlarged menu mockup"
+              />
+            </div>
+          </div>
+        </div>
         <figcaption>Menu — Before (MVP)</figcaption>
       </figure>
       <figure>
-        <div class="cs-img-placeholder"><span>Menu — After (Carousel)</span></div>
+        <div class="ch1-concept-media" id="ch1-menu-after-media">
+          <div class="ch1-carousel ch1-media-layer" id="ch1-menu-after-carousel" aria-label="Menu after carousel redesign mockup" role="region">
+            <div class="ch1-carousel-viewport">
+              <img
+                class="ch1-carousel-img"
+                id="ch1-menu-after-img"
+                src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-menu-redesign-default-1.png"
+                alt="Mobile Order — Menu after carousel redesign"
+                role="button"
+                tabindex="0"
+                aria-label="Open enlarged menu mockup"
+              />
+            </div>
+          </div>
+        </div>
         <figcaption>Menu — After (Carousel redesign)</figcaption>
       </figure>
     </div>
@@ -693,13 +818,13 @@
       </p>
     </div>
 
-    <a href="https://disneyparks.disney.go.com/blog/" class="cs-link-btn" target="_blank" rel="noopener">Disney Parks Blog ↗</a>
-    <a href="https://wdwnt.com" class="cs-link-btn" target="_blank" rel="noopener">WDWNT Post ↗</a>
+    <a href="https://disneyparksblog.com/disney-experiences/moms-panel-monday-mobile-ordering-a-game-changer-for-quick-service-dining-at-disney-parks/" class="cs-link-btn" target="_blank" rel="noopener">Disney Parks Blog ↗</a>
+    <a href="https://wdwnt.com/2019/02/new-look-comes-to-mobile-order-experience-at-disneyland-resort-coming-soon-to-walt-disney-world/" class="cs-link-btn" target="_blank" rel="noopener">WDWNT Post ↗</a>
 
     <div class="ch-role reveal">
       <div class="ch-role-label">My role</div>
       <p>
-        <strong>Lead UX Designer</strong> — owned all deliverables: user flows, concepts, final
+        <strong>UX Designer</strong> — owned all deliverables: user flows, concepts, final
         comps, prototypes, motion studies, and documentation. Established the visual direction
         for the menu category icon set. Traveled to Orlando for user testing and built
         the cross-functional relationship with the WDW product and engineering teams.
@@ -761,20 +886,71 @@
       I enlisted a Visual Designer to flesh out the storyline and produce the final animations.
     </p>
 
-    <figure class="cs-img reveal">
-      <div class="cs-img-placeholder" style="aspect-ratio:16/7;">
-        <span>Storyboard Sketches</span>
+    <figure class="cs-img cs-img--hero-video reveal">
+      <div class="cs-hero-video-frame">
+        <div class="cs-hero-video-inset">
+          <video
+            src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/videos/mose-animations-portfolio.mp4"
+            playsinline
+            muted
+            loop
+            autoplay
+            controls
+            preload="metadata"
+            aria-label="MOSE animated pickup flow storyboard and animations"
+          ></video>
+        </div>
       </div>
-      <figcaption>Storyboards for the animated pickup flow</figcaption>
     </figure>
 
     <div class="cs-img-pair reveal-group">
       <figure>
-        <div class="cs-img-placeholder"><span>Pickup State — Before</span></div>
+        <div class="ch1-concept-media" id="ch2-pickup-before-media">
+          <div class="ch1-carousel ch1-media-layer" id="ch2-pickup-before-carousel" aria-label="Pickup state before carousel" role="region">
+            <div class="ch1-carousel-viewport">
+              <img class="ch1-carousel-img" id="ch2-pickup-before-img" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-mvp-9-mockup.png" alt="Pickup state before — screen 1" role="button" tabindex="0" aria-label="Open enlarged mockup" />
+            </div>
+            <div class="ch1-carousel-controls">
+              <button type="button" class="ch1-carousel-btn" id="ch2-pickup-before-prev" aria-label="Previous slide">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+              </button>
+              <div class="ch1-carousel-dots" aria-hidden="true">
+                <span class="ch1-dot is-active"></span>
+                <span class="ch1-dot"></span>
+                <span class="ch1-dot"></span>
+                <span class="ch1-dot"></span>
+              </div>
+              <button type="button" class="ch1-carousel-btn" id="ch2-pickup-before-next" aria-label="Next slide">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
         <figcaption>Pickup flow — Before</figcaption>
       </figure>
       <figure>
-        <div class="cs-img-placeholder"><span>Pickup State — After (Animated)</span></div>
+        <div class="ch1-concept-media" id="ch2-pickup-after-media">
+          <div class="ch1-carousel ch1-media-layer" id="ch2-pickup-after-carousel" aria-label="Pickup state after carousel" role="region">
+            <div class="ch1-carousel-viewport">
+              <img class="ch1-carousel-img" id="ch2-pickup-after-img" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mose-1.png" alt="Pickup state after — screen 1" role="button" tabindex="0" aria-label="Open enlarged mockup" />
+            </div>
+            <div class="ch1-carousel-controls">
+              <button type="button" class="ch1-carousel-btn" id="ch2-pickup-after-prev" aria-label="Previous slide">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+              </button>
+              <div class="ch1-carousel-dots" aria-hidden="true">
+                <span class="ch1-dot is-active"></span>
+                <span class="ch1-dot"></span>
+                <span class="ch1-dot"></span>
+                <span class="ch1-dot"></span>
+                <span class="ch1-dot"></span>
+              </div>
+              <button type="button" class="ch1-carousel-btn" id="ch2-pickup-after-next" aria-label="Next slide">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
         <figcaption>Pickup flow — After</figcaption>
       </figure>
     </div>
@@ -792,7 +968,7 @@
     <div class="ch-role reveal">
       <div class="ch-role-label">My role</div>
       <p>
-        <strong>Product Designer (solo)</strong> — owned all design from concepting through documentation.
+        <strong>Product Designer</strong> — owned designs from concepting through documentation.
         Created stakeholder presentations and pitched to leadership. Beyond design, I managed
         cross-functional coordination: project planning, budgeting projections, resource allocation,
         and weekly syncs with product and engineering. Collaborated with one Design Lead
@@ -860,29 +1036,38 @@
       as a creative constraint: finding elegant solutions within a rigid system.
     </p>
 
-    <figure class="cs-img reveal">
-      <div class="cs-img-placeholder" style="aspect-ratio:16/8;">
-        <span>Existing UI Components / Constraints</span>
+    <figure class="cs-img cs-img--hero-video reveal">
+      <div class="cs-hero-video-frame">
+        <div class="cs-hero-video-inset">
+          <video
+            src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Baloo/videos/baloo-desktop-walkthrough.mp4"
+            playsinline
+            muted
+            loop
+            autoplay
+            controls
+            preload="metadata"
+            aria-label="Dine reservation add-ons desktop walkthrough"
+          ></video>
+        </div>
       </div>
-      <figcaption>Working within the existing component library</figcaption>
     </figure>
 
-    <div class="cs-img-pair reveal-group">
-      <figure>
-        <div class="cs-img-placeholder"><span>Reservation Flow — Before</span></div>
-        <figcaption>Reservation flow — Before</figcaption>
-      </figure>
-      <figure>
-        <div class="cs-img-placeholder"><span>Reservation Flow — With Add-Ons</span></div>
-        <figcaption>Reservation flow — With add-ons</figcaption>
-      </figure>
-    </div>
-
-    <figure class="cs-img reveal">
-      <div class="cs-img-placeholder" style="aspect-ratio:16/7;">
-        <span>Celebration Add-On Selection UI</span>
+    <figure class="cs-img cs-img--hero-video reveal">
+      <div class="cs-hero-video-frame">
+        <div class="cs-hero-video-inset">
+          <video
+            src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Baloo/videos/baloo-mobile-walkthrough.mp4"
+            playsinline
+            muted
+            loop
+            autoplay
+            controls
+            preload="metadata"
+            aria-label="Dine reservation add-ons mobile walkthrough"
+          ></video>
+        </div>
       </div>
-      <figcaption>Celebration add-on selection screens</figcaption>
     </figure>
 
     <div class="cs-stats reveal-group">
@@ -972,6 +1157,87 @@
   <button type="button" class="ch1-lightbox-nav ch1-lightbox-next" id="ch1-lightbox-next" aria-label="Next wireframe">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9,18 15,12 9,6"/></svg>
   </button>
+  <div class="ch1-carousel-dots ch1-lightbox-dots" id="ch1-lightbox-dots" aria-hidden="true">
+    <span class="ch1-dot is-active"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+  </div>
+</div>
+
+<div id="ch0-lightbox" class="ch1-lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="ch0-lightbox-subtitle">
+  <button type="button" class="ch1-lightbox-close" id="ch0-lightbox-close" aria-label="Close enlarged view">&times;</button>
+  <p class="ch1-lightbox-subtitle" id="ch0-lightbox-subtitle" aria-live="polite"></p>
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-prev" id="ch0-lightbox-prev" aria-label="Previous screen">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15,18 9,12 15,6"/></svg>
+  </button>
+  <img class="ch1-lightbox-img" id="ch0-lightbox-img" src="" alt="" />
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-next" id="ch0-lightbox-next" aria-label="Next screen">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9,18 15,12 9,6"/></svg>
+  </button>
+  <div class="ch1-carousel-dots ch0-lightbox-dots" id="ch0-lightbox-dots" aria-hidden="true">
+    <span class="ch1-dot is-active"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+  </div>
+</div>
+
+<div id="ch1-menu-before-lightbox" class="ch1-lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="ch1-menu-before-lightbox-subtitle">
+  <button type="button" class="ch1-lightbox-close" id="ch1-menu-before-lightbox-close" aria-label="Close enlarged view">&times;</button>
+  <p class="ch1-lightbox-subtitle" id="ch1-menu-before-lightbox-subtitle">Menu — Before (MVP)</p>
+  <img class="ch1-lightbox-img" id="ch1-menu-before-lightbox-img" src="" alt="" />
+</div>
+
+<div id="ch1-menu-after-lightbox" class="ch1-lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="ch1-menu-after-lightbox-subtitle">
+  <button type="button" class="ch1-lightbox-close" id="ch1-menu-after-lightbox-close" aria-label="Close enlarged view">&times;</button>
+  <p class="ch1-lightbox-subtitle" id="ch1-menu-after-lightbox-subtitle">Menu — After (Carousel redesign)</p>
+  <img class="ch1-lightbox-img" id="ch1-menu-after-lightbox-img" src="" alt="" />
+</div>
+
+<div id="ch2-pickup-before-lightbox" class="ch1-lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="ch2-pickup-before-lightbox-subtitle">
+  <button type="button" class="ch1-lightbox-close" id="ch2-pickup-before-lightbox-close" aria-label="Close enlarged view">&times;</button>
+  <p class="ch1-lightbox-subtitle" id="ch2-pickup-before-lightbox-subtitle" aria-live="polite"></p>
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-prev" id="ch2-pickup-before-lightbox-prev" aria-label="Previous screen">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15,18 9,12 15,6"/></svg>
+  </button>
+  <img class="ch1-lightbox-img" id="ch2-pickup-before-lightbox-img" src="" alt="" />
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-next" id="ch2-pickup-before-lightbox-next" aria-label="Next screen">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9,18 15,12 9,6"/></svg>
+  </button>
+  <div class="ch1-carousel-dots ch2-pickup-before-lightbox-dots" id="ch2-pickup-before-lightbox-dots" aria-hidden="true">
+    <span class="ch1-dot is-active"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+  </div>
+</div>
+
+<div id="ch2-pickup-after-lightbox" class="ch1-lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="ch2-pickup-after-lightbox-subtitle">
+  <button type="button" class="ch1-lightbox-close" id="ch2-pickup-after-lightbox-close" aria-label="Close enlarged view">&times;</button>
+  <p class="ch1-lightbox-subtitle" id="ch2-pickup-after-lightbox-subtitle" aria-live="polite"></p>
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-prev" id="ch2-pickup-after-lightbox-prev" aria-label="Previous screen">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15,18 9,12 15,6"/></svg>
+  </button>
+  <img class="ch1-lightbox-img" id="ch2-pickup-after-lightbox-img" src="" alt="" />
+  <button type="button" class="ch1-lightbox-nav ch1-lightbox-next" id="ch2-pickup-after-lightbox-next" aria-label="Next screen">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9,18 15,12 9,6"/></svg>
+  </button>
+  <div class="ch1-carousel-dots ch2-pickup-after-lightbox-dots" id="ch2-pickup-after-lightbox-dots" aria-hidden="true">
+    <span class="ch1-dot is-active"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+    <span class="ch1-dot"></span>
+  </div>
 </div>
 
 <script>
@@ -1030,6 +1296,7 @@ document.querySelectorAll('.reveal,.reveal-group').forEach(el=>obs.observe(el));
   const prevBtn=document.getElementById('ch1-prev');
   const nextBtn=document.getElementById('ch1-next');
   const dots=document.querySelectorAll('#ch1-carousel .ch1-dot');
+  const lightboxDots=document.querySelectorAll('#ch1-lightbox-dots .ch1-dot');
   const caption=document.getElementById('ch1-concept-caption');
   const lightbox=document.getElementById('ch1-lightbox');
   const lightboxImg=document.getElementById('ch1-lightbox-img');
@@ -1076,6 +1343,7 @@ document.querySelectorAll('.reveal,.reveal-group').forEach(el=>obs.observe(el));
     img.src=s[idx].src;
     img.alt=s[idx].alt;
     dots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    if(lightboxDots.length===s.length) lightboxDots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
     syncLightboxFromCarousel();
   }
 
@@ -1127,6 +1395,13 @@ document.querySelectorAll('.reveal,.reveal-group').forEach(el=>obs.observe(el));
     btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
     btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
   });
+  if(lightboxDots.length===dots.length){
+    lightboxDots.forEach((d,i)=>{
+      d.addEventListener('click',e=>{e.stopPropagation();goTo(i);});
+      d.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+      d.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+    });
+  }
   document.addEventListener('keydown',e=>{
     if(!lightbox||lightbox.hidden) return;
     if(e.key==='Escape'){e.preventDefault();closeLightbox();return;}
@@ -1135,6 +1410,434 @@ document.querySelectorAll('.reveal,.reveal-group').forEach(el=>obs.observe(el));
   });
 
   activate(1);
+})();
+
+/* ── CH0 LAUNCH CAROUSEL ── */
+(function(){
+  const base='https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/';
+  const SUBTITLE='Launch screens / flow';
+  const slides=[];
+  for(let i=1;i<=13;i++){
+    slides.push({
+      src:base+'mo-mvp-'+i+'-mockup.png',
+      alt:'Mobile Order MVP launch — screen '+i
+    });
+  }
+
+  const carousel=document.getElementById('ch0-carousel');
+  const img=document.getElementById('ch0-carousel-img');
+  const subtitle=document.getElementById('ch0-carousel-subtitle');
+  const prevBtn=document.getElementById('ch0-prev');
+  const nextBtn=document.getElementById('ch0-next');
+  const dots=document.querySelectorAll('#ch0-carousel .ch1-dot');
+  const lightboxDots=document.querySelectorAll('#ch0-lightbox-dots .ch1-dot');
+  const lightbox=document.getElementById('ch0-lightbox');
+  const lightboxImg=document.getElementById('ch0-lightbox-img');
+  const lightboxClose=document.getElementById('ch0-lightbox-close');
+  const lightboxPrev=document.getElementById('ch0-lightbox-prev');
+  const lightboxNext=document.getElementById('ch0-lightbox-next');
+  const lightboxSubtitle=document.getElementById('ch0-lightbox-subtitle');
+  if(!carousel||!img||!subtitle||dots.length!==slides.length) return;
+  const syncLightboxDots=lightboxDots.length===slides.length;
+
+  let idx=0;
+  let focusBeforeLightbox=null;
+
+  function syncLightboxFromCarousel(){
+    if(!lightbox||!lightboxImg||lightbox.hidden) return;
+    lightboxImg.src=img.src;
+    lightboxImg.alt=img.alt;
+    if(lightboxSubtitle) lightboxSubtitle.textContent=SUBTITLE;
+  }
+
+  function openLightbox(){
+    if(!lightbox||!lightboxImg) return;
+    focusBeforeLightbox=document.activeElement;
+    lightbox.hidden=false;
+    document.body.style.overflow='hidden';
+    syncLightboxFromCarousel();
+    if(lightboxClose) lightboxClose.focus({preventScroll:true});
+  }
+
+  function closeLightbox(){
+    if(!lightbox) return;
+    lightbox.hidden=true;
+    document.body.style.overflow='';
+    const el=focusBeforeLightbox;
+    focusBeforeLightbox=null;
+    if(el&&typeof el.focus==='function') el.focus({preventScroll:true});
+  }
+
+  function goTo(n){
+    idx=(n+slides.length)%slides.length;
+    img.src=slides[idx].src;
+    img.alt=slides[idx].alt;
+    dots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    if(syncLightboxDots) lightboxDots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    syncLightboxFromCarousel();
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click',()=>goTo(idx-1));
+  if(nextBtn) nextBtn.addEventListener('click',()=>goTo(idx+1));
+
+  [prevBtn,nextBtn].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+
+  img.addEventListener('click',openLightbox);
+  img.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox();}
+  });
+  img.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  img.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  if(lightbox){
+    lightbox.addEventListener('click',e=>{if(e.target===lightbox) closeLightbox();});
+  }
+  if(lightboxClose){
+    lightboxClose.addEventListener('click',closeLightbox);
+    lightboxClose.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    lightboxClose.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  }
+  [lightboxPrev,lightboxNext].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();goTo(btn===lightboxPrev?idx-1:idx+1);});
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+  if(syncLightboxDots){
+    lightboxDots.forEach((d,i)=>{
+      d.addEventListener('click',e=>{e.stopPropagation();goTo(i);});
+      d.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+      d.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+    });
+  }
+  document.addEventListener('keydown',e=>{
+    if(!lightbox||lightbox.hidden) return;
+    if(e.key==='Escape'){e.preventDefault();closeLightbox();return;}
+    if(e.key==='ArrowLeft'){e.preventDefault();goTo(idx-1);return;}
+    if(e.key==='ArrowRight'){e.preventDefault();goTo(idx+1);return;}
+  });
+
+  goTo(0);
+})();
+
+/* ── CH1 MENU BEFORE (single image lightbox) ── */
+(function(){
+  const img=document.getElementById('ch1-menu-before-img');
+  const lightbox=document.getElementById('ch1-menu-before-lightbox');
+  const lightboxImg=document.getElementById('ch1-menu-before-lightbox-img');
+  const lightboxClose=document.getElementById('ch1-menu-before-lightbox-close');
+  if(!img||!lightbox||!lightboxImg||!lightboxClose) return;
+
+  let focusBefore=null;
+
+  function openLightbox(){
+    focusBefore=document.activeElement;
+    lightboxImg.src=img.currentSrc||img.src;
+    lightboxImg.alt=img.alt;
+    lightbox.hidden=false;
+    document.body.style.overflow='hidden';
+    lightboxClose.focus({preventScroll:true});
+  }
+
+  function closeLightbox(){
+    lightbox.hidden=true;
+    document.body.style.overflow='';
+    const el=focusBefore;
+    focusBefore=null;
+    if(el&&typeof el.focus==='function') el.focus({preventScroll:true});
+  }
+
+  img.addEventListener('click',openLightbox);
+  img.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox();}
+  });
+  img.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  img.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  lightbox.addEventListener('click',e=>{if(e.target===lightbox) closeLightbox();});
+  lightboxClose.addEventListener('click',closeLightbox);
+  lightboxClose.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  lightboxClose.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  document.addEventListener('keydown',e=>{
+    if(lightbox.hidden) return;
+    if(e.key==='Escape'){e.preventDefault();closeLightbox();}
+  });
+})();
+
+/* ── CH1 MENU AFTER (single image lightbox) ── */
+(function(){
+  const img=document.getElementById('ch1-menu-after-img');
+  const lightbox=document.getElementById('ch1-menu-after-lightbox');
+  const lightboxImg=document.getElementById('ch1-menu-after-lightbox-img');
+  const lightboxClose=document.getElementById('ch1-menu-after-lightbox-close');
+  if(!img||!lightbox||!lightboxImg||!lightboxClose) return;
+
+  let focusBefore=null;
+
+  function openLightbox(){
+    focusBefore=document.activeElement;
+    lightboxImg.src=img.currentSrc||img.src;
+    lightboxImg.alt=img.alt;
+    lightbox.hidden=false;
+    document.body.style.overflow='hidden';
+    lightboxClose.focus({preventScroll:true});
+  }
+
+  function closeLightbox(){
+    lightbox.hidden=true;
+    document.body.style.overflow='';
+    const el=focusBefore;
+    focusBefore=null;
+    if(el&&typeof el.focus==='function') el.focus({preventScroll:true});
+  }
+
+  img.addEventListener('click',openLightbox);
+  img.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox();}
+  });
+  img.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  img.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  lightbox.addEventListener('click',e=>{if(e.target===lightbox) closeLightbox();});
+  lightboxClose.addEventListener('click',closeLightbox);
+  lightboxClose.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  lightboxClose.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  document.addEventListener('keydown',e=>{
+    if(lightbox.hidden) return;
+    if(e.key==='Escape'){e.preventDefault();closeLightbox();}
+  });
+})();
+
+/* ── CH2 PICKUP BEFORE CAROUSEL ── */
+(function(){
+  const base='https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/';
+  const SUBTITLE='Pickup flow — Before';
+  const slides=[
+    {src:base+'mo-mvp-9-mockup.png',alt:'Pickup state before — screen 1'},
+    {src:base+'mo-mvp-10-mockup.png',alt:'Pickup state before — screen 2'},
+    {src:base+'mo-mvp-11-mockup.png',alt:'Pickup state before — screen 3'},
+    {src:base+'mo-mvp-12-mockup.png',alt:'Pickup state before — screen 4'}
+  ];
+
+  const carousel=document.getElementById('ch2-pickup-before-carousel');
+  const img=document.getElementById('ch2-pickup-before-img');
+  const prevBtn=document.getElementById('ch2-pickup-before-prev');
+  const nextBtn=document.getElementById('ch2-pickup-before-next');
+  const dots=document.querySelectorAll('#ch2-pickup-before-carousel .ch1-dot');
+  const lightboxDots=document.querySelectorAll('#ch2-pickup-before-lightbox-dots .ch1-dot');
+  const lightbox=document.getElementById('ch2-pickup-before-lightbox');
+  const lightboxImg=document.getElementById('ch2-pickup-before-lightbox-img');
+  const lightboxClose=document.getElementById('ch2-pickup-before-lightbox-close');
+  const lightboxPrev=document.getElementById('ch2-pickup-before-lightbox-prev');
+  const lightboxNext=document.getElementById('ch2-pickup-before-lightbox-next');
+  const lightboxSubtitle=document.getElementById('ch2-pickup-before-lightbox-subtitle');
+  if(!carousel||!img||dots.length!==slides.length) return;
+  const syncLightboxDots=lightboxDots.length===slides.length;
+
+  let idx=0;
+  let focusBeforeLightbox=null;
+
+  function syncLightboxFromCarousel(){
+    if(!lightbox||!lightboxImg||lightbox.hidden) return;
+    lightboxImg.src=img.src;
+    lightboxImg.alt=img.alt;
+    if(lightboxSubtitle) lightboxSubtitle.textContent=SUBTITLE;
+  }
+
+  function openLightbox(){
+    if(!lightbox||!lightboxImg) return;
+    focusBeforeLightbox=document.activeElement;
+    lightbox.hidden=false;
+    document.body.style.overflow='hidden';
+    syncLightboxFromCarousel();
+    if(lightboxClose) lightboxClose.focus({preventScroll:true});
+  }
+
+  function closeLightbox(){
+    if(!lightbox) return;
+    lightbox.hidden=true;
+    document.body.style.overflow='';
+    const el=focusBeforeLightbox;
+    focusBeforeLightbox=null;
+    if(el&&typeof el.focus==='function') el.focus({preventScroll:true});
+  }
+
+  function goTo(n){
+    idx=(n+slides.length)%slides.length;
+    img.src=slides[idx].src;
+    img.alt=slides[idx].alt;
+    dots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    if(syncLightboxDots) lightboxDots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    syncLightboxFromCarousel();
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click',()=>goTo(idx-1));
+  if(nextBtn) nextBtn.addEventListener('click',()=>goTo(idx+1));
+
+  [prevBtn,nextBtn].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+
+  img.addEventListener('click',openLightbox);
+  img.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox();}
+  });
+  img.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  img.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  if(lightbox){
+    lightbox.addEventListener('click',e=>{if(e.target===lightbox) closeLightbox();});
+  }
+  if(lightboxClose){
+    lightboxClose.addEventListener('click',closeLightbox);
+    lightboxClose.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    lightboxClose.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  }
+  [lightboxPrev,lightboxNext].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();goTo(btn===lightboxPrev?idx-1:idx+1);});
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+  if(syncLightboxDots){
+    lightboxDots.forEach((d,i)=>{
+      d.addEventListener('click',e=>{e.stopPropagation();goTo(i);});
+      d.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+      d.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+    });
+  }
+  document.addEventListener('keydown',e=>{
+    if(!lightbox||lightbox.hidden) return;
+    if(e.key==='Escape'){e.preventDefault();closeLightbox();return;}
+    if(e.key==='ArrowLeft'){e.preventDefault();goTo(idx-1);return;}
+    if(e.key==='ArrowRight'){e.preventDefault();goTo(idx+1);return;}
+  });
+
+  goTo(0);
+})();
+
+/* ── CH2 PICKUP AFTER CAROUSEL ── */
+(function(){
+  const base='https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/';
+  const SUBTITLE='Pickup flow — After';
+  const slides=[
+    {src:base+'mose-1.png',alt:'Pickup state after — screen 1'},
+    {src:base+'mose-2.png',alt:'Pickup state after — screen 2'},
+    {src:base+'mose-3.png',alt:'Pickup state after — screen 3'},
+    {src:base+'mose-4.png',alt:'Pickup state after — screen 4'},
+    {src:base+'mose-5.png',alt:'Pickup state after — screen 5'}
+  ];
+
+  const carousel=document.getElementById('ch2-pickup-after-carousel');
+  const img=document.getElementById('ch2-pickup-after-img');
+  const prevBtn=document.getElementById('ch2-pickup-after-prev');
+  const nextBtn=document.getElementById('ch2-pickup-after-next');
+  const dots=document.querySelectorAll('#ch2-pickup-after-carousel .ch1-dot');
+  const lightboxDots=document.querySelectorAll('#ch2-pickup-after-lightbox-dots .ch1-dot');
+  const lightbox=document.getElementById('ch2-pickup-after-lightbox');
+  const lightboxImg=document.getElementById('ch2-pickup-after-lightbox-img');
+  const lightboxClose=document.getElementById('ch2-pickup-after-lightbox-close');
+  const lightboxPrev=document.getElementById('ch2-pickup-after-lightbox-prev');
+  const lightboxNext=document.getElementById('ch2-pickup-after-lightbox-next');
+  const lightboxSubtitle=document.getElementById('ch2-pickup-after-lightbox-subtitle');
+  if(!carousel||!img||dots.length!==slides.length) return;
+  const syncLightboxDots=lightboxDots.length===slides.length;
+
+  let idx=0;
+  let focusBeforeLightbox=null;
+
+  function syncLightboxFromCarousel(){
+    if(!lightbox||!lightboxImg||lightbox.hidden) return;
+    lightboxImg.src=img.src;
+    lightboxImg.alt=img.alt;
+    if(lightboxSubtitle) lightboxSubtitle.textContent=SUBTITLE;
+  }
+
+  function openLightbox(){
+    if(!lightbox||!lightboxImg) return;
+    focusBeforeLightbox=document.activeElement;
+    lightbox.hidden=false;
+    document.body.style.overflow='hidden';
+    syncLightboxFromCarousel();
+    if(lightboxClose) lightboxClose.focus({preventScroll:true});
+  }
+
+  function closeLightbox(){
+    if(!lightbox) return;
+    lightbox.hidden=true;
+    document.body.style.overflow='';
+    const el=focusBeforeLightbox;
+    focusBeforeLightbox=null;
+    if(el&&typeof el.focus==='function') el.focus({preventScroll:true});
+  }
+
+  function goTo(n){
+    idx=(n+slides.length)%slides.length;
+    img.src=slides[idx].src;
+    img.alt=slides[idx].alt;
+    dots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    if(syncLightboxDots) lightboxDots.forEach((d,i)=>d.classList.toggle('is-active',i===idx));
+    syncLightboxFromCarousel();
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click',()=>goTo(idx-1));
+  if(nextBtn) nextBtn.addEventListener('click',()=>goTo(idx+1));
+
+  [prevBtn,nextBtn].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+
+  img.addEventListener('click',openLightbox);
+  img.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox();}
+  });
+  img.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  img.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+
+  if(lightbox){
+    lightbox.addEventListener('click',e=>{if(e.target===lightbox) closeLightbox();});
+  }
+  if(lightboxClose){
+    lightboxClose.addEventListener('click',closeLightbox);
+    lightboxClose.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    lightboxClose.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  }
+  [lightboxPrev,lightboxNext].filter(Boolean).forEach(btn=>{
+    btn.addEventListener('click',e=>{e.stopPropagation();goTo(btn===lightboxPrev?idx-1:idx+1);});
+    btn.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    btn.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+  if(syncLightboxDots){
+    lightboxDots.forEach((d,i)=>{
+      d.addEventListener('click',e=>{e.stopPropagation();goTo(i);});
+      d.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+      d.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+    });
+  }
+  document.addEventListener('keydown',e=>{
+    if(!lightbox||lightbox.hidden) return;
+    if(e.key==='Escape'){e.preventDefault();closeLightbox();return;}
+    if(e.key==='ArrowLeft'){e.preventDefault();goTo(idx-1);return;}
+    if(e.key==='ArrowRight'){e.preventDefault();goTo(idx+1);return;}
+  });
+
+  goTo(0);
+})();
+
+/* Videos: no autoplay when user prefers reduced motion */
+(function () {
+  if (!window.matchMedia) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.cs-img--hero-video video').forEach(function(v) {
+      v.removeAttribute('autoplay');
+      v.pause();
+    });
+  }
 })();
 </script>
 </body>

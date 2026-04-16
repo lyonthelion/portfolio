@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/grain.css" />
+<script src="assets/nav-active.js" defer></script>
 <style>
 :root{--bg:#080807;--bg-card:#0f0f0d;--bg-card-hover:#141410;--surface:#1a1a16;--border:rgba(255,255,255,0.07);--border-tag:rgba(255,255,255,0.14);--border-hover:rgba(255,200,80,0.35);--accent:#f5b731;--accent-dim:rgba(245,183,49,0.12);--text-primary:#e8e6de;--text-secondary:#a3a196;--text-muted:#6b6b63;--font-display:'Instrument Serif',Georgia,serif;--font-sans:'DM Sans',sans-serif;--font-mono:'DM Mono','Courier New',monospace;--ease-out:cubic-bezier(0.16,1,0.3,1);--ease-in-out:cubic-bezier(0.45,0,0.55,1);--radius:6px;--max-w:1100px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -37,6 +38,8 @@ nav.scrolled{background:rgba(8,8,7,0.92);backdrop-filter:blur(12px);border-botto
 .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--accent);transition:width .25s var(--ease-out)}
 .nav-links a:hover{color:var(--text-primary)}
 .nav-links a:hover::after{width:100%}
+.nav-links a.is-active{color:var(--text-primary)}
+.nav-links a.is-active::after{width:100%}
 
 /* hero */
 #hero{min-height:100vh;display:flex;flex-direction:column;padding:0 3rem 5.5rem;position:relative}
@@ -45,9 +48,11 @@ nav.scrolled{background:rgba(8,8,7,0.92);backdrop-filter:blur(12px);border-botto
 .hero-eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .2s var(--ease-out) forwards}
 .hero-name{font-family:var(--font-display);font-size:clamp(4rem,9vw,9rem);line-height:.95;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:2rem;opacity:0;transform:translateY(24px);animation:fadeUp .9s .35s var(--ease-out) forwards}
 .hero-name em{font-style:italic;color:var(--accent)}
-.hero-role{font-family:var(--font-mono);font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--text-secondary);letter-spacing:.08em;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .5s var(--ease-out) forwards;white-space:nowrap}
-.hero-role-typed{display:inline-block;min-height:1.2em}
-.hero-role-caret{display:inline-block;width:0.6ch;margin-left:0.2ch;color:var(--accent);animation:blink 1.05s steps(1,end) infinite}
+.hero-role{font-family:var(--font-mono);font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--text-secondary);letter-spacing:.08em;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .5s var(--ease-out) forwards;white-space:nowrap;display:flex;flex-wrap:nowrap;align-items:baseline;gap:.35em}
+.hero-role-prefix{flex:0 0 auto}
+.hero-role-textwrap{flex:1 1 0;min-width:0}
+.hero-role-typed{display:inline;min-height:0}
+.hero-role-caret{display:inline-block;width:0.6ch;margin-left:0.2ch;color:var(--accent);animation:blink 1.05s steps(1,end) infinite;vertical-align:baseline}
 .hero-tagline{max-width:500px;font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text-secondary);line-height:1.7;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .6s var(--ease-out) forwards}
 .hero-cta{display:inline-flex;align-items:center;align-self:flex-start;gap:.75rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(245,183,49,0.3);padding:.85rem 1.75rem;border-radius:var(--radius);transition:background .2s,border-color .2s,transform .2s var(--ease-out);opacity:0;animation:fadeUp .8s .75s var(--ease-out) forwards}
 .hero-cta:hover{background:var(--accent-dim);border-color:var(--accent);transform:translateY(-2px)}
@@ -108,18 +113,26 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .project-tag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);border:1px solid var(--border-tag);padding:.25rem .6rem;border-radius:2px}
 
 /* skills */
-.skill-tag{font-size:1rem;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);padding:.45rem .9rem;border-radius:var(--radius);transition:color .2s,border-color .2s,background .2s}
-.skill-tag:hover{color:var(--accent);border-color:rgba(245,183,49,0.3);background:var(--accent-dim)}
+.skill-tag{font-size:1rem;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);padding:.45rem .9rem;border-radius:var(--radius);transition:color .2s,border-color .2s,background .2s;position:relative;isolation:isolate;--mx:50%;--my:50%}
+#skills .skill-tag::before{
+  content:'';
+  position:absolute;inset:1px;border-radius:calc(var(--radius) - 1px);pointer-events:none;z-index:0;
+  opacity:0;transition:opacity .2s;
+  background:radial-gradient(ellipse 125% 145% at var(--mx) var(--my),rgba(245,183,49,.34) 0%,rgba(245,183,49,.14) 40%,transparent 74%);
+  mix-blend-mode:screen;
+}
+#skills.spotlight-ready .skill-tag:hover::before{opacity:1}
 
 /* skills carousel */
 .skills-carousel-wrap{margin-top:4rem}
 .skills-carousel{
   overflow:hidden;
   border-radius:var(--radius);
+  padding-block:3px;
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
   mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
 }
-.skills-track{display:flex;gap:1.25rem;width:max-content;will-change:transform}
+.skills-track{display:flex;gap:1.25rem;width:max-content;will-change:transform;align-items:center}
 .skills-list{display:flex;gap:.6rem;align-items:center}
 .skills-track .skill-tag{white-space:nowrap;flex:0 0 auto}
 
@@ -161,8 +174,17 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 @media(max-width:600px){
   .nav-links{gap:1.5rem}
   .hero-name{font-size:3.5rem}
-  .hero-role{white-space:normal}
-  .hero-role-typed{min-height:2.4em}
+  .hero-role{
+    white-space:normal;
+    line-height:1.45;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    /* Longest phrase wraps to ~3 lines here; 4.5× line-height reserves space so swaps don’t jump layout */
+    min-height:calc(1.45em * 4.5);
+  }
+  .hero-role-textwrap{white-space:normal;word-wrap:break-word;overflow-wrap:break-word}
+  .hero-role-typed{line-height:inherit}
+  .hero-role-caret{white-space:nowrap}
   .skills-carousel{-webkit-mask-image:none;mask-image:none}
   .contact-headline{font-size:2.5rem}
   #cursor-dot,#cursor-ring{display:none}
@@ -174,6 +196,7 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
   .skills-carousel{overflow:auto;-webkit-mask-image:none;mask-image:none}
   .skills-track{width:auto}
   .skills-list{flex-wrap:wrap}
+  #skills .skill-tag::before{display:none}
 }
 </style>
 </head>
@@ -186,10 +209,10 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 <nav id="nav">
   <a class="nav-logo" href="#hero">LH<span>.</span></a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#work">Work</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about" data-nav="about">About</a></li>
+    <li><a href="#work" data-nav="work">Work</a></li>
+    <li><a href="#skills" data-nav="skills">Skills</a></li>
+    <li><a href="#contact" data-nav="contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -199,8 +222,8 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
     <div class="hero-eyebrow">Product Designer — Los Angeles, CA</div>
     <h1 class="hero-name">Lyon <em>Huang</em></h1>
     <div class="hero-role">
-      <span aria-hidden="true">/ </span>
-      <span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true">|</span>
+      <span class="hero-role-prefix" aria-hidden="true">/</span>
+      <span class="hero-role-textwrap"><span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true">|</span></span>
     </div>
     <p class="hero-tagline">I design products that are intuitive, purposeful, and built for real people — from enterprise-scale platforms to consumer apps.</p>
     <a href="mailto:ux@lyonhuang.com" class="hero-cta">Say hi &rarr;</a>
@@ -331,6 +354,52 @@ document.querySelectorAll('a,button,.project-card,.skill-tag').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
 });
+
+// SKILLS: cursor radial spotlight (::before on #skills .skill-tag)
+(function(){
+  const skills=document.getElementById('skills');
+  if(!skills) return;
+  const mqReduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mqFine=window.matchMedia('(hover: hover) and (pointer: fine)');
+  let bound=false;
+  function onMove(e){
+    const t=e.currentTarget;
+    const r=t.getBoundingClientRect();
+    if(r.width<=0||r.height<=0) return;
+    const x=((e.clientX-r.left)/r.width)*100;
+    const y=((e.clientY-r.top)/r.height)*100;
+    t.style.setProperty('--mx',x+'%');
+    t.style.setProperty('--my',y+'%');
+  }
+  function onLeave(e){
+    const t=e.currentTarget;
+    t.style.removeProperty('--mx');
+    t.style.removeProperty('--my');
+  }
+  function bind(){
+    if(mqReduce.matches||!mqFine.matches){
+      if(bound){
+        skills.querySelectorAll('.skill-tag').forEach(t=>{
+          t.removeEventListener('mousemove',onMove);
+          t.removeEventListener('mouseleave',onLeave);
+        });
+        bound=false;
+      }
+      skills.classList.remove('spotlight-ready');
+      return;
+    }
+    skills.classList.add('spotlight-ready');
+    if(bound) return;
+    bound=true;
+    skills.querySelectorAll('.skill-tag').forEach(t=>{
+      t.addEventListener('mousemove',onMove,{passive:true});
+      t.addEventListener('mouseleave',onLeave);
+    });
+  }
+  bind();
+  mqReduce.addEventListener('change',bind);
+  mqFine.addEventListener('change',bind);
+})();
 
 // NAV
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60),{passive:true});

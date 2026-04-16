@@ -99,6 +99,8 @@ nav.scrolled {
 }
 .nav-links a:hover { color: var(--text-primary); }
 .nav-links a:hover::after { width: 100%; }
+.nav-links a.is-active { color: var(--text-primary); }
+.nav-links a.is-active::after { width: 100%; }
 
 /* ── CASE STUDY HERO ── */
 .cs-hero {
