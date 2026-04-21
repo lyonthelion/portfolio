@@ -9,6 +9,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/grain.css" />
 <link rel="stylesheet" href="../assets/case-study-shared.css" />
+<style>
+/* ── HERO — full-bleed splash + scrims (same pattern as cs-hero--mose on Disney case study) ── */
+/* Photo on .cs-hero only; scrim layers live on ::after so one bad gradient does not drop the stack. */
+.cs-hero.cs-hero--mose {
+  border-bottom: 1px solid var(--bg);
+  background-color: var(--bg);
+  background-image: url("https://pub-222dc106558343779b692e4bea526f78.r2.dev/Pluto/pluto-hero-splash-3.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.cs-hero.cs-hero--mose::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  box-shadow: inset 0 -28px 36px -14px rgba(8, 8, 7, 0.32);
+  /* Background layers: top = grain (assets/grain.css); ellipses use % only (min() can invalidate whole rule in some engines). */
+  background:
+    var(--grain-tile) 0 0 / 300px 300px repeat,
+    radial-gradient(ellipse 92% 38% at 50% 61%, rgba(8, 8, 7, 0.88) 0%, rgba(8, 8, 7, 0.35) 45%, rgba(8, 8, 7, 0) 72%),
+    linear-gradient(to top, rgba(8, 8, 7, 1) 0%, rgba(8, 8, 7, 0.94) 5%, rgba(8, 8, 7, 0.82) 16%, rgba(8, 8, 7, 0.5) 38%, rgba(8, 8, 7, 0.22) 58%, rgba(8, 8, 7, 0) 78%),
+    radial-gradient(ellipse at 20% 80%, rgba(245, 183, 49, 0.06) 0%, rgba(8, 8, 7, 0) 60%);
+}
+.cs-hero.cs-hero--mose > * {
+  position: relative;
+  z-index: 1;
+}
+.cs-hero.cs-hero--mose::before {
+  content: none;
+}
+
+/* Concept cards — no hover lift (match Disney #ch0 / #ch3 .ch-card) */
+.cs-body .cs-concept-card:hover {
+  border-color: var(--border);
+  background: var(--bg-card);
+}
+</style>
 <script src="../assets/nav-active.js" defer></script>
 </head>
 <body>
@@ -28,7 +67,7 @@
 </nav>
 
 <!-- HERO -->
-<div class="cs-hero">
+<div class="cs-hero cs-hero--mose">
   <a class="cs-back" href="../index.html#work">← Back to work</a>
   <div class="cs-client-badge">Pluto TV</div>
   <h1>Designing at<br><em>Scale</em></h1>
@@ -54,14 +93,6 @@
 
 <!-- BODY -->
 <div class="cs-body">
-
-  <!-- Cover image placeholder -->
-  <figure class="cs-img reveal">
-    <div class="cs-img-placeholder" style="aspect-ratio:21/9;">
-      <span>Hero / Cover Screenshot</span>
-    </div>
-    <figcaption>Pluto TV — Cross-platform UX work (2021–Present)</figcaption>
-  </figure>
 
   <!-- OVERVIEW -->
   <p class="cs-lead reveal">
@@ -456,7 +487,7 @@
   <div>
     <div class="cs-next-label">Next project</div>
     <a class="cs-next-link" href="disney-f%26b.html">
-      <div class="cs-next-title">Disney Food &amp; Beverage →</div>
+      <div class="cs-next-title">Disney Parks →</div>
     </a>
   </div>
   <a class="cs-next-link" href="disney-f%26b.html">
