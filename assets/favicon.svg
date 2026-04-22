@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 128">
+  <title>LH.</title>
+  <defs>
+    <style>
+      .mark {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 700;
+        font-size: 76px;
+        letter-spacing: -0.02em;
+        paint-order: stroke fill;
+        stroke: #000;
+        stroke-width: 6px;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+
+  <!-- Same text run as “LH.” — no extra `dx`; `dx` was adding visible gap after the H -->
+  <text class="mark" x="10" y="90">
+    <tspan fill="#e8e6de">LH</tspan><tspan fill="#f5b731">.</tspan>
+  </text>
+</svg>
