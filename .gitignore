@@ -2,3 +2,7 @@
 
 # Leftover nested clone from earlier submodule layout; site root is this repo.
 portfolio/
+
+# Local Claude Code config/instructions — not for the published repo
+CLAUDE.md
+.claude/
