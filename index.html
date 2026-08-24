@@ -158,6 +158,27 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 .footer-back{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);transition:color .2s}
 .footer-back:hover{color:var(--accent)}
 
+/* project card 3D parallax + glare (idea 01) */
+.project-thumb-inner{transition:transform .2s var(--ease-out)}
+.project-glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px 220px at var(--gx,50%) var(--gy,50%),rgba(255,255,255,0.16),transparent 60%);mix-blend-mode:screen;z-index:2}
+.project-card.tilting{transition:box-shadow .35s var(--ease-out),border-color .3s,background .3s}
+.project-card:hover .project-glare{opacity:1}
+
+/* impact counters (idea 02) */
+.impact-row{display:flex;flex-wrap:wrap;gap:clamp(2rem,6vw,4.5rem);margin-top:4rem;padding-top:3rem;border-top:1px solid var(--border);justify-content:space-between}
+.impact-stat{display:flex;flex-direction:column;gap:.55rem;min-width:0}
+.impact-num{font-family:var(--font-display);font-size:clamp(2.6rem,6vw,3.8rem);line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.impact-label{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-secondary);line-height:1.5;max-width:18ch}
+
+/* easter egg fallers (idea 04) */
+.egg-faller{position:fixed;top:-52px;font-size:1.8rem;line-height:1;pointer-events:none;z-index:9997;will-change:transform}
+.nav-logo{transition:transform .2s var(--ease-in-out)}
+
+/* copy-to-clipboard toast (idea 08) */
+.contact-email{position:relative}
+.copy-toast{position:absolute;top:-2.6rem;left:50%;transform:translate(-50%,6px);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#000;background:var(--accent);padding:.35rem .8rem;border-radius:100px;opacity:0;transition:opacity .25s,transform .25s var(--ease-out);pointer-events:none;white-space:nowrap}
+.copy-toast.show{opacity:1;transform:translate(-50%,0)}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes slideY{0%{top:-100%}50%{top:0%}100%{top:100%}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
@@ -255,6 +276,11 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
       </div>
     </div>
   </div>
+  <div class="impact-row reveal" id="impact">
+    <div class="impact-stat"><span class="impact-num" data-to="8" data-suffix="">0</span><span class="impact-label">Years in consumer product design</span></div>
+    <div class="impact-stat"><span class="impact-num" data-to="3" data-suffix="">0</span><span class="impact-label">Industries — streaming, theme parks, health-tech</span></div>
+    <div class="impact-stat"><span class="impact-num" data-to="50" data-suffix="M+">0</span><span class="impact-label">Viewers reached at scale</span></div>
+  </div>
 </section>
 
 <div class="divider"></div>
@@ -271,7 +297,7 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
     <a class="project-card" href="work/pluto-tv.html">
       <div class="project-thumb"><div class="project-thumb-inner">
         <span class="project-thumb-label">Pluto TV</span>
-      </div><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
+      </div><div class="project-glare"></div><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
       <div class="project-info">
         <div class="project-client">Pluto TV</div>
         <h3 class="project-name">Pluto TV</h3>
@@ -284,7 +310,7 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
     <a class="project-card" href="work/disney-f&b.html">
       <div class="project-thumb"><div class="project-thumb-inner">
         <span class="project-thumb-label">Disney Parks</span>
-      </div><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
+      </div><div class="project-glare"></div><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
       <div class="project-info">
         <div class="project-client">Disney</div>
         <h3 class="project-name">Disney</h3>
@@ -334,7 +360,7 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
   <div class="section-label" style="justify-content:center">Let's connect</div>
   <h2 class="contact-headline reveal">Got a great<br>project? <em>Let's talk.</em></h2>
   <p class="contact-sub reveal">I'm currently open to full-time product design roles. Don't be a stranger.</p>
-  <a href="mailto:ux@lyonhuang.com" class="contact-email reveal">ux@lyonhuang.com &#8599;</a>
+  <a href="mailto:ux@lyonhuang.com" class="contact-email reveal" id="contact-email" data-copy="ux@lyonhuang.com">ux@lyonhuang.com &#8599;<span class="copy-toast" id="copy-toast" aria-hidden="true">Copied &#10003;</span></a>
   <div class="contact-socials reveal-group">
     <a href="https://www.linkedin.com/in/lyonhuang" class="social-link" target="_blank" rel="noopener">LinkedIn</a>
   </div>
@@ -474,6 +500,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
   /* Hero-only canvas stroke accents (per shape type) */
   var SHAPE_COLORS={circle:'#f5b731',ring:'#e4c76a',square:'#9eb8d4',diamond:'#c4a8e0',triangle:'#8fd4b8',cross:'#e8a090'};
   var W,H,DPR,shapes=[];
+  var scrollDrift=0,lastSY=window.scrollY;
 
   function resize(){
     DPR=window.devicePixelRatio||1;
@@ -492,6 +519,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
     canvas.style.visibility=v; glow.style.visibility=v;
   }
   window.addEventListener('scroll',fade,{passive:true});
+  window.addEventListener('scroll',function(){var d=window.scrollY-lastSY;lastSY=window.scrollY;scrollDrift+=d*0.05;if(scrollDrift>7)scrollDrift=7;if(scrollDrift<-7)scrollDrift=-7;},{passive:true});
 
   function mkShape(rY){
     var t=TYPES[Math.floor(Math.random()*TYPES.length)];
@@ -524,10 +552,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
 
   function tick(){
     ctx.clearRect(0,0,W,H);
+    scrollDrift*=0.9;
     shapes.forEach(function(s){
-      s.x+=s.vx; s.y+=s.vy; s.rot+=s.rotSpd; s.pulse+=s.pspd;
-      var dx=s.x-mx,dy=s.y-my,dist=Math.sqrt(dx*dx+dy*dy),R=100;
-      if(dist<R&&dist>0){var f=(1-dist/R)*.5;s.x+=dx/dist*f;s.y+=dy/dist*f;s.al=s.base*(1+(1-dist/R)*1.8);}
+      s.x+=s.vx; s.y+=s.vy+scrollDrift; s.rot+=s.rotSpd; s.pulse+=s.pspd;
+      var dx=s.x-mx,dy=s.y-my,dist=Math.sqrt(dx*dx+dy*dy),R=140;
+      if(dist<R&&dist>0){var f=(1-dist/R)*.95;s.x+=dx/dist*f;s.y+=dy/dist*f;s.al=s.base*(1+(1-dist/R)*2.1);}
       else{s.al+=(s.base-s.al)*.05;}
       s.al*=.84+.16*Math.sin(s.pulse);
       var pad=s.sz+4;
@@ -541,6 +570,102 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
 
   resize(); init(); tick(); fade();
   window.addEventListener('resize',function(){resize();init();fade();},{passive:true});
+})();
+
+// SHARED MEDIA QUERIES
+var _reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+// PROJECT CARDS: 3D tilt + cursor glare (idea 01)
+(function(){
+  if(_reduced||!_fine) return;
+  document.querySelectorAll('.project-card').forEach(function(card){
+    var thumbInner=card.querySelector('.project-thumb-inner');
+    var glare=card.querySelector('.project-glare');
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+      card.classList.add('tilting');
+      card.style.transform='perspective(900px) translateY(-6px) rotateY('+((px-0.5)*8).toFixed(2)+'deg) rotateX('+((0.5-py)*8).toFixed(2)+'deg)';
+      if(thumbInner) thumbInner.style.transform='scale(1.06) translate('+((px-0.5)*-12).toFixed(1)+'px,'+((py-0.5)*-12).toFixed(1)+'px)';
+      if(glare){glare.style.setProperty('--gx',(px*100).toFixed(1)+'%');glare.style.setProperty('--gy',(py*100).toFixed(1)+'%');}
+    });
+    card.addEventListener('mouseleave',function(){
+      card.classList.remove('tilting');
+      card.style.transform='';
+      if(thumbInner) thumbInner.style.transform='';
+    });
+  });
+})();
+
+// IMPACT COUNTERS: count up on scroll into view (idea 02)
+(function(){
+  var nums=[].slice.call(document.querySelectorAll('.impact-num'));
+  if(!nums.length) return;
+  function fmt(n){ return n>=1000 ? n.toLocaleString() : ''+n; }
+  function run(n){
+    var to=+n.getAttribute('data-to'), suf=n.getAttribute('data-suffix')||'', dur=1500, t0=performance.now();
+    (function step(t){
+      var p=Math.min((t-t0)/dur,1), e=1-Math.pow(1-p,3);
+      n.textContent=fmt(Math.round(to*e))+suf;
+      if(p<1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+  if(_reduced){ nums.forEach(function(n){n.textContent=fmt(+n.getAttribute('data-to'))+(n.getAttribute('data-suffix')||'');}); return; }
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){run(en.target);io.unobserve(en.target);}});},{threshold:.5});
+  nums.forEach(function(n){io.observe(n);});
+})();
+
+// EASTER EGG: click the logo 5× → boba & paws rain (idea 04)
+(function(){
+  var logo=document.querySelector('.nav-logo'); if(!logo) return;
+  var glyphs=['🧋','🐾','🐶','🧋','🐾'];
+  var n=0, unlocked=false;
+  function rain(){
+    if(_reduced) return;
+    var count=28;
+    for(var i=0;i<count;i++){
+      (function(i){
+        var f=document.createElement('div');
+        f.className='egg-faller';
+        f.textContent=glyphs[Math.floor(Math.random()*glyphs.length)];
+        f.style.left=(Math.random()*100)+'vw';
+        document.body.appendChild(f);
+        var dur=2400+Math.random()*2200, drift=(Math.random()-0.5)*140, rot=(Math.random()-0.5)*540;
+        f.animate(
+          [{transform:'translateY(-60px) rotate(0deg)',opacity:1},
+           {transform:'translateY('+(window.innerHeight+80)+'px) translateX('+drift+'px) rotate('+rot+'deg)',opacity:1}],
+          {duration:dur,delay:i*45,easing:'cubic-bezier(.4,0,.7,1)'}
+        ).onfinish=function(){f.remove();};
+      })(i);
+    }
+  }
+  logo.addEventListener('click',function(){
+    if(unlocked){ rain(); return; }
+    n++;
+    logo.style.transform='scale(0.88)';
+    setTimeout(function(){logo.style.transform='';},160);
+    if(n>=5){ unlocked=true; rain(); }
+  });
+})();
+
+// COPY EMAIL: click to copy + toast (idea 08)
+(function(){
+  var link=document.getElementById('contact-email'), toast=document.getElementById('copy-toast');
+  if(!link||!toast) return;
+  var timer;
+  link.addEventListener('click',function(e){
+    var text=link.getAttribute('data-copy')||'';
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      e.preventDefault();
+      navigator.clipboard.writeText(text).then(function(){
+        toast.classList.add('show');
+        clearTimeout(timer);
+        timer=setTimeout(function(){toast.classList.remove('show');},1600);
+      }).catch(function(){ /* fall back to mailto navigation */ window.location.href=link.href; });
+    }
+    // if clipboard API unavailable, default mailto: navigation proceeds
+  });
 })();
 </script>
 </body>
