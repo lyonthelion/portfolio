@@ -10,6 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/grain.css" />
 <link rel="stylesheet" href="../assets/case-study-shared.css" />
+<link rel="stylesheet" href="../assets/nav.css" />
+<script src="../assets/nav.js" defer></script>
 <script src="../assets/nav-active.js" defer></script>
 
 <style>
@@ -466,15 +468,7 @@
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
 
-<nav id="nav">
-  <a class="nav-logo" href="../index.html">LH<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="../index.html#about" data-nav="about">About</a></li>
-    <li><a href="../index.html#work" data-nav="work">Work</a></li>
-    <li><a href="../index.html#skills" data-nav="skills">Skills</a></li>
-    <li><a href="../index.html#contact" data-nav="contact">Contact</a></li>
-  </ul>
-</nav>
+<div id="site-nav" data-base="../"></div>
 
 <!-- ══ HERO ══ -->
 <div class="cs-hero cs-hero--mose">
@@ -1247,7 +1241,6 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));});
 
 /* ── NAV SCROLL ── */
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60),{passive:true});
 
 /* ── REVEAL ── */
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');obs.unobserve(e.target);}}),{threshold:.08});

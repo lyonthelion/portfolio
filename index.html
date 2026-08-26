@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/grain.css" />
+<link rel="stylesheet" href="assets/nav.css" />
+<script src="assets/nav.js" defer></script>
 <script src="assets/nav-active.js" defer></script>
 <style>
 :root{--bg:#080807;--bg-card:#0f0f0d;--bg-card-hover:#141410;--surface:#1a1a16;--border:rgba(255,255,255,0.07);--border-tag:rgba(255,255,255,0.14);--border-hover:rgba(255,200,80,0.35);--accent:#f5b731;--accent-dim:rgba(245,183,49,0.12);--text-primary:#e8e6de;--text-secondary:#a3a196;--text-muted:#6b6b63;--font-display:'Instrument Serif',Georgia,serif;--font-sans:'DM Sans',sans-serif;--font-mono:'DM Mono','Courier New',monospace;--ease-out:cubic-bezier(0.16,1,0.3,1);--ease-in-out:cubic-bezier(0.45,0,0.55,1);--radius:6px;--max-w:1100px}
@@ -28,44 +30,6 @@ body.cursor-hover #cursor-ring{width:54px;height:54px;border-color:var(--accent)
 /* fixed full-viewport layers */
 #hero-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0}
 #hero-glow{position:fixed;top:0;left:0;width:100vw;height:100vh;background:radial-gradient(ellipse 72% 62% at 16% 74%,rgba(245,183,49,0.06) 0%,transparent 100%),radial-gradient(ellipse 48% 38% at 80% 28%,rgba(245,183,49,0.028) 0%,transparent 100%);pointer-events:none;z-index:0;transition:opacity .1s linear}
-
-/* nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 3rem;background:linear-gradient(to bottom,rgba(8,8,7,0.95),transparent);transition:background .3s}
-nav.scrolled{background:rgba(8,8,7,0.20);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-logo{font-family:var(--font-display);font-size:1.2rem;color:var(--text-primary)}
-.nav-logo span{color:var(--accent)}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--accent);transition:width .25s var(--ease-out)}
-.nav-links a:hover{color:var(--text-primary)}
-.nav-links a:hover::after{width:100%}
-.nav-links a.is-active{color:var(--text-primary)}
-.nav-links a.is-active::after{width:100%}
-
-/* overflow menu: two-line toggle → X */
-.nav-toggle{display:none;position:relative;width:22px;height:16px;background:none;border:0;padding:0;cursor:none;z-index:210}
-.nav-toggle-bar{position:absolute;left:0;width:22px;height:2px;background:var(--text-primary);transition:transform .3s var(--ease-out),background .2s}
-.nav-toggle-bar:nth-child(1){top:4px}
-.nav-toggle-bar:nth-child(2){top:10px}
-.nav-toggle:hover .nav-toggle-bar{background:var(--accent)}
-.nav-toggle.open .nav-toggle-bar:nth-child(1){transform:translateY(3px) rotate(45deg)}
-.nav-toggle.open .nav-toggle-bar:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
-
-/* overflow menu: full-screen overlay */
-.nav-overlay{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;background:rgba(8,8,7,0.97);backdrop-filter:blur(6px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s var(--ease-out),visibility .4s}
-.nav-overlay.open{opacity:1;visibility:visible;pointer-events:auto}
-.nav-overlay-links{list-style:none;display:flex;flex-direction:column;align-items:center;gap:1.75rem;text-align:center}
-.nav-overlay-links a{font-family:var(--font-display);font-size:clamp(2.25rem,11vw,3.25rem);line-height:1;color:var(--text-primary);transition:color .2s}
-.nav-overlay-links a:hover{color:var(--accent)}
-.nav-overlay-links li{opacity:0;transform:translateY(18px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out)}
-.nav-overlay.open .nav-overlay-links li{opacity:1;transform:none}
-.nav-overlay.open .nav-overlay-links li:nth-child(1){transition-delay:.06s}
-.nav-overlay.open .nav-overlay-links li:nth-child(2){transition-delay:.12s}
-.nav-overlay.open .nav-overlay-links li:nth-child(3){transition-delay:.18s}
-.nav-overlay.open .nav-overlay-links li:nth-child(4){transition-delay:.24s}
-.nav-overlay.open .nav-overlay-links li:nth-child(5){transition-delay:.30s}
-body.menu-open{overflow:hidden}
-body.menu-open nav,body.menu-open nav.scrolled{background:transparent;backdrop-filter:none;border-bottom-color:transparent}
 
 /* hero */
 #hero{min-height:100vh;display:flex;flex-direction:column;padding:0 3rem 5.5rem;position:relative}
@@ -203,7 +167,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
 
 /* easter egg fallers (idea 04) */
 .egg-faller{position:fixed;top:-52px;font-size:1.8rem;line-height:1;pointer-events:none;z-index:9997;will-change:transform}
-.nav-logo{transition:transform .2s var(--ease-in-out)}
 
 /* copy-to-clipboard toast (idea 08) */
 .contact-email{position:relative}
@@ -225,7 +188,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
   footer{flex-direction:column;gap:1rem;text-align:center}
 }
 @media(max-width:600px){
-  .nav-links{gap:1.5rem}
   .hero-name{font-size:3.5rem}
   .hero-role{
     white-space:normal;
@@ -244,12 +206,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
   body{cursor:auto}
 }
 
-/* nav links overflow → collapse to hamburger overlay */
-@media(max-width:480px){
-  .nav-links{display:none}
-  .nav-toggle{display:block}
-}
-
 @media (prefers-reduced-motion: reduce){
   .marquee-left{animation:none}
   .skills-carousel{overflow:auto;-webkit-mask-image:none;mask-image:none}
@@ -265,30 +221,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
 <div id="cursor-ring"></div>
 <div id="hero-glow"></div>
 
-<nav id="nav">
-  <a class="nav-logo" href="#hero">LH<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="#about" data-nav="about">About</a></li>
-    <li><a href="#work" data-nav="work">Work</a></li>
-    <li><a href="https://drive.google.com/file/d/1OHJcjeubRDB25KiydVox9oK9vkcrZ_EQ/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li>
-    <li><a href="#skills" data-nav="skills">Skills</a></li>
-    <li><a href="#contact" data-nav="contact">Contact</a></li>
-  </ul>
-  <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-overlay">
-    <span class="nav-toggle-bar"></span>
-    <span class="nav-toggle-bar"></span>
-  </button>
-</nav>
-
-<div class="nav-overlay" id="nav-overlay" aria-hidden="true">
-  <ul class="nav-overlay-links">
-    <li><a href="#about" data-nav="about">About</a></li>
-    <li><a href="#work" data-nav="work">Work</a></li>
-    <li><a href="https://drive.google.com/file/d/1OHJcjeubRDB25KiydVox9oK9vkcrZ_EQ/view?usp=sharing" target="_blank" rel="noopener">Resume</a></li>
-    <li><a href="#skills" data-nav="skills">Skills</a></li>
-    <li><a href="#contact" data-nav="contact">Contact</a></li>
-  </ul>
-</div>
+<div id="site-nav" data-base=""></div>
 
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
@@ -486,33 +419,6 @@ document.querySelectorAll('a,button,.project-card,.skill-tag').forEach(el=>{
   bind();
   mqReduce.addEventListener('change',bind);
   mqFine.addEventListener('change',bind);
-})();
-
-// NAV
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>60),{passive:true});
-
-// OVERFLOW MENU: hamburger toggles full-screen overlay
-(function(){
-  var toggle=document.getElementById('nav-toggle');
-  var overlay=document.getElementById('nav-overlay');
-  if(!toggle||!overlay) return;
-  var links=overlay.querySelectorAll('a');
-  function setOpen(open){
-    toggle.classList.toggle('open',open);
-    overlay.classList.toggle('open',open);
-    document.body.classList.toggle('menu-open',open);
-    toggle.setAttribute('aria-expanded',open?'true':'false');
-    toggle.setAttribute('aria-label',open?'Close menu':'Open menu');
-    overlay.setAttribute('aria-hidden',open?'false':'true');
-    if(open){ if(links[0]) links[0].focus(); }
-    else{ toggle.focus(); }
-  }
-  toggle.addEventListener('click',function(){ setOpen(!overlay.classList.contains('open')); });
-  links.forEach(function(a){ a.addEventListener('click',function(){ setOpen(false); }); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&overlay.classList.contains('open')) setOpen(false); });
-  // close if the viewport grows back to where inline links fit
-  var mq=window.matchMedia('(min-width:481px)');
-  mq.addEventListener('change',function(e){ if(e.matches&&overlay.classList.contains('open')) setOpen(false); });
 })();
 
 // REVEAL
@@ -785,8 +691,8 @@ var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 })();
 
 // EASTER EGG: click the logo 5× → boba & paws rain (idea 04)
+// Delegated on document: the logo is injected by nav.js after this script runs.
 (function(){
-  var logo=document.querySelector('.nav-logo'); if(!logo) return;
   var glyphs=['🧋','🐾','🐶','🧋','🐾'];
   var n=0, unlocked=false;
   function rain(){
@@ -808,7 +714,9 @@ var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       })(i);
     }
   }
-  logo.addEventListener('click',function(){
+  document.addEventListener('click',function(e){
+    var logo=e.target.closest && e.target.closest('.nav-logo');
+    if(!logo) return;
     if(unlocked){ rain(); return; }
     n++;
     logo.style.transform='scale(0.88)';
