@@ -145,7 +145,9 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 /* footer */
 footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;max-width:var(--max-w);margin:0 auto}
 .footer-copy{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-muted)}
-.footer-back{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);transition:color .2s}
+.footer-back{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);transition:color .2s}
+/* crisp inline SVG arrow for buttons (DM Mono's arrow glyphs render small/misaligned) */
+.btn-arrow{width:.95em;height:.95em;flex:0 0 auto}
 .footer-back:hover{color:var(--accent)}
 
 /* cursor glare highlight (project cards + avatar) */
@@ -234,7 +236,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
       <span class="hero-role-textwrap"><span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true">|</span></span>
     </div>
     <p class="hero-tagline">I design consumer products at scale — mobile apps, streaming platforms, and hospitality digital experiences.</p>
-    <a href="mailto:hi@lyonhuang.com" class="hero-cta" data-copy="hi@lyonhuang.com">Say hi &rarr;<span class="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
+    <a href="mailto:hi@lyonhuang.com" class="hero-cta" data-copy="hi@lyonhuang.com">Say hi<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span class="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
   </div>
   <div class="hero-scroll"><div class="hero-scroll-line"></div>Scroll</div>
 </section>
@@ -263,7 +265,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
         <p>I'm currently based in <strong>Los Angeles</strong> and looking for my next opportunity to design products that genuinely matter.</p>
       </div>
       <div class="resume-row">
-        <a href="https://drive.google.com/file/d/1OHJcjeubRDB25KiydVox9oK9vkcrZ_EQ/view?usp=sharing" class="resume-btn" target="_blank" rel="noopener">Resume &rarr;</a>
+        <a href="https://drive.google.com/file/d/1OHJcjeubRDB25KiydVox9oK9vkcrZ_EQ/view?usp=sharing" class="resume-btn" target="_blank" rel="noopener">Resume<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
     </div>
   </div>
@@ -356,13 +358,13 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
   <p class="contact-sub reveal">I'm currently open to full-time product design roles. Don't be a stranger.</p>
   <a href="mailto:hi@lyonhuang.com" class="contact-email reveal" id="contact-email" data-copy="hi@lyonhuang.com">hi@lyonhuang.com<span class="copy-toast" id="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
   <div class="contact-socials reveal-group">
-    <a href="https://www.linkedin.com/in/lyonhuang" class="linkedin-btn" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.linkedin.com/in/lyonhuang" class="linkedin-btn" target="_blank" rel="noopener">LinkedIn<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
   </div>
 </section>
 
 <footer>
   <span class="footer-copy">&#169; 2026 Lyon Huang</span>
-  <a href="#hero" class="footer-back">Back to top &#8593;</a>
+  <a href="#hero" class="footer-back">Back to top<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></a>
 </footer>
 
 <script>
