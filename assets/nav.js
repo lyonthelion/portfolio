@@ -42,12 +42,7 @@
   function onScroll(){ nav.classList.toggle('scrolled', window.scrollY>60); }
   window.addEventListener('scroll',onScroll,{passive:true});
   onScroll();
-
-  // custom-cursor hover for the injected nav elements (they didn't exist when the page's inline cursor script ran)
-  nav.querySelectorAll('a,button').forEach(function(el){
-    el.addEventListener('mouseenter',function(){document.body.classList.add('cursor-hover');});
-    el.addEventListener('mouseleave',function(){document.body.classList.remove('cursor-hover');});
-  });
+  // (cursor-hover for nav links is handled by the delegated listener in base.js)
 
   // OVERFLOW MENU: hamburger toggles full-screen overlay
   var links=overlay.querySelectorAll('a');

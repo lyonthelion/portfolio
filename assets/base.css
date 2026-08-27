@@ -1,0 +1,41 @@
+/* ═══════════════════════════════════════════════
+   LYON HUANG — SHARED BASE
+   Design tokens + reset + custom-cursor styling shared by every page.
+   Load order: grain.css → base.css → nav.css → page styles.
+   Page-specific tokens (--max-w, --accent-dim, --max-w-wide) and the
+   things that legitimately differ per page (body line-height, img
+   radius, reveal distances, footer) stay in each page's own CSS.
+   ═══════════════════════════════════════════════ */
+
+/* ── TOKENS (shared) ── */
+:root{
+  --bg:#080807;
+  --bg-card:#0f0f0d;
+  --bg-card-hover:#141410;
+  --surface:#1a1a16;
+  --border:rgba(255,255,255,0.07);
+  --border-tag:rgba(255,255,255,0.14);
+  --border-hover:rgba(255,200,80,0.35);
+  --accent:#f5b731;
+  --text-primary:#e8e6de;
+  --text-secondary:#a3a196;
+  --text-muted:#6b6b63;
+  --font-display:'Instrument Serif',Georgia,serif;
+  --font-sans:'DM Sans',sans-serif;
+  --font-mono:'DM Mono','Courier New',monospace;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --ease-in-out:cubic-bezier(0.45,0,0.55,1);
+  --radius:6px;
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+::selection{background:var(--accent);color:#000}
+a{color:inherit;text-decoration:none}
+
+/* ── CURSOR ── */
+#cursor-dot{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s var(--ease-out),height .2s var(--ease-out);mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(245,183,49,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s var(--ease-out),height .3s var(--ease-out),border-color .2s}
+body.cursor-hover #cursor-dot{width:14px;height:14px}
+body.cursor-hover #cursor-ring{width:54px;height:54px;border-color:var(--accent)}
