@@ -58,7 +58,9 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .reveal-group.in-view>*:nth-child(3){opacity:1;transform:none;transition-delay:.2s}
 
 /* about */
-#about .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:4rem}
+#about .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:stretch}
+.about-intro{display:flex;flex-direction:column}
+.about-intro .about-avatar{margin-top:auto;margin-bottom:auto} /* center photo against the description column */
 .about-avatar{position:relative;aspect-ratio:1;max-width:320px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .about-avatar-inner{width:100%;height:100%;overflow:hidden}
 .about-avatar-inner img{width:100%;height:100%;object-fit:cover;display:block}
@@ -137,9 +139,8 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .contact-email{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-display);font-style:italic;font-size:clamp(1.2rem,3vw,2rem);color:var(--text-primary);border-bottom:1px solid rgba(245,183,49,0.3);padding-bottom:.25rem;transition:color .2s,border-color .2s}
 .contact-email:hover{color:var(--accent);border-color:var(--accent)}
 .contact-socials{display:flex;justify-content:center;gap:2rem;margin-top:3rem}
-.social-link{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);transition:color .2s;display:flex;align-items:center;gap:.4rem}
-.social-link::before{content:'↗';color:var(--text-muted);transition:color .2s}
-.social-link:hover,.social-link:hover::before{color:var(--accent)}
+.linkedin-btn{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#0a66c2;border:1px solid rgba(10,102,194,0.45);padding:.7rem 1.4rem;border-radius:var(--radius);transition:background .2s,border-color .2s,color .2s,transform .2s var(--ease-out)}
+.linkedin-btn:hover{background:#0a66c2;border-color:#0a66c2;color:#fff;transform:translateY(-2px)}
 
 /* footer */
 footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;max-width:var(--max-w);margin:0 auto}
@@ -165,6 +166,11 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
 .contact-email{position:relative}
 .copy-toast{position:absolute;top:-2.6rem;left:50%;transform:translate(-50%,6px);font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#000;background:var(--accent);padding:.35rem .8rem;border-radius:100px;opacity:0;transition:opacity .25s,transform .25s var(--ease-out);pointer-events:none;white-space:nowrap}
 .copy-toast.show{opacity:1;transform:translate(-50%,0)}
+/* click micro-animation on the copy buttons */
+@keyframes copyPop{0%{transform:scale(1)}30%{transform:scale(0.93)}62%{transform:scale(1.03)}100%{transform:scale(1)}}
+.copy-pop{animation:copyPop .42s var(--ease-out)}
+/* copy particle burst */
+.copy-spark{position:fixed;width:6px;height:6px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9997;will-change:transform,opacity}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes slideY{0%{top:-100%}50%{top:0%}100%{top:100%}}
@@ -175,6 +181,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
   #hero{padding:0 2rem 5rem}
   section{padding:5rem 2rem}
   #about .about-grid{grid-template-columns:1fr;gap:3rem}
+  .about-intro .about-avatar{margin-top:2.5rem;margin-bottom:0}
   .about-avatar{max-width:240px}
   .project-grid{grid-template-columns:1fr}
   .project-card:nth-child(n){grid-column:span 1}
@@ -205,6 +212,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
   .skills-track{width:auto}
   .skills-list{flex-wrap:wrap}
   #skills .skill-tag::before{display:none}
+  .copy-pop{animation:none}
 }
 </style>
 </head>
@@ -219,14 +227,14 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-main">
-    <div class="hero-eyebrow">Product Designer — Los Angeles, CA</div>
+    <div class="hero-eyebrow">Senior Product Designer</div>
     <h1 class="hero-name">Lyon <em>Huang</em></h1>
     <div class="hero-role">
       <span class="hero-role-prefix" aria-hidden="true">/</span>
       <span class="hero-role-textwrap"><span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true">|</span></span>
     </div>
     <p class="hero-tagline">I design consumer products at scale — mobile apps, streaming platforms, and hospitality digital experiences.</p>
-    <a href="mailto:hi@lyonhuang.com" class="hero-cta" data-copy="hi@lyonhuang.com">Say hi &rarr;<span class="copy-toast" aria-hidden="true">Copied &#10003;</span></a>
+    <a href="mailto:hi@lyonhuang.com" class="hero-cta" data-copy="hi@lyonhuang.com">Say hi &rarr;<span class="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
   </div>
   <div class="hero-scroll"><div class="hero-scroll-line"></div>Scroll</div>
 </section>
@@ -234,10 +242,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
 <div class="divider"></div>
 
 <section id="about">
-  <div class="section-label" aria-hidden="true"></div>
-  <h2 class="section-title reveal">About <em>Me</em></h2>
   <div class="about-grid">
-    <div class="reveal">
+    <div class="about-intro reveal">
+      <div class="section-label" aria-hidden="true"></div>
+      <h2 class="section-title">About <em>Me</em></h2>
       <div class="about-avatar">
         <div class="about-avatar-inner"><img src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Other/profile.jpg" alt="Lyon Huang" width="320" height="320" loading="lazy" decoding="async" /></div>
         <div class="glare"></div>
@@ -250,7 +258,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
         <div class="about-detail"><span class="about-detail-label">Focus</span><span class="about-detail-value">Product Design</span></div>
       </div>
       <div class="about-bio">
-        <p>Hello! I'm <strong>Lyon Huang</strong>, a product designer with a passion for building experiences that feel effortless. I thrive at the intersection of user empathy, systems thinking, and visual craft.</p>
+        <p>Hello! I'm <strong>Lyon Huang</strong>, a <strong>Senior Product Designer</strong> with a passion for building experiences that feel effortless. I thrive at the intersection of user empathy, systems thinking, and visual craft.</p>
         <p>Most recently, I've been designing at <strong>Pluto TV</strong>, shaping UX for a streaming platform reaching millions of viewers. Before that, I spent years at <strong>Disney Parks</strong> designing mobile ordering experiences for Disneyland and Walt Disney World.</p>
         <p>I'm currently based in <strong>Los Angeles</strong> and looking for my next opportunity to design products that genuinely matter.</p>
       </div>
@@ -317,20 +325,20 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
       <div class="skills-track marquee-left">
         <div class="skills-list" role="list">
           <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Adobe Creative Suite</span>
-          <span class="skill-tag" role="listitem">Cursor</span><span class="skill-tag" role="listitem">Wireframes</span>
-          <span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">UX Research</span>
+          <span class="skill-tag" role="listitem">Claude</span><span class="skill-tag" role="listitem">Cursor</span><span class="skill-tag" role="listitem">Wireframes</span>
+          <span class="skill-tag" role="listitem">AI Prototyping</span><span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">UX Research</span>
           <span class="skill-tag" role="listitem">User Testing</span><span class="skill-tag" role="listitem">Information Architecture</span>
           <span class="skill-tag" role="listitem">Visual Design</span><span class="skill-tag" role="listitem">Interaction Design</span>
-          <span class="skill-tag" role="listitem">Generative AI</span><span class="skill-tag" role="listitem">Accessibility</span>
+          <span class="skill-tag" role="listitem">Agentic Design</span><span class="skill-tag" role="listitem">Generative AI</span><span class="skill-tag" role="listitem">Accessibility</span>
           <span class="skill-tag" role="listitem">Design Systems</span>
         </div>
         <div class="skills-list" role="list" aria-hidden="true">
           <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Adobe Creative Suite</span>
-          <span class="skill-tag" role="listitem">Cursor</span><span class="skill-tag" role="listitem">Wireframes</span>
-          <span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">UX Research</span>
+          <span class="skill-tag" role="listitem">Claude</span><span class="skill-tag" role="listitem">Cursor</span><span class="skill-tag" role="listitem">Wireframes</span>
+          <span class="skill-tag" role="listitem">AI Prototyping</span><span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">UX Research</span>
           <span class="skill-tag" role="listitem">User Testing</span><span class="skill-tag" role="listitem">Information Architecture</span>
           <span class="skill-tag" role="listitem">Visual Design</span><span class="skill-tag" role="listitem">Interaction Design</span>
-          <span class="skill-tag" role="listitem">Generative AI</span><span class="skill-tag" role="listitem">Accessibility</span>
+          <span class="skill-tag" role="listitem">Agentic Design</span><span class="skill-tag" role="listitem">Generative AI</span><span class="skill-tag" role="listitem">Accessibility</span>
           <span class="skill-tag" role="listitem">Design Systems</span>
         </div>
       </div>
@@ -346,9 +354,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
   <div class="section-label" style="justify-content:center">Let's connect</div>
   <h2 class="contact-headline reveal">Got a great<br>project? <em>Let's talk.</em></h2>
   <p class="contact-sub reveal">I'm currently open to full-time product design roles. Don't be a stranger.</p>
-  <a href="mailto:hi@lyonhuang.com" class="contact-email reveal" id="contact-email" data-copy="hi@lyonhuang.com">hi@lyonhuang.com &#8599;<span class="copy-toast" id="copy-toast" aria-hidden="true">Copied &#10003;</span></a>
+  <a href="mailto:hi@lyonhuang.com" class="contact-email reveal" id="contact-email" data-copy="hi@lyonhuang.com">hi@lyonhuang.com<span class="copy-toast" id="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
   <div class="contact-socials reveal-group">
-    <a href="https://www.linkedin.com/in/lyonhuang" class="social-link" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.linkedin.com/in/lyonhuang" class="linkedin-btn" target="_blank" rel="noopener">LinkedIn</a>
   </div>
 </section>
 
@@ -708,16 +716,45 @@ var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 // COPY TO CLIPBOARD: any [data-copy] link → copy + toast (idea 08)
 (function(){
+  // small particle burst radiating from the copied element (subtle, ~600ms)
+  function burst(el){
+    if(_reduced) return;
+    var r=el.getBoundingClientRect();
+    var cx=r.left+r.width/2, cy=r.top+r.height/2, n=12;
+    for(var i=0;i<n;i++){
+      (function(i){
+        var p=document.createElement('span');
+        p.className='copy-spark';
+        p.style.left=cx+'px'; p.style.top=cy+'px';
+        var sz=4+Math.random()*3;
+        p.style.width=p.style.height=sz.toFixed(1)+'px';
+        document.body.appendChild(p);
+        var ang=(Math.PI*2)*(i/n)+(Math.random()-0.5)*0.5, dist=26+Math.random()*36;
+        var dx=Math.cos(ang)*dist, dy=Math.sin(ang)*dist;
+        p.animate(
+          [{transform:'translate(-50%,-50%) scale(1)',opacity:1},
+           {transform:'translate(calc(-50% + '+dx.toFixed(1)+'px),calc(-50% + '+dy.toFixed(1)+'px)) scale(0.2)',opacity:0}],
+          {duration:520+Math.random()*240,easing:'cubic-bezier(.2,.7,.3,1)'}
+        ).onfinish=function(){p.remove();};
+      })(i);
+    }
+  }
   document.querySelectorAll('[data-copy]').forEach(function(link){
     var toast=link.querySelector('.copy-toast');
     if(!toast) return;
     var timer;
+    // pop micro-animation + particle burst on copy — skipped on the hero CTA
+    var pop=!link.classList.contains('hero-cta');
+    // clear the pop class after it plays so it can retrigger on the next click
+    link.addEventListener('animationend',function(){ link.classList.remove('copy-pop'); });
     link.addEventListener('click',function(e){
       var text=link.getAttribute('data-copy')||'';
       if(navigator.clipboard&&navigator.clipboard.writeText){
         e.preventDefault();
         navigator.clipboard.writeText(text).then(function(){
           toast.classList.add('show');
+          // micro-animation: restart the pop (remove → reflow → add) + spark burst
+          if(pop){ link.classList.remove('copy-pop'); void link.offsetWidth; link.classList.add('copy-pop'); burst(link); }
           clearTimeout(timer);
           timer=setTimeout(function(){toast.classList.remove('show');},1600);
         }).catch(function(){ /* fall back to mailto navigation */ window.location.href=link.href; });
