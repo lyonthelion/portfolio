@@ -61,8 +61,8 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 
 /* about */
 #about .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:stretch}
-.about-intro{display:flex;flex-direction:column}
-.about-intro .about-avatar{margin-top:auto;margin-bottom:auto} /* center photo against the description column */
+.about-intro{display:flex;flex-direction:column;position:relative}
+.about-intro .about-avatar{position:absolute;top:50%;left:0;transform:translateY(-50%);width:100%;margin:0} /* center photo against the full description column */
 .about-avatar{position:relative;aspect-ratio:1;max-width:320px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .about-avatar-inner{width:100%;height:100%;overflow:hidden}
 .about-avatar-inner img{width:100%;height:100%;object-fit:cover;display:block}
@@ -181,7 +181,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   #hero{padding:0 2rem 5rem}
   section{padding:5rem 2rem}
   #about .about-grid{grid-template-columns:1fr;gap:3rem}
-  .about-intro .about-avatar{margin-top:2.5rem;margin-bottom:0}
+  .about-intro .about-avatar{position:static;transform:none;width:auto;margin-top:2.5rem;margin-bottom:0}
   .about-avatar{max-width:240px}
   .project-grid{grid-template-columns:1fr}
   .project-card:nth-child(n){grid-column:span 1}
@@ -234,7 +234,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
       <span class="hero-role-textwrap"><span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true">|</span></span>
     </div>
     <p class="hero-tagline">I design consumer products at scale — mobile apps, streaming platforms, and hospitality digital experiences.</p>
-    <a href="mailto:hi@lyonhuang.com" class="hero-cta" data-copy="hi@lyonhuang.com">Say hi<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><span class="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
+    <a href="#contact" class="hero-cta">Say hi<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
   </div>
   <div class="hero-scroll"><div class="hero-scroll-line"></div>Scroll</div>
 </section>
@@ -254,21 +254,21 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
     <div class="about-text reveal">
       <div class="about-detail-row">
         <div class="about-detail"><span class="about-detail-label">Location</span><span class="about-detail-value">Los Angeles, CA</span></div>
-        <div class="about-detail"><span class="about-detail-label">Status</span><span class="about-detail-value">Available for hire</span></div>
+        <div class="about-detail"><span class="about-detail-label">Currently</span><span class="about-detail-value">Pluto TV (Paramount)</span></div>
         <div class="about-detail"><span class="about-detail-label">Focus</span><span class="about-detail-value">Product Design</span></div>
       </div>
       <div class="about-bio">
-        <p>Hello! I'm <strong>Lyon Huang</strong>, a <strong>Senior Product Designer</strong> with a passion for building experiences that feel effortless. I thrive at the intersection of user empathy, systems thinking, and visual craft.</p>
-        <p>Most recently, I've been designing at <strong>Pluto TV</strong>, shaping UX for a streaming platform reaching millions of viewers. Before that, I spent years at <strong>Disney Parks</strong> designing mobile ordering experiences for Disneyland and Walt Disney World.</p>
-        <p>I'm currently based in <strong>Los Angeles</strong> and looking for my next opportunity to design products that genuinely matter.</p>
+        <p>Hello! I'm <strong>Lyon Huang</strong>. I spend most of my time on the parts of a product people never really notice — browse pages, search, menus, the flows you run multiple times a day without thinking about them. Honestly that unglamorous stuff is my favorite part, since getting it right is what actually makes something easy to use.</p>
+        <p>I've always liked making things for other people to enjoy, and I think it started with games. Simulation games are still one of my favorite genres — I love the idea of building my own city, zoo, or theme park. There's something immensely satisfying about perfecting the supply chain for a space colony, or figuring out the right planting layout on a farm for maximum yield. That itch for optimization carried from those games into my work, where I'm always trying to make whatever someone's using just a little better.</p>
+        <p>My work has ranged from streaming platforms to theme-park apps, tiny features to full platform convergence — and most of what I'm proud of came out of working closely with the teams around me. Lately I've been heads-down on cross-platform and design-system updates, plus getting sharper with AI prototyping.</p>
       </div>
       <div class="resume-row">
-        <a href="https://drive.google.com/file/d/1OHJcjeubRDB25KiydVox9oK9vkcrZ_EQ/view?usp=sharing" class="resume-btn" target="_blank" rel="noopener">Resume<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <a href="https://drive.google.com/file/d/1MvmpHLzYLWzH1L3VaeXqGhEyqR0yp_MD/view?usp=sharing" class="resume-btn" target="_blank" rel="noopener">Resume<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
     </div>
   </div>
   <div class="impact-row reveal" id="impact">
-    <div class="impact-stat"><span class="impact-num" data-to="8" data-suffix="">0</span><span class="impact-label">Years in consumer product design</span></div>
+    <div class="impact-stat"><span class="impact-num" data-since="2017" data-suffix="">0</span><span class="impact-label">Years in consumer product design</span></div>
     <div class="impact-stat"><span class="impact-num" data-to="5" data-suffix="+">0</span><span class="impact-label">Platforms shipped on</span></div>
     <div class="impact-stat"><span class="impact-num" data-to="50" data-suffix="M+">0</span><span class="impact-label">Viewers reached at scale</span></div>
     <div class="impact-stat"><span class="impact-num" data-to="40" data-suffix="+">0</span><span class="impact-label">Experiments shipped</span></div>
@@ -353,7 +353,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   <div id="contact-glow"></div>
   <div class="section-label" style="justify-content:center">Let's connect</div>
   <h2 class="contact-headline reveal">Got a great<br>project? <em>Let's talk.</em></h2>
-  <p class="contact-sub reveal">I'm currently open to full-time product design roles. Don't be a stranger.</p>
+  <p class="contact-sub reveal">Always open to talk design, trade ideas, or hear what you're working on. Don't be a stranger.</p>
   <a href="mailto:hi@lyonhuang.com" class="contact-email reveal" id="contact-email" data-copy="hi@lyonhuang.com">hi@lyonhuang.com<span class="copy-toast" id="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
   <div class="contact-socials reveal-group">
     <a href="https://www.linkedin.com/in/lyonhuang" class="linkedin-btn" target="_blank" rel="noopener">LinkedIn<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
@@ -419,8 +419,10 @@ var mx=window.mx=0, my=window.my=0;
   const el=document.getElementById('hero-role-typed');
   if(!el) return;
 
+  // years auto-increments each year (2017 start → "9 years" in 2026)
+  const yrsInDesign=Math.max(1, new Date().getFullYear()-2017);
   const phrases=[
-    '8 years in consumer product design',
+    yrsInDesign+' years in consumer product design',
     'Shipping products used by millions',
     'Research-driven, collaboration-first',
     'Animal lover & dog dad',
@@ -666,6 +668,8 @@ var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 (function(){
   var nums=[].slice.call(document.querySelectorAll('.impact-num'));
   if(!nums.length) return;
+  // resolve any auto-counting stats (e.g. years since a start year) to a concrete data-to
+  nums.forEach(function(n){ var s=n.getAttribute('data-since'); if(s){ n.setAttribute('data-to', Math.max(1, new Date().getFullYear()-(+s))); } });
   function fmt(n){ return n>=1000 ? n.toLocaleString() : ''+n; }
   function run(n){
     var to=+n.getAttribute('data-to'), suf=n.getAttribute('data-suffix')||'', dur=1500, t0=performance.now();
@@ -757,7 +761,7 @@ var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
           // micro-animation: restart the pop (remove → reflow → add) + spark burst
           if(pop){ link.classList.remove('copy-pop'); void link.offsetWidth; link.classList.add('copy-pop'); burst(link); }
           clearTimeout(timer);
-          timer=setTimeout(function(){toast.classList.remove('show');},1600);
+          timer=setTimeout(function(){toast.classList.remove('show');},2600);
         }).catch(function(){ /* fall back to mailto navigation */ window.location.href=link.href; });
       }
       // if clipboard API unavailable, default mailto: navigation proceeds

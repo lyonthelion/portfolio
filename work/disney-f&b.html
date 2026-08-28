@@ -17,6 +17,7 @@
 <script src="../assets/nav.js" defer></script>
 <script src="../assets/nav-active.js" defer></script>
 <script src="../assets/footer.js" defer></script>
+<script src="../assets/case-study-shared.js" defer></script>
 
 <style>
 /* ── HERO — MOSE device grid + scrims (this page only) ── */
@@ -51,155 +52,14 @@
   content: none;
 }
 
-/* ── ON THIS PAGE (TOC) ── */
-.toc {
-  margin: 3rem 0 1rem;
-  padding: 1.5rem 1.75rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-.toc .cs-section-label { margin-bottom: 1.25rem; }
-.toc-links {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: .75rem 1.25rem;
-}
-.toc-links a {
-  font-family: var(--font-mono);
-  font-size: .7rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  padding: .75rem .9rem;
-  border: 1px solid var(--border-tag);
-  border-radius: var(--radius);
-  transition: background .2s, border-color .2s, color .2s, transform .2s var(--ease-out);
-}
-.toc-links a:hover {
-  background: var(--accent-dim);
-  border-color: rgba(245,183,49,0.3);
-  color: var(--accent);
-  transform: translateY(-2px);
-}
+/* Chapter, TOC, three-card, role, and hero-video styles now live in
+   assets/case-study-shared.css (shared across all case studies). */
 
-/* ── CHAPTERS ── */
-.chapter { display: block; }
-
-/* ── CHAPTER HEADER ── */
-.ch-eyebrow {
-  font-family: var(--font-mono);
-  font-size: .62rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-.ch-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  line-height: 1.1;
-  letter-spacing: -.02em;
-  color: var(--text-primary);
-  margin-bottom: 2rem;
-}
-.ch-title em { font-style: italic; color: var(--accent); }
-
-/* ── THREE-CARD GRID ── */
-.ch-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  margin: 2.5rem 0;
-}
-.ch-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  transition: border-color .25s, background .25s;
-}
-.ch-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+/* Page-specific: concept cards in ch0/ch3 stay static on hover. */
 #ch0 .ch-card:hover,
 #ch3 .ch-card:hover {
   border-color: var(--border);
   background: var(--bg-card);
-}
-.ch-card-tag {
-  font-family: var(--font-mono);
-  font-size: .58rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  padding: .3rem .7rem;
-  border-radius: 2px;
-  display: inline-block;
-  margin-bottom: .75rem;
-}
-.tag-problem  { background: rgba(210,80,50,.12);  color: #e07050; }
-.tag-process  { background: rgba(80,130,210,.12); color: #6a9fd8; }
-.tag-outcome  { background: rgba(80,180,100,.12); color: #60c070; }
-.ch-card h4 {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  color: var(--text-primary);
-  margin-bottom: .5rem;
-  line-height: 1.3;
-}
-.ch-card p {
-  font-size: .875rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-/* ── ROLE BLOCK ── */
-.ch-role {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--accent);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 1.25rem 1.5rem;
-  margin-top: 2.5rem;
-}
-.ch-role-label {
-  font-family: var(--font-mono);
-  font-size: .6rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: .5rem;
-}
-.ch-role p {
-  font-size: .9rem;
-  color: var(--text-secondary);
-  line-height: 1.75;
-}
-.ch-role p strong { color: var(--text-primary); font-weight: 400; }
-
-/* ── BODY: overview hero video (match app UI white; video fills inset width) ── */
-.cs-img.cs-img--hero-video {
-  background: #fff;
-}
-.cs-img--hero-video .cs-hero-video-frame {
-  aspect-ratio: 21 / 9;
-  background: #fff;
-  box-sizing: border-box;
-  padding: clamp(0.75rem, 2.2vw, 1.75rem);
-  display: grid;
-}
-.cs-img--hero-video .cs-hero-video-inset {
-  min-width: 0;
-  min-height: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cs-img--hero-video video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
 }
 
 /* ── INTRO TEXT WITHIN CHAPTER ── */
@@ -460,11 +320,6 @@
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .toc { padding: 1.25rem; }
-  .toc-links { grid-template-columns: 1fr; }
-  .ch-cards { grid-template-columns: 1fr; }
-}
 </style>
 </head>
 <body>
@@ -476,17 +331,16 @@
 
 <!-- ══ HERO ══ -->
 <div class="cs-hero cs-hero--mose">
-  <a class="cs-back" href="../index.html#work">← Back to work</a>
   <div class="cs-client-badge">Disney Parks</div>
   <h1>Digital <em>Dining</em></h1>
   <div class="cs-meta-row">
     <div class="cs-meta-item">
-      <span class="cs-meta-label">Client</span>
-      <span class="cs-meta-value">Disneyland &amp; Walt Disney World</span>
+      <span class="cs-meta-label">Company</span>
+      <span class="cs-meta-value">The Walt Disney Company</span>
     </div>
     <div class="cs-meta-item">
-      <span class="cs-meta-label">Team</span>
-      <span class="cs-meta-value">Food &amp; Beverage, Digital</span>
+      <span class="cs-meta-label">Role</span>
+      <span class="cs-meta-value">Product Designer</span>
     </div>
     <div class="cs-meta-item">
       <span class="cs-meta-label">Platforms</span>
@@ -552,12 +406,13 @@
 
   <!-- ── ON THIS PAGE ── -->
   <div class="toc reveal">
-    <div class="cs-section-label">On this page</div>
+    <div class="cs-section-label cs-section-label--sub">On this page</div>
     <div class="toc-links" aria-label="On this page">
-      <a href="#ch0">01 — Mobile Order launch</a>
-      <a href="#ch1">02 — Menu redesign</a>
-      <a href="#ch2">03 — State enhancements</a>
-      <a href="#ch3">04 — Dine reservation add-ons</a>
+      <a href="#ch0">1 — Mobile Order launch</a>
+      <a href="#ch1">2 — Menu redesign</a>
+      <a href="#ch2">3 — State enhancements</a>
+      <a href="#ch3">4 — Dine reservation add-ons</a>
+      <a href="#ch4">5 — Reflection</a>
     </div>
   </div>
 
@@ -566,7 +421,8 @@
   ════════════════════════════ -->
   <div id="ch0" class="chapter cs-section reveal">
 
-    <p class="ch-eyebrow">Chapter 01 · iOS · Android · 2017</p>
+    <div class="cs-section-label">Chapter 1</div>
+    <p class="ch-eyebrow">iOS · Android · 2017</p>
     <h2 class="ch-title">Mobile Order <em>Launch</em></h2>
 
     <p class="ch-intro">
@@ -654,7 +510,8 @@
   ════════════════════════════ -->
   <div id="ch1" class="chapter cs-section reveal">
 
-    <p class="ch-eyebrow">Chapter 02 · iOS · Android · 2018–2019</p>
+    <div class="cs-section-label">Chapter 2</div>
+    <p class="ch-eyebrow">iOS · Android · 2018–2019</p>
     <h2 class="ch-title">Mobile Order <em>Menu Redesign</em></h2>
 
     <p class="ch-intro">
@@ -692,7 +549,7 @@
       </li>
     </ol>
 
-    <div class="cs-section-label" style="margin-top:3rem;">Concepts</div>
+    <div class="cs-section-label cs-section-label--sub" style="margin-top:3rem;">Concepts</div>
     <p class="cs-p">I created three interaction patterns to evaluate with leadership and product before narrowing to test:</p>
 
     <div class="cs-concepts reveal-group">
@@ -814,15 +671,15 @@
         covered by the Disney Parks Blog and WDWNT.
       </p>
       <div class="cs-outcome-links">
-        <a href="https://disneyparksblog.com/disney-experiences/moms-panel-monday-mobile-ordering-a-game-changer-for-quick-service-dining-at-disney-parks/" class="cs-link-btn" target="_blank" rel="noopener">Disney Parks Blog ↗</a>
-        <a href="https://wdwnt.com/2019/02/new-look-comes-to-mobile-order-experience-at-disneyland-resort-coming-soon-to-walt-disney-world/" class="cs-link-btn" target="_blank" rel="noopener">WDWNT Post ↗</a>
+        <a href="https://disneyparksblog.com/disney-experiences/moms-panel-monday-mobile-ordering-a-game-changer-for-quick-service-dining-at-disney-parks/" class="cs-link-btn" target="_blank" rel="noopener">Disney Parks Blog<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <a href="https://wdwnt.com/2019/02/new-look-comes-to-mobile-order-experience-at-disneyland-resort-coming-soon-to-walt-disney-world/" class="cs-link-btn" target="_blank" rel="noopener">WDWNT Post<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
     </div>
 
     <div class="ch-role reveal">
       <div class="ch-role-label">My role</div>
       <p>
-        <strong>UX Designer</strong> — owned all deliverables: user flows, concepts, final
+        <strong>Product Designer</strong> — owned all deliverables: user flows, concepts, final
         comps, prototypes, motion studies, and documentation. Established the visual direction
         for the menu category icon set. Traveled to Orlando for user testing and built
         the cross-functional relationship with the WDW product and engineering teams.
@@ -837,7 +694,8 @@
   ════════════════════════════ -->
   <div id="ch2" class="chapter cs-section reveal">
 
-    <p class="ch-eyebrow">Chapter 03 · iOS · Android · 2019–2020</p>
+    <div class="cs-section-label">Chapter 3</div>
+    <p class="ch-eyebrow">iOS · Android · 2019–2020</p>
     <h2 class="ch-title">Mobile Order <em>State Enhancements</em></h2>
 
     <p class="ch-intro">
@@ -871,7 +729,7 @@
       </div>
     </div>
 
-    <div class="cs-section-label" style="margin-top:3rem;">Design direction</div>
+    <div class="cs-section-label cs-section-label--sub" style="margin-top:3rem;">Design direction</div>
     <h3>Storyboarding a narrative</h3>
     <p class="cs-p">
       The existing pickup flow used static states for instructions and order status.
@@ -981,7 +839,8 @@
   ════════════════════════════ -->
   <div id="ch3" class="chapter cs-section reveal">
 
-    <p class="ch-eyebrow">Chapter 04 · Web · 2019</p>
+    <div class="cs-section-label">Chapter 4</div>
+    <p class="ch-eyebrow">Web · 2019</p>
     <h2 class="ch-title">Dine Reservation <em>Add-Ons</em></h2>
 
     <p class="ch-intro">
@@ -1025,7 +884,7 @@
       </div>
     </div>
 
-    <div class="cs-section-label" style="margin-top:3rem;">Constraint</div>
+    <div class="cs-section-label cs-section-label--sub" style="margin-top:3rem;">Constraint</div>
     <h3>Designing within an older system</h3>
     <p class="cs-p">
       To meet the project's budget requirements, we had to reuse as many existing
@@ -1105,9 +964,10 @@
   </div><!-- /ch3 -->
 
   <!-- ── REFLECTION ── -->
-  <div class="cs-section reveal">
-    <div class="cs-section-label">Reflection</div>
-    <h2>Three years, four products,<br><em>one team.</em></h2>
+  <div id="ch4" class="cs-section reveal">
+    <div class="cs-section-label">Chapter 5</div>
+    <p class="ch-eyebrow">Reflection</p>
+    <h2 class="ch-title">Three years, four products,<br><em>one team.</em></h2>
     <p class="cs-p">
       Working on Disney's Food &amp; Beverage digital team meant designing for an audience
       in motion — guests who were hungry, distracted, and surrounded by more interesting

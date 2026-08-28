@@ -21,7 +21,7 @@ nav.scrolled{background:rgba(8,8,7,0.20);backdrop-filter:blur(12px);border-botto
 .nav-toggle-bar{position:absolute;left:0;width:22px;height:2px;background:var(--text-primary);transition:transform .3s var(--ease-out),background .2s}
 .nav-toggle-bar:nth-child(1){top:4px}
 .nav-toggle-bar:nth-child(2){top:10px}
-.nav-toggle:hover .nav-toggle-bar{background:var(--accent)}
+@media (hover:hover){.nav-toggle:hover .nav-toggle-bar{background:var(--accent)}}
 .nav-toggle.open .nav-toggle-bar:nth-child(1){transform:translateY(3px) rotate(45deg)}
 .nav-toggle.open .nav-toggle-bar:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
 
@@ -30,7 +30,7 @@ nav.scrolled{background:rgba(8,8,7,0.20);backdrop-filter:blur(12px);border-botto
 .nav-overlay.open{opacity:1;visibility:visible;pointer-events:auto}
 .nav-overlay-links{list-style:none;display:flex;flex-direction:column;align-items:center;gap:1.75rem;text-align:center}
 .nav-overlay-links a{font-family:var(--font-display);font-size:clamp(2.25rem,11vw,3.25rem);line-height:1;color:var(--text-primary);transition:color .2s}
-.nav-overlay-links a:hover{color:var(--accent)}
+@media (hover:hover){.nav-overlay-links a:hover{color:var(--accent)}}
 .nav-overlay-links li{opacity:0;transform:translateY(18px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out)}
 .nav-overlay.open .nav-overlay-links li{opacity:1;transform:none}
 .nav-overlay.open .nav-overlay-links li:nth-child(1){transition-delay:.06s}

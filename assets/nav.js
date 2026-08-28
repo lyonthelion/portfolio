@@ -11,7 +11,7 @@
 
   var base=mount.getAttribute('data-base')||'';
   var isHome=base==='';
-  var RESUME='https://drive.google.com/file/d/1OHJcjeubRDB25KiydVox9oK9vkcrZ_EQ/view?usp=sharing';
+  var RESUME='https://drive.google.com/file/d/1MvmpHLzYLWzH1L3VaeXqGhEyqR0yp_MD/view?usp=sharing';
   function sec(id){ return isHome ? '#'+id : base+'index.html#'+id; }
   var logoHref=isHome ? '#hero' : base+'index.html';
 
