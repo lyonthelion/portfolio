@@ -11,9 +11,11 @@
 <link rel="stylesheet" href="assets/grain.css" />
 <link rel="stylesheet" href="assets/base.css" />
 <link rel="stylesheet" href="assets/nav.css" />
+<link rel="stylesheet" href="assets/footer.css" />
 <script src="assets/base.js" defer></script>
 <script src="assets/nav.js" defer></script>
 <script src="assets/nav-active.js" defer></script>
+<script src="assets/footer.js" defer></script>
 <style>
 /* page-specific token overrides (shared tokens live in assets/base.css) */
 :root{--accent-dim:rgba(245,183,49,0.12);--max-w:1100px}
@@ -142,13 +144,9 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .linkedin-btn{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#0a66c2;border:1px solid rgba(10,102,194,0.45);padding:.7rem 1.4rem;border-radius:var(--radius);transition:background .2s,border-color .2s,color .2s,transform .2s var(--ease-out)}
 .linkedin-btn:hover{background:#0a66c2;border-color:#0a66c2;color:#fff;transform:translateY(-2px)}
 
-/* footer */
-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;max-width:var(--max-w);margin:0 auto}
-.footer-copy{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-muted)}
-.footer-back{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);transition:color .2s}
+/* footer is shared via assets/footer.css + assets/footer.js (injected into #site-footer) */
 /* crisp inline SVG arrow for buttons (DM Mono's arrow glyphs render small/misaligned) */
 .btn-arrow{width:.95em;height:.95em;flex:0 0 auto}
-.footer-back:hover{color:var(--accent)}
 
 /* cursor glare highlight (project cards + avatar) */
 .glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px 220px at var(--gx,50%) var(--gy,50%),rgba(255,255,255,0.16),transparent 60%);mix-blend-mode:screen;z-index:2}
@@ -362,10 +360,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2r
   </div>
 </section>
 
-<footer>
-  <span class="footer-copy">&#169; 2026 Lyon Huang</span>
-  <a href="#hero" class="footer-back">Back to top<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></a>
-</footer>
+<div id="site-footer" data-base=""></div>
 
 <script>
 // Cursor follower, cursor-hover, reveal, and smooth-scroll are shared in assets/base.js.
@@ -558,7 +553,6 @@ var mx=window.mx=0, my=window.my=0;
   var canvas=document.getElementById('contact-canvas');
   var glow=document.getElementById('contact-glow');
   var section=document.getElementById('contact');
-  var footer=document.querySelector('footer');
   if(!canvas||!glow||!section) return;
   var ctx=canvas.getContext('2d');
   var TYPES=['circle','ring','square','diamond','triangle','cross'];
@@ -567,6 +561,9 @@ var mx=window.mx=0, my=window.my=0;
 
   function resize(){
     DPR=window.devicePixelRatio||1;
+    // re-query the footer each time: it's injected by footer.js (defer) after this runs,
+    // so caching it at parse time would miss it and the glow would stop at the footer top.
+    var footer=document.querySelector('footer');
     W=window.innerWidth; H=section.offsetHeight+(footer?footer.offsetHeight:0);
     canvas.style.width=W+'px'; canvas.style.height=H+'px';
     canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
@@ -637,6 +634,8 @@ var mx=window.mx=0, my=window.my=0;
 
   resize(); init();
   window.addEventListener('resize',function(){resize();init();},{passive:true});
+  // remeasure once footer.js has injected the footer, so the glow extends under it
+  window.addEventListener('load',function(){resize();init();});
 
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){ e.isIntersecting ? start() : stop(); });

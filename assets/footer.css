@@ -1,0 +1,48 @@
+/* ═══════════════════════════════════════════════
+   LYON HUANG — SHARED FOOTER
+   Single source of truth (injected by assets/footer.js into #site-footer).
+   Matches the home footer (.7rem). Self-contained arrow sizing so it
+   doesn't depend on any page's .btn-arrow rule.
+   ═══════════════════════════════════════════════ */
+
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  padding:2rem 3rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  max-width:var(--max-w-wide, var(--max-w));margin:0 auto;
+}
+.footer-copy{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-muted);transition:color .2s}
+.footer-copy:hover{color:var(--accent)}
+.footer-links{display:flex;align-items:center;gap:1.75rem}
+.footer-back{
+  display:inline-flex;align-items:center;gap:.45rem;
+  font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-muted);transition:color .2s;
+}
+.footer-back:hover{color:var(--accent)}
+
+/* back-to-top: arrow drawn as a mask so a persistent grey fill stays visible and an
+   orange block wipes upward through it (reversed hero scroll indicator) */
+.footer-back-arrow{
+  --fb-arrow:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='2.2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cline%20x1='12'%20y1='19'%20x2='12'%20y2='5'/%3E%3Cpolyline%20points='5%2012%2012%205%2019%2012'/%3E%3C/svg%3E");
+  position:relative;display:inline-block;overflow:hidden;width:1.25em;height:1.25em;
+  background:currentColor; /* persistent grey arrow (turns amber on hover via currentColor) */
+  -webkit-mask:var(--fb-arrow) center/contain no-repeat;
+  mask:var(--fb-arrow) center/contain no-repeat;
+}
+.footer-back-arrow::before{
+  content:'';position:absolute;inset:0;background:var(--accent);
+  animation:footerArrowWipe 2.2s var(--ease-in-out) infinite;
+}
+@keyframes footerArrowWipe{
+  0%{transform:translateY(100%)}
+  50%{transform:translateY(0)}
+  100%{transform:translateY(-100%)}
+}
+@media(prefers-reduced-motion:reduce){.footer-back-arrow::before{animation:none;opacity:0}}
+
+@media(max-width:900px){
+  footer{flex-direction:column;gap:1rem;text-align:center}
+  .footer-links{justify-content:center}
+}
