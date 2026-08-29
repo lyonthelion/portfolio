@@ -103,31 +103,24 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .project-tag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);border:1px solid var(--border-tag);padding:.25rem .6rem;border-radius:2px}
 
 /* skills */
-.skill-tag{font-size:1rem;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);padding:.45rem .9rem;border-radius:var(--radius);transition:color .2s,border-color .2s,background .2s;position:relative;isolation:isolate;--mx:50%;--my:50%}
-#skills .skill-tag::before{
-  content:'';
-  position:absolute;inset:1px;border-radius:calc(var(--radius) - 1px);pointer-events:none;z-index:0;
-  opacity:0;transition:opacity .2s;
-  background:radial-gradient(ellipse 125% 145% at var(--mx) var(--my),rgba(245,183,49,.34) 0%,rgba(245,183,49,.14) 40%,transparent 74%);
-  mix-blend-mode:screen;
-}
-#skills.spotlight-ready .skill-tag:hover::before{opacity:1}
+.skill-tag{font-size:1rem;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);padding:.45rem .9rem;border-radius:var(--radius);transition:color .2s,border-color .2s,background .2s,transform .25s var(--ease-out);position:relative;isolation:isolate}
 
-/* skills carousel */
-.skills-carousel-wrap{margin-top:4rem}
-.skills-carousel{
-  overflow:hidden;
-  border-radius:var(--radius);
-  padding-block:3px;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
-  mask-image:linear-gradient(90deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
-}
-.skills-track{display:flex;gap:1.25rem;width:max-content;will-change:transform;align-items:center}
-.skills-list{display:flex;gap:.6rem;align-items:center}
-.skills-track .skill-tag{white-space:nowrap;flex:0 0 auto}
-
-@keyframes marqueeLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.marquee-left{animation:marqueeLeft 24s linear infinite}
+/* skills — filterable grid */
+.skills-wrap{margin-top:3rem}
+.skills-filters{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem}
+.skills-filter{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);background:transparent;border:1px solid var(--border-tag);padding:.5rem 1rem;border-radius:100px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.skills-filter:hover{color:var(--text-primary);border-color:var(--border-hover)}
+.skills-filter.is-active{color:#000;background:var(--accent);border-color:var(--accent)}
+.skills-grid{display:flex;flex-wrap:wrap;gap:.6rem}
+.skills-grid .skill-tag{white-space:nowrap;transition:opacity .35s var(--ease-out),color .2s,border-color .2s,background .2s,transform .25s var(--ease-out)}
+.skills-grid .skill-tag.is-dim{opacity:.22}
+.skills-grid .skill-tag.is-hot{color:var(--text-primary);border-color:var(--border-hover)}
+/* hover: amber fill + tracing accent border */
+@property --skill-a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.skills-grid .skill-tag::after{content:'';position:absolute;inset:-1px;border-radius:var(--radius);padding:1px;background:conic-gradient(from var(--skill-a),transparent 0deg,var(--accent) 55deg,transparent 120deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;opacity:0;transition:opacity .25s;z-index:1;pointer-events:none}
+.skills-grid .skill-tag:hover{transform:translateY(-2px);color:var(--accent);border-color:var(--border-hover);background:var(--accent-dim)}
+.skills-grid .skill-tag:hover::after{opacity:1;animation:skillTrace 2.4s linear infinite}
+@keyframes skillTrace{to{--skill-a:360deg}}
 
 /* contact */
 #contact{position:relative;text-align:center;padding:7rem 3rem 10rem}
@@ -200,18 +193,14 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   .hero-role-textwrap{white-space:normal;word-wrap:break-word;overflow-wrap:break-word}
   .hero-role-typed{line-height:inherit}
   .hero-role-caret{white-space:nowrap}
-  .skills-carousel{-webkit-mask-image:none;mask-image:none}
   .contact-headline{font-size:2.5rem}
   #cursor-dot,#cursor-ring{display:none}
   body{cursor:auto}
 }
 
 @media (prefers-reduced-motion: reduce){
-  .marquee-left{animation:none}
-  .skills-carousel{overflow:auto;-webkit-mask-image:none;mask-image:none}
-  .skills-track{width:auto}
-  .skills-list{flex-wrap:wrap}
-  #skills .skill-tag::before{display:none}
+  .skills-grid .skill-tag:hover{transform:none;border-color:var(--accent)}
+  .skills-grid .skill-tag:hover::after{animation:none;opacity:0}
   .copy-pop{animation:none}
 }
 </style>
@@ -320,28 +309,31 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 <section id="skills">
   <div class="section-label" aria-hidden="true"></div>
   <h2 class="section-title reveal">Tools and <em>Skills</em></h2>
-  <div class="skills-carousel-wrap reveal-group">
-    <div class="skills-carousel" aria-label="Capabilities carousel">
-      <div class="skills-track marquee-left">
-        <div class="skills-list" role="list">
-          <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Adobe Creative Suite</span>
-          <span class="skill-tag" role="listitem">Claude</span><span class="skill-tag" role="listitem">Cursor</span><span class="skill-tag" role="listitem">Wireframes</span>
-          <span class="skill-tag" role="listitem">AI Prototyping</span><span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">UX Research</span>
-          <span class="skill-tag" role="listitem">User Testing</span><span class="skill-tag" role="listitem">Information Architecture</span>
-          <span class="skill-tag" role="listitem">Visual Design</span><span class="skill-tag" role="listitem">Interaction Design</span>
-          <span class="skill-tag" role="listitem">Agentic Design</span><span class="skill-tag" role="listitem">Generative AI</span><span class="skill-tag" role="listitem">Accessibility</span>
-          <span class="skill-tag" role="listitem">Design Systems</span>
-        </div>
-        <div class="skills-list" role="list" aria-hidden="true">
-          <span class="skill-tag" role="listitem">Figma</span><span class="skill-tag" role="listitem">Adobe Creative Suite</span>
-          <span class="skill-tag" role="listitem">Claude</span><span class="skill-tag" role="listitem">Cursor</span><span class="skill-tag" role="listitem">Wireframes</span>
-          <span class="skill-tag" role="listitem">AI Prototyping</span><span class="skill-tag" role="listitem">Prototyping</span><span class="skill-tag" role="listitem">UX Research</span>
-          <span class="skill-tag" role="listitem">User Testing</span><span class="skill-tag" role="listitem">Information Architecture</span>
-          <span class="skill-tag" role="listitem">Visual Design</span><span class="skill-tag" role="listitem">Interaction Design</span>
-          <span class="skill-tag" role="listitem">Agentic Design</span><span class="skill-tag" role="listitem">Generative AI</span><span class="skill-tag" role="listitem">Accessibility</span>
-          <span class="skill-tag" role="listitem">Design Systems</span>
-        </div>
-      </div>
+  <div class="skills-wrap reveal-group">
+    <div class="skills-filters" id="skills-filters" role="group" aria-label="Filter skills by category">
+      <button type="button" class="skills-filter is-active" data-cat="all" aria-pressed="true">All</button>
+      <button type="button" class="skills-filter" data-cat="design" aria-pressed="false">Design</button>
+      <button type="button" class="skills-filter" data-cat="research" aria-pressed="false">Research</button>
+      <button type="button" class="skills-filter" data-cat="ai" aria-pressed="false">AI &amp; tooling</button>
+      <button type="button" class="skills-filter" data-cat="systems" aria-pressed="false">Systems</button>
+    </div>
+    <div class="skills-grid" id="skills-grid" role="list">
+      <span class="skill-tag" role="listitem" data-cat="design">Figma</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Adobe Creative Suite</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">Claude</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">Cursor</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Wireframes</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">AI Prototyping</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Prototyping</span>
+      <span class="skill-tag" role="listitem" data-cat="research">UX Research</span>
+      <span class="skill-tag" role="listitem" data-cat="research">User Testing</span>
+      <span class="skill-tag" role="listitem" data-cat="research systems">Information Architecture</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Visual Design</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Interaction Design</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">Agentic Design</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">Generative AI</span>
+      <span class="skill-tag" role="listitem" data-cat="systems">Accessibility</span>
+      <span class="skill-tag" role="listitem" data-cat="systems">Design Systems</span>
     </div>
   </div>
 </section>
@@ -368,50 +360,27 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 // canvas fields (which run at parse time, before the deferred base.js) read a defined value.
 var mx=window.mx=0, my=window.my=0;
 
-// SKILLS: cursor radial spotlight (::before on #skills .skill-tag)
+// SKILLS: category filter (dim non-matching tags)
 (function(){
-  const skills=document.getElementById('skills');
-  if(!skills) return;
-  const mqReduce=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const mqFine=window.matchMedia('(hover: hover) and (pointer: fine)');
-  let bound=false;
-  function onMove(e){
-    const t=e.currentTarget;
-    const r=t.getBoundingClientRect();
-    if(r.width<=0||r.height<=0) return;
-    const x=((e.clientX-r.left)/r.width)*100;
-    const y=((e.clientY-r.top)/r.height)*100;
-    t.style.setProperty('--mx',x+'%');
-    t.style.setProperty('--my',y+'%');
-  }
-  function onLeave(e){
-    const t=e.currentTarget;
-    t.style.removeProperty('--mx');
-    t.style.removeProperty('--my');
-  }
-  function bind(){
-    if(mqReduce.matches||!mqFine.matches){
-      if(bound){
-        skills.querySelectorAll('.skill-tag').forEach(t=>{
-          t.removeEventListener('mousemove',onMove);
-          t.removeEventListener('mouseleave',onLeave);
-        });
-        bound=false;
-      }
-      skills.classList.remove('spotlight-ready');
-      return;
-    }
-    skills.classList.add('spotlight-ready');
-    if(bound) return;
-    bound=true;
-    skills.querySelectorAll('.skill-tag').forEach(t=>{
-      t.addEventListener('mousemove',onMove,{passive:true});
-      t.addEventListener('mouseleave',onLeave);
+  const filters=document.getElementById('skills-filters');
+  const grid=document.getElementById('skills-grid');
+  if(!filters||!grid) return;
+  const tags=Array.prototype.slice.call(grid.querySelectorAll('.skill-tag'));
+  filters.addEventListener('click',function(e){
+    const btn=e.target.closest('.skills-filter');
+    if(!btn) return;
+    filters.querySelectorAll('.skills-filter').forEach(function(f){
+      const on=f===btn;
+      f.classList.toggle('is-active',on);
+      f.setAttribute('aria-pressed',on?'true':'false');
     });
-  }
-  bind();
-  mqReduce.addEventListener('change',bind);
-  mqFine.addEventListener('change',bind);
+    const cat=btn.dataset.cat;
+    tags.forEach(function(t){
+      const match=cat==='all'||t.dataset.cat.split(' ').indexOf(cat)!==-1;
+      t.classList.toggle('is-dim',!match);
+      t.classList.toggle('is-hot',match&&cat!=='all');
+    });
+  });
 })();
 
 // HERO TYPING
@@ -426,7 +395,7 @@ var mx=window.mx=0, my=window.my=0;
     'Shipping products used by millions',
     'Research-driven, collaboration-first',
     'Animal lover & dog dad',
-    'If not friend, why friend shaped?',
+    'If not friend, why friend-shaped?',
     'Food junkie',
     'Milk tea enthusiast',
   ];
