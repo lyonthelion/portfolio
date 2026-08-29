@@ -50,3 +50,14 @@
   },{threshold:.5});
   parsed.forEach(function(o){ o.el.textContent=fmt(0,o.p); o.el._stat=o; io.observe(o.el); });
 })();
+
+// Hero videos: honor prefers-reduced-motion by dropping autoplay and pausing.
+// Runs on every case study (was previously inline in the Disney page only, so
+// the Pluto hero video ignored the setting — this fixes that too).
+(function(){
+  if(!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.cs-img--hero-video video').forEach(function(v){
+    v.removeAttribute('autoplay');
+    v.pause();
+  });
+})();
