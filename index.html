@@ -521,7 +521,17 @@ var mx=window.mx=0, my=window.my=0;
   }
 
   resize(); init(); tick(); fade();
-  window.addEventListener('resize',function(){resize();init();fade();},{passive:true});
+  // Re-init re-randomizes every shape's position, so only do it on a real WIDTH change.
+  // Mobile browsers fire `resize` on every URL-bar show/hide (a height-only change) while
+  // scrolling — re-initing there made the shapes jump around the viewport. On height-only
+  // changes we resize the backing store but leave the shapes where they are.
+  var lastW=window.innerWidth;
+  window.addEventListener('resize',function(){
+    var w=window.innerWidth;
+    resize();
+    if(w!==lastW){ lastW=w; init(); }
+    fade();
+  },{passive:true});
 })();
 
 // CONTACT CANVAS: living shape field (same treatment as hero)
@@ -609,7 +619,14 @@ var mx=window.mx=0, my=window.my=0;
   }
 
   resize(); init();
-  window.addEventListener('resize',function(){resize();init();},{passive:true});
+  // Re-init only on a real WIDTH change (see hero canvas note): avoids shapes jumping
+  // when mobile browsers fire `resize` on URL-bar show/hide during scroll.
+  var lastW=window.innerWidth;
+  window.addEventListener('resize',function(){
+    var w=window.innerWidth;
+    resize();
+    if(w!==lastW){ lastW=w; init(); }
+  },{passive:true});
   // remeasure once footer.js has injected the footer, so the glow extends under it
   window.addEventListener('load',function(){resize();init();});
 
