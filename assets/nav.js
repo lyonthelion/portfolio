@@ -15,10 +15,13 @@
   function sec(id){ return isHome ? '#'+id : base+'index.html#'+id; }
   var logoHref=isHome ? '#hero' : base+'index.html';
 
+  // Resume sits first (a standalone external link) so the in-page scroll-spy
+  // items — about/work/skills/contact — stay contiguous and the active
+  // underline doesn't hop over it while scrolling.
   var linksHTML=''
+    +'<li><a href="'+RESUME+'" target="_blank" rel="noopener">Resume</a></li>'
     +'<li><a href="'+sec('about')+'" data-nav="about">About</a></li>'
     +'<li><a href="'+sec('work')+'" data-nav="work">Work</a></li>'
-    +'<li><a href="'+RESUME+'" target="_blank" rel="noopener">Resume</a></li>'
     +'<li><a href="'+sec('skills')+'" data-nav="skills">Skills</a></li>'
     +'<li><a href="'+sec('contact')+'" data-nav="contact">Contact</a></li>';
 
