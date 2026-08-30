@@ -6,3 +6,9 @@ portfolio/
 # Local Claude Code config/instructions — not for the published repo
 CLAUDE.md
 .claude/
+
+# npm artifacts from installing @vercel/analytics — unused on this no-build
+# static site (analytics loads via /_vercel/insights/script.js instead).
+node_modules/
+package.json
+package-lock.json
