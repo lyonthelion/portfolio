@@ -186,6 +186,11 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   footer{flex-direction:column;gap:1rem;text-align:center}
 }
 @media(max-width:600px){
+  /* Size the hero to the *visible* viewport (svh accounts for mobile browser
+     chrome) and lift the scroll cue off the bottom edge, so it isn't pushed
+     below the fold / clipped — where it read as a detached element. */
+  #hero{min-height:100svh}
+  .hero-scroll{margin-bottom:1.75rem}
   .hero-name{font-size:3.5rem}
   .hero-role{
     white-space:normal;
