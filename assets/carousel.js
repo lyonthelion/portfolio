@@ -26,6 +26,8 @@
   var BASE = CFG.base || '';
   function url(src){ return /^(https?:)?\/\//.test(src) ? src : BASE + src; }
 
+  var REG = {};   // id → carousel/single API, used to group before/after pairs
+
   /* ── One shared lightbox, injected once ── */
   var LB = {};
   var st = { slides: [], idx: 0, onChange: null, focus: null, dotEls: null };
@@ -128,30 +130,75 @@
     function go(n){ idx = (n + slides.length) % slides.length; render(); }
     function open(){ lbOpen(slides, idx, subtitle, function(i){ go(i); }); }
 
+    var viewport = root.querySelector('.ch1-carousel-viewport');
     if (prev) prev.addEventListener('click', function(){ go(idx - 1); });
     if (next) next.addEventListener('click', function(){ go(idx + 1); });
-    img.addEventListener('click', open);
-    img.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    // Open the lightbox from anywhere in the image frame (incl. the padding /
+    // the "Zoom" hint corner), not just the image pixels. api.onZoom is mutable
+    // so pairs (below) can redirect it to a combined before+after set.
+    (viewport || img).addEventListener('click', function(){ api.onZoom(); });
+    img.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); api.onZoom(); } });
 
     dots = dotsC ? makeDots(dotsC, slides.length) : [];
     render();
 
-    return {
+    var api = {
+      onZoom: open,
+      index: function(){ return idx; },
+      slides: function(){ return slides; },
+      subtitle: function(){ return subtitle; },
       setSlides: function(nextSlides, nextSubtitle){
         slides = nextSlides; subtitle = nextSubtitle; idx = 0;
         dots = dotsC ? makeDots(dotsC, slides.length) : [];
         render();
       }
     };
+    return api;
   }
 
   /* ── Single image: zoom only ── */
   function initSingle(el){
-    var img = el.querySelector('.ch1-carousel-img'); if (!img) return;
+    var img = el.querySelector('.ch1-carousel-img'); if (!img) return null;
     var subtitle = el.getAttribute('data-subtitle') || '';
-    function open(){ lbOpen([{ src: img.getAttribute('src'), alt: img.alt }], 0, subtitle, null); }
-    img.addEventListener('click', open);
-    img.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    var slides = [{ src: img.getAttribute('src'), alt: img.alt }];
+    function open(){ lbOpen(slides, 0, subtitle, null); }
+    (el.querySelector('.ch1-carousel-viewport') || img).addEventListener('click', function(){ api.onZoom(); });
+    img.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); api.onZoom(); } });
+    var api = {
+      onZoom: open,
+      index: function(){ return 0; },
+      slides: function(){ return slides; },
+      subtitle: function(){ return subtitle; }
+    };
+    return api;
+  }
+
+  /* ── Paired galleries (review #12): a before/after pair opens ONE lightbox
+       spanning both sets, so you can swipe before → after without closing and
+       re-opening. Each member keeps its own in-page carousel; only zoom merges.
+       Config: pairs:[{ members:[id, id], subtitle? }] where id is a configured
+       carousel id or a .ch1-concept-media[data-subtitle] element id. ── */
+  function initPairs(pairs){
+    (pairs || []).forEach(function(pair){
+      var members = (pair.members || []).map(function(id){ return REG[id]; }).filter(Boolean);
+      if (members.length < 2) return;
+      function build(){
+        var all = [], offsets = [], labels = [];
+        members.forEach(function(m){ offsets.push(all.length); labels.push(m.subtitle()); all = all.concat(m.slides()); });
+        return { all: all, offsets: offsets, labels: labels };
+      }
+      function labelFor(c, i){
+        for (var m = c.offsets.length - 1; m >= 0; m--){ if (i >= c.offsets[m]) return c.labels[m]; }
+        return pair.subtitle || '';
+      }
+      members.forEach(function(m, mi){
+        m.onZoom = function(){
+          var c = build();
+          var start = c.offsets[mi] + m.index();
+          lbOpen(c.all, start, labelFor(c, start), function(i){ LB.subtitle.textContent = labelFor(c, i); });
+        };
+      });
+    });
   }
 
   /* ── Tabbed concept gallery: cards swap the active carousel's slide set ── */
@@ -191,15 +238,17 @@
       var cfg = map[id];
       var subEl = root.querySelector('.ch1-carousel-subtitle');
       var subtitle = cfg.subtitle != null ? cfg.subtitle : (subEl ? subEl.textContent : '');
-      makeCarousel(root, cfg.slides, subtitle);
+      REG[id] = makeCarousel(root, cfg.slides, subtitle);
     });
 
     (CFG.tabbed || []).forEach(initTabbed);
 
     Array.prototype.forEach.call(
       document.querySelectorAll('.ch1-concept-media[data-subtitle]'),
-      initSingle
+      function(el){ var api = initSingle(el); if (api && el.id) REG[el.id] = api; }
     );
+
+    initPairs(CFG.pairs);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

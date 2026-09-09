@@ -61,3 +61,67 @@
     v.pause();
   });
 })();
+
+/* ── Sticky chapter subnav ─────────────────────────────────────────────
+   Clones the in-page .toc-links into a slim bar fixed under the site nav.
+   Reveals it once the TOC scrolls out of view and highlights the chapter
+   currently on screen (scroll-spy). No per-page markup needed. */
+(function(){
+  var toc = document.querySelector('.toc');
+  var tocLinks = toc && toc.querySelector('.toc-links');
+  if(!tocLinks) return;
+  var anchors = [].slice.call(tocLinks.querySelectorAll('a[href^="#"]'));
+  if(!anchors.length) return;
+
+  var mainNav = document.querySelector('nav');
+
+  var bar = document.createElement('nav');
+  bar.className = 'cs-subnav';
+  bar.setAttribute('aria-label', 'Chapters');
+  var inner = document.createElement('div');
+  inner.className = 'cs-subnav-inner';
+
+  var links = anchors.map(function(a){
+    var l = document.createElement('a');
+    l.href = a.getAttribute('href');
+    l.textContent = a.textContent.trim();
+    inner.appendChild(l);
+    return l;
+  });
+  bar.appendChild(inner);
+  document.body.appendChild(bar);
+
+  // Publish the (fixed) site-nav height so CSS can offset both layouts.
+  function positionBar(){
+    bar.style.setProperty('--cs-nav-h', (mainNav ? mainNav.offsetHeight : 56) + 'px');
+  }
+  positionBar();
+  window.addEventListener('resize', positionBar, {passive:true});
+  window.addEventListener('load', positionBar);
+
+  // Reveal the bar once the in-page TOC has scrolled up past the nav.
+  function onScroll(){
+    var navH = mainNav ? mainNav.offsetHeight : 56;
+    bar.classList.toggle('is-visible', toc.getBoundingClientRect().bottom < navH + 8);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Scroll-spy: mark the chapter currently in view as active.
+  var sections = links
+    .map(function(l){ return document.querySelector(l.getAttribute('href')); })
+    .filter(Boolean);
+  if('IntersectionObserver' in window && sections.length){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var id = '#' + e.target.id;
+          links.forEach(function(l){
+            l.classList.toggle('is-active', l.getAttribute('href') === id);
+          });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function(s){ io.observe(s); });
+  }
+})();

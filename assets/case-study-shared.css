@@ -116,6 +116,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .cs-section {
   margin-top: 5rem; padding-top: 5rem;
   border-top: 1px solid var(--border);
+  scroll-margin-top: 6rem;
 }
 .cs-section-label {
   font-family: var(--font-mono); font-size: .65rem;
@@ -221,9 +222,11 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 }
 
 /* image pair (before/after) */
+/* Before/after (and any image pair): stacked full-width so each image is
+   large and legible, rather than two small side-by-side thumbnails. */
 .cs-img-pair {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1rem; margin: 2.5rem 0;
+  display: grid; grid-template-columns: 1fr;
+  gap: 2rem; margin: 2.5rem 0;
 }
 .cs-img-pair figure { display: flex; flex-direction: column; gap: .6rem; }
 .cs-img-pair figcaption {
@@ -276,6 +279,10 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   font-family: var(--font-display); font-style: italic;
   font-size: clamp(2rem, 4vw, 3rem); color: var(--accent);
   line-height: 1;
+}
+.cs-stat .stat-note {
+  font-family: var(--font-mono); font-size: .8rem;
+  color: var(--text-primary); margin-top: .1rem;
 }
 .cs-stat .stat-label {
   font-family: var(--font-mono); font-size: .65rem;
@@ -552,24 +559,43 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 
 /* Concept cards act as tabs for the shared concept carousel */
 .ch1-concept-card {
-  cursor: pointer;
+  cursor: pointer; position: relative;
   transition: border-color .2s, background .2s, transform .2s var(--ease-out);
 }
 .ch1-concept-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* Active card reads as the selected tab: accent border/fill + a caret that
+   points down to the shared carousel it controls. */
 .ch1-concept-card[aria-pressed="true"] {
-  border-color: var(--border-hover);
-  background: var(--bg-card-hover);
+  border-color: rgba(245,183,49,.55);
+  background: var(--accent-dim);
 }
 .ch1-concept-card[aria-pressed="true"] .cc-num { color: var(--accent); }
+.ch1-concept-card[aria-pressed="true"]::after {
+  content: ''; position: absolute; left: 50%; bottom: 0;
+  transform: translate(-50%, 100%);
+  border: 7px solid transparent; border-top-color: rgba(245,183,49,.55);
+}
+@media (max-width: 640px) { .ch1-concept-card[aria-pressed="true"]::after { display: none; } }
 
 /* Media slot: placeholder + carousel stack as absolute layers */
 .ch1-concept-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/10;
+  aspect-ratio: 16/11;
   border-radius: var(--radius);
   overflow: hidden;
 }
+/* Hover hint that the media enlarges on click (zoom already wired in carousel.js). */
+.ch1-concept-media::after {
+  content: 'Zoom \2922';
+  position: absolute; right: .6rem; bottom: .6rem; z-index: 3;
+  font-family: var(--font-mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-primary); background: rgba(8,8,7,.72);
+  padding: .3rem .5rem; border-radius: var(--radius); border: 1px solid var(--border-tag);
+  opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+.ch1-concept-media:hover::after { opacity: 1; transform: translateY(0); }
 .ch1-concept-media > .ch1-media-layer {
   position: absolute;
   inset: 0;
@@ -598,7 +624,8 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .ch1-carousel-viewport {
   flex: 1; min-height: 0; overflow: hidden; position: relative;
   background: var(--surface); display: flex; align-items: center; justify-content: center;
-  padding: clamp(1rem, 2.8vw, 1.65rem) clamp(1.1rem, 2.4vw, 1.85rem); box-sizing: border-box;
+  padding: clamp(.6rem, 1.6vw, 1rem) clamp(.75rem, 1.8vw, 1.15rem); box-sizing: border-box;
+  cursor: zoom-in;
 }
 .ch1-carousel-img {
   width: auto; height: auto; max-width: 100%; max-height: 100%;
@@ -665,3 +692,89 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   z-index: 2; max-width: min(90vw, 14rem); pointer-events: auto;
 }
 .ch1-lightbox-dots .ch1-dot { cursor: pointer; }
+
+/* ── Sticky chapter nav (built by case-study-shared.js from .toc-links) ──
+   Two responsive layouts of the same injected nav:
+   • wide viewports  → a vertical rail in the left gutter (Wikipedia-style)
+   • narrower ones    → a horizontal bar pinned under the site header
+   Both reveal once the in-page TOC scrolls away and highlight the current
+   chapter via scroll-spy. JS publishes the header height as --cs-nav-h.
+
+   Default (narrow): horizontal bar under the header. */
+.cs-subnav {
+  position: fixed; left: 0; right: 0; top: var(--cs-nav-h, 56px); z-index: 90;
+  display: flex; justify-content: center;
+  padding: .5rem 1rem;
+  background: rgba(8, 8, 7, 0.9);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transform: translateY(-120%); opacity: 0; visibility: hidden;
+  transition: transform .35s var(--ease-out), opacity .3s, visibility .35s;
+}
+.cs-subnav.is-visible { transform: translateY(0); opacity: 1; visibility: visible; }
+.cs-subnav-inner {
+  display: flex; gap: .35rem; align-items: center;
+  width: 100%; max-width: var(--max-w); justify-content: center;
+  overflow-x: auto; scrollbar-width: none;
+}
+.cs-subnav-inner::-webkit-scrollbar { display: none; }
+.cs-subnav a {
+  font-family: var(--font-mono); font-size: .64rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-secondary); white-space: nowrap;
+  padding: .4rem .8rem; border-radius: var(--radius);
+  transition: color .2s, background .2s;
+}
+.cs-subnav a:hover { color: var(--accent); }
+.cs-subnav a.is-active { color: var(--accent); background: var(--accent-dim); }
+@media (max-width: 700px) {
+  .cs-subnav, .cs-subnav-inner { justify-content: flex-start; }
+}
+
+/* Wide: the left gutter can hold a vertical rail beside the centred content. */
+@media (min-width: 1340px) {
+  .cs-subnav {
+    top: calc(var(--cs-nav-h, 56px) + 2rem);
+    left: max(1.5rem, calc((100vw - var(--max-w)) / 2 - 12.5rem));
+    right: auto;
+    width: 11rem; padding: 0;
+    justify-content: flex-start;
+    background: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+    border-bottom: none;
+    transform: translateX(-8px);
+  }
+  .cs-subnav.is-visible { transform: translateX(0); }
+  .cs-subnav-inner {
+    flex-direction: column; align-items: stretch; gap: .1rem;
+    width: 100%; max-width: none; justify-content: flex-start;
+    overflow: visible;
+    border-left: 1px solid var(--border);
+  }
+  .cs-subnav a {
+    white-space: normal; font-size: .62rem; line-height: 1.35;
+    padding: .5rem 1rem; border-radius: 0;
+    transition: color .2s, box-shadow .2s;
+  }
+  .cs-subnav a:hover { background: none; }
+  .cs-subnav a.is-active {
+    background: none; color: var(--accent);
+    box-shadow: inset 2px 0 0 0 var(--accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-subnav { transition: opacity .2s, visibility .2s; transform: none; }
+  .cs-subnav.is-visible { transform: none; }
+}
+
+/* Stats folded into an outcome box (review #7): drop the standalone card
+   border/margins so they read as part of the outcome rather than a block below it. */
+.cs-outcome .cs-stats {
+  margin: 1.6rem 0 0; border: none; border-top: 1px solid var(--border);
+  border-radius: 0; overflow: visible;
+}
+.cs-outcome .cs-stat { padding: 1.25rem 1.25rem 0; }
+.cs-outcome .cs-stat:first-child { padding-left: 0; }
+.cs-outcome .cs-stat:last-child { padding-right: 0; }
+@media (max-width: 700px) {
+  .cs-outcome .cs-stat { padding: 1.25rem 0 0; border-right: none; border-bottom: none; }
+}
