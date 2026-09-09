@@ -12,3 +12,6 @@ CLAUDE.md
 node_modules/
 package.json
 package-lock.json
+
+# Generated portfolio PDFs — large binaries, not part of the published site.
+exports/
