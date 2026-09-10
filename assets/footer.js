@@ -11,11 +11,12 @@
   var base=mount.getAttribute('data-base')||'';
   var isHome=base==='';
   var home=isHome ? '#hero' : base+'index.html';
+  var year=new Date().getFullYear(); // auto-increments on Jan 1
 
   // the back-to-top arrow is drawn in CSS (mask-based) so an orange fill can wipe up through it
   mount.innerHTML=''
     +'<footer>'
-    +  '<a class="footer-copy" href="'+home+'">&#169; 2026 Lyon Huang</a>'
+    +  '<a class="footer-copy" href="'+home+'">&#169; '+year+' Lyon Huang</a>'
     +  '<div class="footer-links">'
     +    '<a class="footer-back" href="#top">Back to top'
     +      '<span class="footer-back-arrow" aria-hidden="true"></span>'
