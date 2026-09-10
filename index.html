@@ -35,11 +35,23 @@ img{display:block;max-width:100%}
 .hero-eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .2s var(--ease-out) forwards}
 .hero-name{font-family:var(--font-display);font-size:clamp(4rem,9vw,9rem);line-height:.95;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:2rem;opacity:0;transform:translateY(24px);animation:fadeUp .9s .35s var(--ease-out) forwards}
 .hero-name em{font-style:italic;color:var(--accent)}
+/* eyebrow rule: draws in, holds, collapses (JS-driven, one-shot) */
+.hero-eyebrow{position:relative;width:fit-content;padding-bottom:.55rem}
+.hero-eyebrow-rule{position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--accent);opacity:.55;transform:scaleX(0);transform-origin:left center}
+/* name: base layer + shape-field fill layer */
+.hero-name-wrap{position:relative;align-self:flex-start;margin-bottom:2rem;opacity:0;transform:translateY(24px);animation:fadeUp .9s .35s var(--ease-out) forwards}
+.hero-name-wrap .hero-name{margin-bottom:0;opacity:1;transform:none;animation:none}
+.hero-name-wrap .hero-name-fill{position:absolute;inset:0;color:transparent;background-clip:text;-webkit-background-clip:text;background-size:160% 200%;opacity:0;pointer-events:none;transition:opacity .35s linear,background-position .35s ease-out}
+.hero-name-wrap .hero-name-fill em{color:transparent}
+@media (prefers-reduced-motion:reduce){
+  .hero-eyebrow-rule{display:none}
+  .hero-name-fill{display:none}
+}
 .hero-role{font-family:var(--font-mono);font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--text-secondary);letter-spacing:.08em;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .5s var(--ease-out) forwards;white-space:nowrap;display:flex;flex-wrap:nowrap;align-items:baseline;gap:.35em}
 .hero-role-prefix{flex:0 0 auto}
 .hero-role-textwrap{flex:1 1 0;min-width:0}
 .hero-role-typed{display:inline;min-height:0}
-.hero-role-caret{display:inline-block;width:0.6ch;margin-left:0.2ch;color:var(--accent);animation:blink 1.05s steps(1,end) infinite;vertical-align:baseline}
+.hero-role-caret{display:inline-block;width:2px;height:1.1em;margin-left:0.22ch;background:var(--accent);vertical-align:-0.18em;animation:blink 1.05s steps(1,end) infinite}
 .hero-tagline{max-width:500px;font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text-secondary);line-height:1.7;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .6s var(--ease-out) forwards}
 .hero-actions{display:flex;align-items:center;gap:2.5rem;align-self:flex-start;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .75s var(--ease-out) forwards}
 .hero-cta{position:relative;display:inline-flex;align-items:center;gap:.75rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(245,183,49,0.3);padding:.85rem 1.75rem;border-radius:var(--radius);transition:background .2s,border-color .2s,transform .2s var(--ease-out)}
@@ -229,11 +241,14 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
   <div class="hero-main">
-    <div class="hero-eyebrow">Senior Product Designer</div>
-    <h1 class="hero-name">Lyon <em>Huang</em></h1>
+    <div class="hero-eyebrow">Senior Product Designer<span class="hero-eyebrow-rule" aria-hidden="true"></span></div>
+    <div class="hero-name-wrap">
+      <h1 class="hero-name">Lyon <em>Huang</em></h1>
+      <span class="hero-name hero-name-fill" aria-hidden="true">Lyon <em>Huang</em></span>
+    </div>
     <div class="hero-role">
       <span class="hero-role-prefix" aria-hidden="true">/</span>
-      <span class="hero-role-textwrap"><span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true">|</span></span>
+      <span class="hero-role-textwrap"><span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true"></span></span>
     </div>
     <p class="hero-tagline">I design consumer products at scale: mobile apps, streaming platforms, and hospitality digital experiences.</p>
     <div class="hero-actions">
@@ -448,6 +463,53 @@ var mx=window.mx=0, my=window.my=0;
   }
 
   tick();
+})();
+
+// HERO NAME: shape-field fill on hover + one-shot eyebrow rule
+(function(){
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  // ── eyebrow rule: draw → hold 500ms → collapse right
+  var rule = document.querySelector('.hero-eyebrow-rule');
+  if (rule) {
+    var draw = rule.animate(
+      [{ transform:'scaleX(0)' }, { transform:'scaleX(1)' }],
+      { duration:900, delay:350, easing:'cubic-bezier(0.16,1,0.3,1)', fill:'forwards' }
+    );
+    draw.onfinish = function(){
+      setTimeout(function(){
+        rule.style.transformOrigin = 'right center';
+        rule.animate(
+          [{ transform:'scaleX(1)' }, { transform:'scaleX(0)' }],
+          { duration:700, easing:'cubic-bezier(0.16,1,0.3,1)', fill:'forwards' }
+        );
+      }, 500);
+    };
+  }
+
+  // ── shape field inside the letters
+  var wrap = document.querySelector('.hero-name-wrap');
+  var fill = document.querySelector('.hero-name-fill');
+  if (!wrap || !fill) return;
+
+  // same palette as the hero canvas SHAPE_COLORS
+  fill.style.backgroundImage = [
+    'radial-gradient(circle 90px at 12% 30%, #f5b731 0%, transparent 60%)',
+    'radial-gradient(circle 130px at 42% 70%, #8fd4b8 0%, transparent 62%)',
+    'radial-gradient(circle 110px at 68% 25%, #c4a8e0 0%, transparent 60%)',
+    'radial-gradient(circle 150px at 92% 75%, #9eb8d4 0%, transparent 64%)',
+    'linear-gradient(90deg, #e4c76a, #e8a090)'
+  ].join(',');
+
+  wrap.addEventListener('pointerenter', function(){ fill.style.opacity = '1'; });
+  wrap.addEventListener('pointerleave', function(){ fill.style.opacity = '0'; });
+  wrap.addEventListener('pointermove', function(e){
+    var r = wrap.getBoundingClientRect();
+    var nx = (e.clientX - r.left) / r.width;
+    var ny = (e.clientY - r.top) / r.height;
+    fill.style.backgroundPosition = (20 + nx * 60) + '% ' + (20 + ny * 60) + '%';
+  });
 })();
 
 // CANVAS + GLOW
