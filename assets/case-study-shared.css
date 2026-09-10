@@ -394,7 +394,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   font-family: var(--font-mono);
   font-size: .7rem;
   letter-spacing: .12em;
-  text-transform: uppercase;
+  text-transform: capitalize;
   color: var(--text-secondary);
   padding: .75rem .9rem;
   border: 1px solid var(--border-tag);
@@ -417,7 +417,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 
 .ch-head {
   display: grid;
-  grid-template-columns: 6.5rem minmax(0, 1fr);
+  grid-template-columns: 10rem minmax(0, 1fr);
   gap: 2.25rem;
   align-items: start;
   padding-top: 3.25rem;
@@ -425,7 +425,10 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 }
 .ch-num {
   font-family: var(--font-display);
-  font-size: 6.5rem;
+  /* height spans the two-line title beside it — tracks the title's own
+     clamp(1.8rem,3.5vw,2.8rem) so it scales together on medium desktops:
+     (eyebrow block + 2 title lines) / 0.739 glyph ratio */
+  font-size: clamp(8rem, 2.75rem + 10.4vw, 11rem);
   line-height: .72;
   color: var(--accent);
   text-align: left;
@@ -458,17 +461,25 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   letter-spacing: -.02em;
   color: var(--text-primary);
   margin-bottom: 2rem;
+  /* keep every title a clean two-line stack beside the (now taller) numeral;
+     widened from 66% to compensate for the wider numeral column */
+  max-width: 74%;
+  text-wrap: balance;
 }
-.ch-title em { font-style: italic; color: var(--accent); }
+/* accent clause always starts its own line (replaces the old hard <br>) */
+.ch-title em { font-style: italic; color: var(--accent); display: block; }
 
 @media (max-width: 600px) {
   .ch-head {
-    grid-template-columns: 3.5rem minmax(0, 1fr);
+    grid-template-columns: 7rem minmax(0, 1fr);
     gap: 1.125rem;
     padding-top: 1.875rem;
   }
-  .ch-num { font-size: 3.5rem; padding-top: .375rem; }
+  /* mobile title font floors at 1.8rem and the eyebrow can wrap to two
+     lines, so the block is a touch taller than the clamp floor assumes */
+  .ch-num { font-size: 8rem; padding-top: .375rem; }
   .ch-eyebrow { font-size: .6rem; letter-spacing: .22em; gap: .625rem; margin-bottom: .875rem; }
+  .ch-title { max-width: none; }
 }
 
 /* Three-card grid (Problem / Process / Outcome) */
@@ -787,13 +798,16 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .cs-subnav.is-visible { transform: translateY(0); opacity: 1; visibility: visible; }
 .cs-subnav-inner {
   display: flex; gap: .35rem; align-items: center;
-  width: 100%; max-width: var(--max-w); justify-content: center;
+  width: 100%; max-width: var(--max-w);
+  /* centre when the chapters fit; fall back to start-aligned (fully
+     scrollable, no clipped first item) once they overflow */
+  justify-content: safe center;
   overflow-x: auto; scrollbar-width: none;
 }
 .cs-subnav-inner::-webkit-scrollbar { display: none; }
 .cs-subnav a {
   font-family: var(--font-mono); font-size: .64rem; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--text-secondary); white-space: nowrap;
+  text-transform: capitalize; color: var(--text-secondary); white-space: nowrap;
   padding: .4rem .8rem; border-radius: var(--radius);
   transition: color .2s, background .2s;
 }
