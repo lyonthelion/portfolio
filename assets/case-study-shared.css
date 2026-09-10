@@ -410,14 +410,47 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 
 /* Chapter header */
 .chapter { display: block; }
-.ch-eyebrow {
-  font-family: var(--font-mono);
-  font-size: .62rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
+
+/* the .ch-head border becomes the chapter divider, so drop the
+   wrapping section's own top rule to avoid a doubled hairline */
+.cs-section:has(> .ch-head) { border-top: none; padding-top: 0; }
+
+.ch-head {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 2.25rem;
+  align-items: start;
+  padding-top: 3.25rem;
+  border-top: 1px solid var(--border);
 }
+.ch-num {
+  font-family: var(--font-display);
+  font-size: 6.5rem;
+  line-height: .72;
+  color: var(--accent);
+  text-align: left;
+  padding-top: .6rem;
+}
+
+/* eyebrow now sits on a rule that runs to the measure edge */
+.ch-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .875rem;
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+.ch-eyebrow::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--border);
+}
+
 .ch-title {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
@@ -427,6 +460,16 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   margin-bottom: 2rem;
 }
 .ch-title em { font-style: italic; color: var(--accent); }
+
+@media (max-width: 600px) {
+  .ch-head {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 1.125rem;
+    padding-top: 1.875rem;
+  }
+  .ch-num { font-size: 3.5rem; padding-top: .375rem; }
+  .ch-eyebrow { font-size: .6rem; letter-spacing: .22em; gap: .625rem; margin-bottom: .875rem; }
+}
 
 /* Three-card grid (Problem / Process / Outcome) */
 .ch-cards {
@@ -515,6 +558,27 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .cs-img.cs-img--hero-video--dark,
 .cs-img--hero-video--dark .cs-hero-video-frame { background: #000; }
 
+/* Custom hero-video controls (built in case-study-shared.js): play/pause +
+   fullscreen only, no scrim. White icons + mix-blend-mode:difference invert
+   against the video behind them, so they stay legible over any frame without
+   an overlay/gradient. */
+.cs-img--hero-video .cs-hero-video-inset { position: relative; }
+.cs-video-controls {
+  position: absolute; right: .4rem; bottom: .4rem;
+  display: flex; gap: .1rem; z-index: 2;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.cs-video-btn {
+  pointer-events: auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.5rem; height: 2.5rem; padding: 0;
+  background: none; border: 0; cursor: pointer; color: #fff;
+  -webkit-tap-highlight-color: transparent;
+}
+.cs-video-btn svg { width: 22px; height: 22px; }
+.cs-video-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
 @media (max-width: 900px) {
   .toc { padding: 1.25rem; }
   .toc-links { grid-template-columns: 1fr; }
@@ -585,8 +649,11 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   border-radius: var(--radius);
   overflow: hidden;
 }
-/* Hover hint that the media enlarges on click (zoom already wired in carousel.js). */
-.ch1-concept-media::after {
+/* "Zoom" hint sits INSIDE the image frame (.ch1-carousel-viewport, which is the
+   click target). It used to live on .ch1-concept-media and landed over the
+   carousel controls, so tapping the hint did nothing. pointer-events:none means
+   a tap passes through to the viewport, which opens the lightbox. */
+.ch1-carousel-viewport::after {
   content: 'Zoom \2922';
   position: absolute; right: .6rem; bottom: .6rem; z-index: 3;
   font-family: var(--font-mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
@@ -595,7 +662,13 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s;
   pointer-events: none;
 }
-.ch1-concept-media:hover::after { opacity: 1; transform: translateY(0); }
+/* Reveal on hover for pointer devices; show persistently on touch (no hover). */
+@media (hover: hover) {
+  .ch1-carousel-viewport:hover::after { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .ch1-carousel-viewport::after { opacity: .9; transform: none; }
+}
 .ch1-concept-media > .ch1-media-layer {
   position: absolute;
   inset: 0;
@@ -777,4 +850,29 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .cs-outcome .cs-stat:last-child { padding-right: 0; }
 @media (max-width: 700px) {
   .cs-outcome .cs-stat { padding: 1.25rem 0 0; border-right: none; border-bottom: none; }
+}
+
+/* Horizontal chapter subnav (mobile / narrow): real, tappable arrow buttons at
+   each edge that scroll the chapter list. Larger hit target than a hint, shown
+   via .can-left / .can-right (toggled by JS from scroll position). Hidden in the
+   vertical-rail layout (>=1340px), which has no horizontal scroll. */
+.cs-subnav-arrow {
+  position: absolute; top: 0; bottom: 0; z-index: 3;
+  display: none; align-items: center;
+  width: 3rem; padding: 0; border: 0; cursor: pointer;
+  color: var(--accent);
+}
+.cs-subnav-arrow svg { width: 20px; height: 20px; }
+.cs-subnav-arrow-left {
+  left: 0; justify-content: flex-start; padding-left: .35rem;
+  background: linear-gradient(to right, var(--bg) 45%, transparent);
+}
+.cs-subnav-arrow-right {
+  right: 0; justify-content: flex-end; padding-right: .35rem;
+  background: linear-gradient(to left, var(--bg) 45%, transparent);
+}
+.cs-subnav.can-left  .cs-subnav-arrow-left  { display: flex; }
+.cs-subnav.can-right .cs-subnav-arrow-right { display: flex; }
+@media (min-width: 1340px) {
+  .cs-subnav-arrow { display: none !important; }
 }

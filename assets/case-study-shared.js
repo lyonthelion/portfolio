@@ -62,6 +62,63 @@
   });
 })();
 
+/* ── Custom hero-video controls: play/pause + fullscreen only ───────────
+   Replaces the native controls (and their gradient scrim). Icons are white
+   and the bar uses mix-blend-mode:difference (see CSS) so they invert against
+   whatever the video shows, staying legible without an overlay. */
+(function(){
+  var videos = document.querySelectorAll('.cs-img--hero-video video');
+  if(!videos.length) return;
+
+  var ICON = {
+    play:  '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg>',
+    full:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>'
+  };
+
+  videos.forEach(function(v){
+    v.removeAttribute('controls');
+    var inset = v.closest('.cs-hero-video-inset') || v.parentElement;
+    if(!inset) return;
+
+    var bar = document.createElement('div');
+    bar.className = 'cs-video-controls';
+
+    var playBtn = document.createElement('button');
+    playBtn.type = 'button';
+    playBtn.className = 'cs-video-btn cs-video-play';
+
+    var fsBtn = document.createElement('button');
+    fsBtn.type = 'button';
+    fsBtn.className = 'cs-video-btn cs-video-full';
+    fsBtn.setAttribute('aria-label', 'Fullscreen');
+    fsBtn.innerHTML = ICON.full;
+
+    function syncPlay(){
+      var playing = !v.paused && !v.ended;
+      playBtn.innerHTML = playing ? ICON.pause : ICON.play;
+      playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+    }
+    playBtn.addEventListener('click', function(){ if(v.paused) v.play(); else v.pause(); });
+    v.addEventListener('play', syncPlay);
+    v.addEventListener('pause', syncPlay);
+    syncPlay();
+
+    fsBtn.addEventListener('click', function(){
+      if(v.requestFullscreen) v.requestFullscreen();
+      else if(v.webkitEnterFullscreen) v.webkitEnterFullscreen();      // iOS Safari
+      else if(v.webkitRequestFullscreen) v.webkitRequestFullscreen();
+    });
+
+    // Deter casual downloads: block the right-click "Save video as…" menu.
+    v.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+    bar.appendChild(playBtn);
+    bar.appendChild(fsBtn);
+    inset.appendChild(bar);
+  });
+})();
+
 /* ── Sticky chapter subnav ─────────────────────────────────────────────
    Clones the in-page .toc-links into a slim bar fixed under the site nav.
    Reveals it once the TOC scrolls out of view and highlights the chapter
@@ -91,6 +148,38 @@
   bar.appendChild(inner);
   document.body.appendChild(bar);
 
+  // Real, tappable scroll arrows at each edge (no per-page markup needed).
+  function makeArrow(dir){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cs-subnav-arrow cs-subnav-arrow-' + (dir < 0 ? 'left' : 'right');
+    b.setAttribute('aria-label', dir < 0 ? 'Scroll chapters left' : 'Scroll chapters right');
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="' + (dir < 0 ? '15 18 9 12 15 6' : '9 18 15 12 9 6') + '"/></svg>';
+    b.addEventListener('click', function(){ inner.scrollBy({ left: dir * inner.clientWidth * 0.7, behavior: 'smooth' }); });
+    return b;
+  }
+  bar.appendChild(makeArrow(-1));
+  bar.appendChild(makeArrow(1));
+
+  // Overflow state: reveal the arrow that can still scroll; keep the active
+  // chapter centred as scroll-spy moves it.
+  function horizontallyScrollable(){ return inner.scrollWidth - inner.clientWidth > 4; }
+  function updateArrows(){
+    if(!horizontallyScrollable()){ bar.classList.remove('can-left', 'can-right'); return; }
+    var max = inner.scrollWidth - inner.clientWidth;
+    bar.classList.toggle('can-left', inner.scrollLeft > 4);
+    bar.classList.toggle('can-right', inner.scrollLeft < max - 4);
+  }
+  function centerActive(link){
+    if(!link || !horizontallyScrollable()) return;
+    var target = link.offsetLeft - (inner.clientWidth - link.offsetWidth) / 2;
+    inner.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+  }
+  inner.addEventListener('scroll', updateArrows, {passive:true});
+  window.addEventListener('resize', updateArrows, {passive:true});
+  window.addEventListener('load', updateArrows);
+  updateArrows();
+
   // Publish the (fixed) site-nav height so CSS can offset both layouts.
   function positionBar(){
     bar.style.setProperty('--cs-nav-h', (mainNav ? mainNav.offsetHeight : 56) + 'px');
@@ -116,9 +205,14 @@
       entries.forEach(function(e){
         if(e.isIntersecting){
           var id = '#' + e.target.id;
+          var active = null;
           links.forEach(function(l){
-            l.classList.toggle('is-active', l.getAttribute('href') === id);
+            var on = l.getAttribute('href') === id;
+            l.classList.toggle('is-active', on);
+            if(on){ active = l; }
           });
+          centerActive(active);
+          updateArrows();
         }
       });
     }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
