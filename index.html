@@ -47,11 +47,11 @@ img{display:block;max-width:100%}
   .hero-eyebrow-rule{display:none}
   .hero-name-fill{display:none}
 }
-.hero-role{font-family:var(--font-mono);font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--text-secondary);letter-spacing:.08em;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .5s var(--ease-out) forwards;white-space:nowrap;display:flex;flex-wrap:nowrap;align-items:baseline;gap:.35em}
-.hero-role-prefix{flex:0 0 auto}
+.hero-role{font-family:var(--font-mono);font-size:clamp(.85rem,1.5vw,1.1rem);color:var(--text-primary);letter-spacing:.08em;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .5s var(--ease-out) forwards;white-space:nowrap;display:flex;flex-wrap:nowrap;align-items:baseline}
 .hero-role-textwrap{flex:1 1 0;min-width:0}
 .hero-role-typed{display:inline;min-height:0}
-.hero-role-caret{display:inline-block;width:2px;height:1.1em;margin-left:0.22ch;background:var(--accent);vertical-align:-0.18em;animation:blink 1.05s steps(1,end) infinite}
+.hero-role-caret{display:inline-block;width:1ch;height:1.15em;margin-left:0;background:var(--accent);vertical-align:-0.2em}
+.hero-role-caret.is-blinking{animation:blink 1.05s steps(1,end) infinite}
 .hero-tagline{max-width:500px;font-size:clamp(1rem,1.5vw,1.15rem);color:var(--text-secondary);line-height:1.7;margin-bottom:3rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .6s var(--ease-out) forwards}
 .hero-actions{display:flex;align-items:center;gap:2.5rem;align-self:flex-start;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .75s var(--ease-out) forwards}
 .hero-cta{position:relative;display:inline-flex;align-items:center;gap:.75rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(245,183,49,0.3);padding:.85rem 1.75rem;border-radius:var(--radius);transition:background .2s,border-color .2s,transform .2s var(--ease-out)}
@@ -251,7 +251,6 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
       <span class="hero-name hero-name-fill" aria-hidden="true">Lyon <em>Huang</em></span>
     </div>
     <div class="hero-role">
-      <span class="hero-role-prefix" aria-hidden="true">/</span>
       <span class="hero-role-textwrap"><span class="hero-role-typed" id="hero-role-typed" aria-label="Role tagline"></span><span class="hero-role-caret" aria-hidden="true"></span></span>
     </div>
     <p class="hero-tagline">I design consumer products at scale: mobile apps, streaming platforms, and hospitality digital experiences.</p>
@@ -456,6 +455,11 @@ var mx=window.mx=0, my=window.my=0;
     return;
   }
 
+  // caret is solid while actively typing/deleting, and blinks (awaiting input)
+  // during the pauses \u2014 when a phrase finishes and while empty between phrases.
+  const caret=document.querySelector('.hero-role-caret');
+  function blink(on){ if(caret) caret.classList.toggle('is-blinking', on); }
+
   let phraseIdx=0, charIdx=0, deleting=false;
   const typeMs=55, deleteMs=32, holdMs=2800, betweenMs=750;
 
@@ -466,9 +470,11 @@ var mx=window.mx=0, my=window.my=0;
       el.textContent=phrase.slice(0,charIdx)||'\u200B';
       if(charIdx===phrase.length){
         deleting=true;
+        blink(true);              // phrase complete -> blink while holding
         setTimeout(tick, holdMs);
         return;
       }
+      blink(false);              // actively typing -> solid
       setTimeout(tick, typeMs);
       return;
     }
@@ -478,9 +484,11 @@ var mx=window.mx=0, my=window.my=0;
     if(charIdx===0){
       deleting=false;
       phraseIdx=(phraseIdx+1)%phrases.length;
+      blink(true);              // fully deleted -> blink while awaiting the next phrase
       setTimeout(tick, betweenMs);
       return;
     }
+    blink(false);              // actively deleting -> solid
     setTimeout(tick, deleteMs);
   }
 
