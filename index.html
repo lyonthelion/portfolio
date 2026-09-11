@@ -552,198 +552,173 @@ var mx=window.mx=0, my=window.my=0;
   });
 })();
 
-// CANVAS + GLOW
-(function(){
-  var canvas=document.getElementById('hero-canvas');
-  var glow=document.getElementById('hero-glow');
-  var hero=document.getElementById('hero');
-  var ctx=canvas.getContext('2d');
+// SHAPE FIELD — shared animated geometric background (hero + contact/footer)
+// One component drives both canvases; per-instance config covers the differences:
+//   hero    → full viewport, always running, fades + drifts on scroll
+//   contact → section+footer height, IntersectionObserver-gated
+// Shared behaviour: cursor-repel + light-up, and a click ripple that shoves nearby
+// shapes away from the pointer and lets the impulse coast to rest (eased physics).
+function createShapeField(cfg){
+  var canvas=cfg.canvas, glow=cfg.glow, ctx=canvas.getContext('2d');
   var TYPES=['circle','ring','square','diamond','triangle','cross'];
-  /* Hero-only canvas stroke accents (per shape type) */
+  // resting stroke per type, plus a hotter, more-saturated variant blended in as a shape lights up
   var SHAPE_COLORS={circle:'#f5b731',ring:'#e4c76a',square:'#9eb8d4',diamond:'#c4a8e0',triangle:'#8fd4b8',cross:'#e8a090'};
+  var HOT_COLORS={circle:'#ffca3a',ring:'#ffd955',square:'#7db4ff',diamond:'#c79bff',triangle:'#6fe3ab',cross:'#ff9a7a'};
   var W,H,DPR,shapes=[];
   var scrollDrift=0,lastSY=window.scrollY;
+  // click ripple: reach, peak impulse, and a high per-frame decay so shapes coast further before settling
+  var RIP_R=230,RIP_STR=9,RIP_DECAY=0.93;
+
+  function mixHex(c1,c2,t){ // lerp two #rrggbb strings → 'rgb(...)'
+    var a=parseInt(c1.slice(1),16),b=parseInt(c2.slice(1),16);
+    var r1=a>>16&255,g1=a>>8&255,b1=a&255,r2=b>>16&255,g2=b>>8&255,b2=b&255;
+    return 'rgb('+Math.round(r1+(r2-r1)*t)+','+Math.round(g1+(g2-g1)*t)+','+Math.round(b1+(b2-b1)*t)+')';
+  }
 
   function resize(){
     DPR=window.devicePixelRatio||1;
-    W=window.innerWidth; H=window.innerHeight;
+    var d=cfg.measure(); W=d.w; H=d.h;
     canvas.style.width=W+'px'; canvas.style.height=H+'px';
     canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
+    if(cfg.setGlowHeight&&glow) glow.style.height=H+'px'; // contact glow tracks section height; hero glow is CSS-sized
     ctx.scale(DPR,DPR);
   }
 
-  function fade(){
-    var hh=hero.offsetHeight,sy=scrollY;
+  function mkShape(rY){
+    var t=TYPES[Math.floor(Math.random()*TYPES.length)];
+    var sz=8+Math.random()*42,al=.11+Math.random()*.14,sp=.07+Math.random()*.25; // resting alpha, a touch above the original .08+.14
+    return{t:t,x:Math.random()*W,y:rY?Math.random()*H:H+sz+10,vx:(Math.random()-.5)*.18,vy:-(0.05+Math.random()*sp),rot:Math.random()*Math.PI*2,rotSpd:(Math.random()-.5)*.007,sz:sz,al:al,base:al,color:SHAPE_COLORS[t],hot:HOT_COLORS[t],lit:0,ivx:0,ivy:0,pulse:Math.random()*Math.PI*2,pspd:.007+Math.random()*.012};
+  }
+
+  function init(){
+    shapes=[];
+    var n=Math.max(cfg.densityFloor,Math.floor(W*H/18500));
+    for(var i=0;i<n;i++)shapes.push(mkShape(true));
+  }
+
+  function draw(s){
+    ctx.save();
+    ctx.globalAlpha=Math.max(0,s.al);
+    ctx.strokeStyle=s.lit>0.01?mixHex(s.color,s.hot,Math.min(1,s.lit)):s.color; // saturate toward the hot colour when lit
+    ctx.lineWidth=1.2+s.lit*0.7; // a touch thicker when lit so it reads brighter
+    ctx.translate(s.x,s.y); ctx.rotate(s.rot);
+    var z=s.sz;
+    switch(s.t){
+      case'circle':ctx.beginPath();ctx.arc(0,0,z*.5,0,Math.PI*2);ctx.stroke();break;
+      case'ring':ctx.beginPath();ctx.arc(0,0,z*.5,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(0,0,z*.24,0,Math.PI*2);ctx.stroke();break;
+      case'square':ctx.strokeRect(-z*.5,-z*.5,z,z);break;
+      case'diamond':ctx.beginPath();ctx.moveTo(0,-z*.56);ctx.lineTo(z*.38,0);ctx.lineTo(0,z*.56);ctx.lineTo(-z*.38,0);ctx.closePath();ctx.stroke();break;
+      case'triangle':ctx.beginPath();ctx.moveTo(0,-z*.52);ctx.lineTo(z*.5,z*.38);ctx.lineTo(-z*.5,z*.38);ctx.closePath();ctx.stroke();break;
+      case'cross':var a=z*.42;ctx.beginPath();ctx.moveTo(-a,0);ctx.lineTo(a,0);ctx.moveTo(0,-a);ctx.lineTo(0,a);ctx.stroke();break;
+    }
+    ctx.restore();
+  }
+
+  function step(){
+    ctx.clearRect(0,0,W,H);
+    if(cfg.scrollDrift) scrollDrift*=0.9;
+    var rect=canvas.getBoundingClientRect();
+    var lmx=mx-rect.left, lmy=my-rect.top; // hero canvas sits at 0,0 so this equals mx/my there
+    shapes.forEach(function(s){
+      s.x+=s.vx; s.y+=s.vy+(cfg.scrollDrift?scrollDrift:0); s.rot+=s.rotSpd; s.pulse+=s.pspd;
+      if(s.ivx){s.x+=s.ivx;s.ivx*=RIP_DECAY;} // click-ripple impulse, coasting back to normal drift
+      if(s.ivy){s.y+=s.ivy;s.ivy*=RIP_DECAY;}
+      var dx=s.x-lmx,dy=s.y-lmy,dist=Math.sqrt(dx*dx+dy*dy),R=140;
+      var litTarget=(dist<R&&dist>0)?(1-dist/R):0;
+      s.lit+=(litTarget-s.lit)*0.15; // ease brightness in/out so it trails the cursor smoothly
+      if(dist<R&&dist>0){var f=litTarget*.95;s.x+=dx/dist*f;s.y+=dy/dist*f;}
+      s.al=s.base*(1+s.lit*2.4);
+      s.al*=.84+.16*Math.sin(s.pulse);
+      var pad=s.sz+4;
+      if(s.y<-pad){Object.assign(s,mkShape(false));s.x=Math.random()*W;}
+      if(s.x<-pad)s.x=W+pad;
+      if(s.x>W+pad)s.x=-pad;
+      draw(s);
+    });
+  }
+
+  var running=false,rafId=null;
+  function loop(){ if(!running)return; step(); rafId=requestAnimationFrame(loop); }
+  function start(){ if(running)return; running=true; if(cfg.onStart)cfg.onStart(); loop(); }
+  function stop(){ running=false; if(rafId)cancelAnimationFrame(rafId); if(cfg.onStop)cfg.onStop(); }
+
+  function fade(){ // hero only: opacity/visibility by scroll depth
+    var hh=cfg.fadeHost.offsetHeight,sy=scrollY;
     var fs=hh*.55,fe=hh;
     var op=sy<=fs?1:sy>=fe?0:1-(sy-fs)/(fe-fs);
     canvas.style.opacity=op; glow.style.opacity=op;
     var v=op===0?'hidden':'visible';
     canvas.style.visibility=v; glow.style.visibility=v;
   }
-  window.addEventListener('scroll',fade,{passive:true});
-  window.addEventListener('scroll',function(){var d=window.scrollY-lastSY;lastSY=window.scrollY;scrollDrift+=d*0.05;if(scrollDrift>7)scrollDrift=7;if(scrollDrift<-7)scrollDrift=-7;},{passive:true});
+  function isShowing(){ return cfg.mode==='hero' ? canvas.style.visibility!=='hidden' : running; }
 
-  function mkShape(rY){
-    var t=TYPES[Math.floor(Math.random()*TYPES.length)];
-    var sz=8+Math.random()*42,al=.08+Math.random()*.14,sp=.07+Math.random()*.25;
-    return{t:t,x:Math.random()*W,y:rY?Math.random()*H:H+sz+10,vx:(Math.random()-.5)*.18,vy:-(0.05+Math.random()*sp),rot:Math.random()*Math.PI*2,rotSpd:(Math.random()-.5)*.007,sz:sz,al:al,base:al,color:SHAPE_COLORS[t],pulse:Math.random()*Math.PI*2,pspd:.007+Math.random()*.012};
-  }
-
-  function init(){
-    shapes=[];
-    var n=Math.max(22,Math.floor(W*H/17000));
-    for(var i=0;i<n;i++)shapes.push(mkShape(true));
-  }
-
-  function draw(s){
-    ctx.save();
-    ctx.globalAlpha=Math.max(0,s.al);
-    ctx.strokeStyle=s.color; ctx.lineWidth=1.2;
-    ctx.translate(s.x,s.y); ctx.rotate(s.rot);
-    var z=s.sz;
-    switch(s.t){
-      case'circle':ctx.beginPath();ctx.arc(0,0,z*.5,0,Math.PI*2);ctx.stroke();break;
-      case'ring':ctx.beginPath();ctx.arc(0,0,z*.5,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(0,0,z*.24,0,Math.PI*2);ctx.stroke();break;
-      case'square':ctx.strokeRect(-z*.5,-z*.5,z,z);break;
-      case'diamond':ctx.beginPath();ctx.moveTo(0,-z*.56);ctx.lineTo(z*.38,0);ctx.lineTo(0,z*.56);ctx.lineTo(-z*.38,0);ctx.closePath();ctx.stroke();break;
-      case'triangle':ctx.beginPath();ctx.moveTo(0,-z*.52);ctx.lineTo(z*.5,z*.38);ctx.lineTo(-z*.5,z*.38);ctx.closePath();ctx.stroke();break;
-      case'cross':var a=z*.42;ctx.beginPath();ctx.moveTo(-a,0);ctx.lineTo(a,0);ctx.moveTo(0,-a);ctx.lineTo(0,a);ctx.stroke();break;
-    }
-    ctx.restore();
-  }
-
-  function tick(){
-    ctx.clearRect(0,0,W,H);
-    scrollDrift*=0.9;
-    shapes.forEach(function(s){
-      s.x+=s.vx; s.y+=s.vy+scrollDrift; s.rot+=s.rotSpd; s.pulse+=s.pspd;
-      var dx=s.x-mx,dy=s.y-my,dist=Math.sqrt(dx*dx+dy*dy),R=140;
-      if(dist<R&&dist>0){var f=(1-dist/R)*.95;s.x+=dx/dist*f;s.y+=dy/dist*f;s.al=s.base*(1+(1-dist/R)*2.1);}
-      else{s.al+=(s.base-s.al)*.05;}
-      s.al*=.84+.16*Math.sin(s.pulse);
-      var pad=s.sz+4;
-      if(s.y<-pad){Object.assign(s,mkShape(false));s.x=Math.random()*W;}
-      if(s.x<-pad)s.x=W+pad;
-      if(s.x>W+pad)s.x=-pad;
-      draw(s);
-    });
-    requestAnimationFrame(tick);
-  }
-
-  resize(); init(); tick(); fade();
-  // Re-init re-randomizes every shape's position, so only do it on a real WIDTH change.
-  // Mobile browsers fire `resize` on every URL-bar show/hide (a height-only change) while
-  // scrolling — re-initing there made the shapes jump around the viewport. On height-only
-  // changes we resize the backing store but leave the shapes where they are.
-  var lastW=window.innerWidth;
-  window.addEventListener('resize',function(){
-    var w=window.innerWidth;
-    resize();
-    if(w!==lastW){ lastW=w; init(); }
-    fade();
-  },{passive:true});
-})();
-
-// CONTACT CANVAS: living shape field (same treatment as hero)
-(function(){
-  var canvas=document.getElementById('contact-canvas');
-  var glow=document.getElementById('contact-glow');
-  var section=document.getElementById('contact');
-  if(!canvas||!glow||!section) return;
-  var ctx=canvas.getContext('2d');
-  var TYPES=['circle','ring','square','diamond','triangle','cross'];
-  var SHAPE_COLORS={circle:'#f5b731',ring:'#e4c76a',square:'#9eb8d4',diamond:'#c4a8e0',triangle:'#8fd4b8',cross:'#e8a090'};
-  var W,H,DPR,shapes=[],running=false,rafId=null;
-
-  function resize(){
-    DPR=window.devicePixelRatio||1;
-    // re-query the footer each time: it's injected by footer.js (defer) after this runs,
-    // so caching it at parse time would miss it and the glow would stop at the footer top.
-    var footer=document.querySelector('footer');
-    W=window.innerWidth; H=section.offsetHeight+(footer?footer.offsetHeight:0);
-    canvas.style.width=W+'px'; canvas.style.height=H+'px';
-    canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
-    glow.style.height=H+'px';
-    ctx.scale(DPR,DPR);
-  }
-
-  function mkShape(rY){
-    var t=TYPES[Math.floor(Math.random()*TYPES.length)];
-    var sz=8+Math.random()*42,al=.08+Math.random()*.14,sp=.07+Math.random()*.25;
-    return{t:t,x:Math.random()*W,y:rY?Math.random()*H:H+sz+10,vx:(Math.random()-.5)*.18,vy:-(0.05+Math.random()*sp),rot:Math.random()*Math.PI*2,rotSpd:(Math.random()-.5)*.007,sz:sz,al:al,base:al,color:SHAPE_COLORS[t],pulse:Math.random()*Math.PI*2,pspd:.007+Math.random()*.012};
-  }
-
-  function init(){
-    shapes=[];
-    var n=Math.max(14,Math.floor(W*H/17000));
-    for(var i=0;i<n;i++)shapes.push(mkShape(true));
-  }
-
-  function draw(s){
-    ctx.save();
-    ctx.globalAlpha=Math.max(0,s.al);
-    ctx.strokeStyle=s.color; ctx.lineWidth=1.2;
-    ctx.translate(s.x,s.y); ctx.rotate(s.rot);
-    var z=s.sz;
-    switch(s.t){
-      case'circle':ctx.beginPath();ctx.arc(0,0,z*.5,0,Math.PI*2);ctx.stroke();break;
-      case'ring':ctx.beginPath();ctx.arc(0,0,z*.5,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(0,0,z*.24,0,Math.PI*2);ctx.stroke();break;
-      case'square':ctx.strokeRect(-z*.5,-z*.5,z,z);break;
-      case'diamond':ctx.beginPath();ctx.moveTo(0,-z*.56);ctx.lineTo(z*.38,0);ctx.lineTo(0,z*.56);ctx.lineTo(-z*.38,0);ctx.closePath();ctx.stroke();break;
-      case'triangle':ctx.beginPath();ctx.moveTo(0,-z*.52);ctx.lineTo(z*.5,z*.38);ctx.lineTo(-z*.5,z*.38);ctx.closePath();ctx.stroke();break;
-      case'cross':var a=z*.42;ctx.beginPath();ctx.moveTo(-a,0);ctx.lineTo(a,0);ctx.moveTo(0,-a);ctx.lineTo(0,a);ctx.stroke();break;
-    }
-    ctx.restore();
-  }
-
-  function tick(){
-    if(!running) return;
-    ctx.clearRect(0,0,W,H);
+  // CLICK RIPPLE: shove nearby shapes away from the click, strongest at the centre
+  window.addEventListener('pointerdown',function(e){
+    if(!isShowing())return;
     var rect=canvas.getBoundingClientRect();
-    var localMx=mx-rect.left, localMy=my-rect.top;
+    var cx=e.clientX-rect.left, cy=e.clientY-rect.top;
     shapes.forEach(function(s){
-      s.x+=s.vx; s.y+=s.vy; s.rot+=s.rotSpd; s.pulse+=s.pspd;
-      var dx=s.x-localMx,dy=s.y-localMy,dist=Math.sqrt(dx*dx+dy*dy),R=140;
-      if(dist<R&&dist>0){var f=(1-dist/R)*.95;s.x+=dx/dist*f;s.y+=dy/dist*f;s.al=s.base*(1+(1-dist/R)*2.1);}
-      else{s.al+=(s.base-s.al)*.05;}
-      s.al*=.84+.16*Math.sin(s.pulse);
-      var pad=s.sz+4;
-      if(s.y<-pad){Object.assign(s,mkShape(false));s.x=Math.random()*W;}
-      if(s.x<-pad)s.x=W+pad;
-      if(s.x>W+pad)s.x=-pad;
-      draw(s);
+      var dx=s.x-cx,dy=s.y-cy,d=Math.sqrt(dx*dx+dy*dy);
+      if(d>=RIP_R)return;
+      var f=(1-d/RIP_R)*RIP_STR;
+      if(d>0){s.ivx+=dx/d*f;s.ivy+=dy/d*f;}
+      else{var a=Math.random()*Math.PI*2;s.ivx+=Math.cos(a)*f;s.ivy+=Math.sin(a)*f;}
     });
-    rafId=requestAnimationFrame(tick);
-  }
-
-  function start(){
-    if(running) return;
-    running=true;
-    canvas.classList.add('visible'); glow.classList.add('visible');
-    tick();
-  }
-  function stop(){
-    running=false;
-    if(rafId) cancelAnimationFrame(rafId);
-    canvas.classList.remove('visible'); glow.classList.remove('visible');
-  }
+  },{passive:true});
 
   resize(); init();
-  // Re-init only on a real WIDTH change (see hero canvas note): avoids shapes jumping
-  // when mobile browsers fire `resize` on URL-bar show/hide during scroll.
+  // Re-init (which re-randomises positions) only on a real WIDTH change: mobile browsers fire
+  // `resize` on every URL-bar show/hide (height-only) during scroll, and re-initing there made
+  // the shapes jump. On height-only changes we just resize the backing store.
   var lastW=window.innerWidth;
   window.addEventListener('resize',function(){
-    var w=window.innerWidth;
-    resize();
+    var w=window.innerWidth; resize();
     if(w!==lastW){ lastW=w; init(); }
+    if(cfg.mode==='hero') fade();
   },{passive:true});
-  // remeasure once footer.js has injected the footer, so the glow extends under it
-  window.addEventListener('load',function(){resize();init();});
 
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
-  },{threshold:.15});
-  io.observe(section);
+  if(cfg.scrollDrift){
+    window.addEventListener('scroll',function(){var d=window.scrollY-lastSY;lastSY=window.scrollY;scrollDrift+=d*0.05;if(scrollDrift>7)scrollDrift=7;if(scrollDrift<-7)scrollDrift=-7;},{passive:true});
+  }
+
+  if(cfg.mode==='hero'){
+    window.addEventListener('scroll',fade,{passive:true});
+    start(); fade();
+  }else{
+    // remeasure once footer.js (defer) has injected the footer, so the field/glow extend under it
+    window.addEventListener('load',function(){resize();init();});
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting ? start() : stop(); });
+    },{threshold:.15});
+    io.observe(cfg.section);
+  }
+}
+
+// HERO: full-viewport, always-on, scroll fade + drift, click ripple
+(function(){
+  var canvas=document.getElementById('hero-canvas'),glow=document.getElementById('hero-glow'),hero=document.getElementById('hero');
+  if(!canvas||!glow||!hero) return;
+  createShapeField({
+    canvas:canvas, glow:glow, mode:'hero', fadeHost:hero,
+    densityFloor:20, scrollDrift:true, setGlowHeight:false,
+    measure:function(){ return {w:window.innerWidth,h:window.innerHeight}; }
+  });
+})();
+
+// CONTACT / FOOTER: section-height, IntersectionObserver-gated, click ripple
+(function(){
+  var canvas=document.getElementById('contact-canvas'),glow=document.getElementById('contact-glow'),section=document.getElementById('contact');
+  if(!canvas||!glow||!section) return;
+  createShapeField({
+    canvas:canvas, glow:glow, section:section, mode:'section',
+    densityFloor:13, scrollDrift:false, setGlowHeight:true,
+    measure:function(){
+      var footer=document.querySelector('footer'); // injected by footer.js (defer) after this runs
+      return {w:window.innerWidth, h:section.offsetHeight+(footer?footer.offsetHeight:0)};
+    },
+    onStart:function(){ canvas.classList.add('visible'); glow.classList.add('visible'); },
+    onStop:function(){ canvas.classList.remove('visible'); glow.classList.remove('visible'); }
+  });
 })();
 
 // SHARED MEDIA QUERIES
