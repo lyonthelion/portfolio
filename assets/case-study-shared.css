@@ -82,10 +82,10 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 }
 .cs-meta-item { display: flex; flex-direction: column; gap: .25rem; align-items: center; }
 .cs-meta-label {
-  font-family: var(--font-mono); font-size: .6rem;
+  font-family: var(--font-mono); font-size: .72rem;
   letter-spacing: .2em; text-transform: uppercase; color: var(--text-secondary);
 }
-.cs-meta-value { font-size: .9rem; color: var(--text-primary); }
+.cs-meta-value { font-size: .95rem; color: var(--text-primary); }
 
 /* ── BODY CONTENT ── */
 .cs-body {
@@ -119,7 +119,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   scroll-margin-top: 6rem;
 }
 .cs-section-label {
-  font-family: var(--font-mono); font-size: .65rem;
+  font-family: var(--font-mono); font-size: .72rem;
   letter-spacing: .25em; text-transform: uppercase;
   color: var(--accent); margin-bottom: 1rem;
   display: flex; align-items: center; gap: .75rem;
@@ -169,7 +169,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   background: var(--accent-dim);
 }
 .cs-hmw-label {
-  font-family: var(--font-mono); font-size: .6rem;
+  font-family: var(--font-mono); font-size: .72rem;
   letter-spacing: .2em; text-transform: uppercase;
   color: var(--accent); margin-bottom: .75rem;
 }
@@ -232,7 +232,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .cs-img-pair figcaption {
   font-family: var(--font-mono); font-size: .62rem;
   letter-spacing: .14em; text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 /* single wide image */
@@ -246,8 +246,44 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   padding: .85rem 1.25rem;
   font-family: var(--font-mono); font-size: .62rem;
   letter-spacing: .14em; text-transform: uppercase;
-  color: var(--text-muted); border-top: 1px solid var(--border);
+  color: var(--text-primary); border-top: 1px solid var(--border);
 }
+
+/* before / after comparison slider (drag the divider to reveal each side) */
+.cs-compare {
+  position: relative; aspect-ratio: var(--ar, 1); line-height: 0; touch-action: pan-y;
+  cursor: ew-resize; user-select: none; -webkit-user-select: none;
+}
+/* both layers fill the same fixed box with object-fit: cover so before/after
+   mockups sit in the same frame even when they aren't pixel-identical */
+.cs-compare .cs-compare-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; -webkit-user-drag: none; }
+/* the "before" image sits on top, clipped to the divider position */
+.cs-compare-before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+/* when the before/after mockups render the device at different scales, nudge
+   the before layer to match (set --before-scale per instance; default 1) */
+.cs-compare-before .cs-compare-img { transform: scale(var(--before-scale, 1)); transform-origin: center; }
+.cs-compare-divider {
+  position: absolute; top: 0; bottom: 0; left: var(--pos, 50%);
+  width: 2px; margin-left: -1px; background: var(--accent); pointer-events: none; z-index: 3;
+}
+.cs-compare-grip {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(8, 8, 7, 0.82); border: 1px solid var(--accent);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+.cs-compare-grip svg { width: 13px; height: 13px; color: var(--accent); }
+.cs-compare-tag {
+  position: absolute; top: .7rem; z-index: 2; line-height: 1; pointer-events: none;
+  font-family: var(--font-mono); font-size: .58rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--text-primary); background: rgba(8, 8, 7, 0.55); padding: .35rem .5rem; border-radius: 4px;
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.cs-compare-tag--before { left: .7rem; }
+.cs-compare-tag--after { right: .7rem; }
+.cs-compare:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .cs-compare { scroll-behavior: auto; } }
 
 /* image placeholder (grey box with label) */
 .cs-img-placeholder {
@@ -285,7 +321,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   color: var(--text-primary); margin-top: .1rem;
 }
 .cs-stat .stat-label {
-  font-family: var(--font-mono); font-size: .65rem;
+  font-family: var(--font-mono); font-size: .72rem;
   letter-spacing: .14em; text-transform: uppercase;
   color: var(--text-secondary);
 }
@@ -297,7 +333,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   border-radius: var(--radius);
 }
 .cs-outcome-label {
-  font-family: var(--font-mono); font-size: .62rem;
+  font-family: var(--font-mono); font-size: .72rem;
   letter-spacing: .2em; text-transform: uppercase;
   color: var(--accent); margin-bottom: 1rem;
 }
@@ -329,7 +365,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   text-align: center;
 }
 .cs-next-label {
-  font-family: var(--font-mono); font-size: .65rem;
+  font-family: var(--font-mono); font-size: .72rem;
   letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
   margin-bottom: .6rem;
 }
@@ -411,17 +447,17 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 /* Chapter header */
 .chapter { display: block; }
 
-/* the .ch-head border becomes the chapter divider, so drop the
-   wrapping section's own top rule to avoid a doubled hairline */
-.cs-section:has(> .ch-head) { border-top: none; padding-top: 0; }
+/* chapters separate by whitespace + the eyebrow rule, not a full-width
+   divider — suppress the wrapping section's own top rule and tighten the
+   gap (3.5rem margin + 2.5rem ch-head padding = 6rem above each chapter) */
+.cs-section:has(> .ch-head) { border-top: none; padding-top: 0; margin-top: 3.5rem; }
 
 .ch-head {
   display: grid;
   grid-template-columns: 10rem minmax(0, 1fr);
   gap: 2.25rem;
   align-items: start;
-  padding-top: 3.25rem;
-  border-top: 1px solid var(--border);
+  padding-top: 2.5rem;
 }
 .ch-num {
   font-family: var(--font-display);
@@ -518,7 +554,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   line-height: 1.3;
 }
 .ch-card p {
-  font-size: .875rem;
+  font-size: .95rem;
   color: var(--text-secondary);
   line-height: 1.7;
 }
@@ -534,13 +570,13 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 }
 .ch-role-label {
   font-family: var(--font-mono);
-  font-size: .6rem;
+  font-size: .72rem;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: .5rem;
 }
-.ch-role p { font-size: .9rem; color: var(--text-secondary); line-height: 1.75; }
+.ch-role p { font-size: .95rem; color: var(--text-secondary); line-height: 1.75; }
 .ch-role p strong { color: var(--text-primary); font-weight: 400; }
 
 /* Section-label dash marker: default on (main chapter headings); the --sub
@@ -700,9 +736,16 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .ch1-concept-media .ch1-carousel-img { width: auto; max-width: 100%; }
 
 .ch1-carousel { background: var(--bg-card); display: flex; flex-direction: column; }
+/* carousels laid out in a pair have no .cs-img wrapper, so give them the same
+   framed stroke as the standalone (.cs-img-wrapped) carousels on the page */
+.cs-img-pair .ch1-carousel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
 .ch1-carousel-subtitle {
   font-family: var(--font-mono); font-size: .65rem; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--text-secondary);
+  text-transform: uppercase; color: var(--text-primary);
   padding: .65rem 1rem .35rem; flex-shrink: 0; margin: 0;
 }
 .ch1-carousel-viewport {
@@ -789,7 +832,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   position: fixed; left: 0; right: 0; top: var(--cs-nav-h, 56px); z-index: 90;
   display: flex; justify-content: center;
   padding: .5rem 1rem;
-  background: rgba(8, 8, 7, 0.9);
+  background: rgba(8, 8, 7, 0.2); /* match the scrolled main nav */
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   transform: translateY(-120%); opacity: 0; visibility: hidden;
@@ -798,13 +841,27 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .cs-subnav.is-visible { transform: translateY(0); opacity: 1; visibility: visible; }
 .cs-subnav-inner {
   display: flex; gap: .35rem; align-items: center;
-  width: 100%; max-width: var(--max-w);
+  width: 100%; max-width: var(--max-w-wide);
   /* centre when the chapters fit; fall back to start-aligned (fully
      scrollable, no clipped first item) once they overflow */
   justify-content: safe center;
   overflow-x: auto; scrollbar-width: none;
 }
 .cs-subnav-inner::-webkit-scrollbar { display: none; }
+/* fade the chapters out toward whichever edge still has hidden content
+   (can-left / can-right toggled by JS from scroll position) */
+.cs-subnav.can-right .cs-subnav-inner {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
+          mask-image: linear-gradient(90deg, #000 calc(100% - 2.5rem), transparent);
+}
+.cs-subnav.can-left .cs-subnav-inner {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5rem);
+          mask-image: linear-gradient(90deg, transparent, #000 2.5rem);
+}
+.cs-subnav.can-left.can-right .cs-subnav-inner {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+}
 .cs-subnav a {
   font-family: var(--font-mono); font-size: .64rem; letter-spacing: .1em;
   text-transform: capitalize; color: var(--text-secondary); white-space: nowrap;
@@ -837,7 +894,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
     border-left: 1px solid var(--border);
   }
   .cs-subnav a {
-    white-space: normal; font-size: .62rem; line-height: 1.35;
+    white-space: normal; font-size: .72rem; line-height: 1.35;
     padding: .5rem 1rem; border-radius: 0;
     transition: color .2s, box-shadow .2s;
   }
@@ -879,11 +936,11 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .cs-subnav-arrow svg { width: 20px; height: 20px; }
 .cs-subnav-arrow-left {
   left: 0; justify-content: flex-start; padding-left: .35rem;
-  background: linear-gradient(to right, var(--bg) 45%, transparent);
+  background: none; /* the inner's mask handles the fade now */
 }
 .cs-subnav-arrow-right {
   right: 0; justify-content: flex-end; padding-right: .35rem;
-  background: linear-gradient(to left, var(--bg) 45%, transparent);
+  background: none;
 }
 .cs-subnav.can-left  .cs-subnav-arrow-left  { display: flex; }
 .cs-subnav.can-right .cs-subnav-arrow-right { display: flex; }

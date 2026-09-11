@@ -337,44 +337,29 @@
       <cite>Research debrief notes, Walt Disney World</cite>
     </div>
 
-    <div class="cs-img-pair reveal-group">
-      <figure>
-        <div class="ch1-concept-media" id="ch1-menu-before-media" data-subtitle="Menu · Before (MVP)">
-          <div class="ch1-carousel ch1-media-layer" id="ch1-menu-before-carousel" aria-label="Menu before MVP mockup" role="region">
-            <div class="ch1-carousel-viewport">
-              <img
-                class="ch1-carousel-img"
-                id="ch1-menu-before-img"
-                src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-mvp-3-mockup.png"
-                alt="Mobile Order MVP · Build Your Order menu at Galactic Grill, Disneyland (before redesign)"
-                role="button"
-                tabindex="0"
-                aria-label="Open enlarged menu mockup"
-              />
-            </div>
-          </div>
+    <figure class="cs-img reveal">
+      <div class="cs-compare" style="--pos:50%; --before-scale:1.03" role="slider" tabindex="0"
+           aria-label="Compare the Build Your Order menu before and after the redesign"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="Half before, half after">
+        <img class="cs-compare-img"
+             src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-menu-redesign-default-1.png"
+             alt="Mobile Order · Build Your Order menu after the carousel redesign" draggable="false" />
+        <div class="cs-compare-before">
+          <img class="cs-compare-img"
+               src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-mvp-3-mockup.png"
+               alt="Mobile Order MVP · Build Your Order menu before the redesign" draggable="false" />
         </div>
-        <figcaption>Menu · Before (MVP)</figcaption>
-      </figure>
-      <figure>
-        <div class="ch1-concept-media" id="ch1-menu-after-media" data-subtitle="Menu · After (Carousel redesign)">
-          <div class="ch1-carousel ch1-media-layer" id="ch1-menu-after-carousel" aria-label="Menu after carousel redesign mockup" role="region">
-            <div class="ch1-carousel-viewport">
-              <img
-                class="ch1-carousel-img"
-                id="ch1-menu-after-img"
-                src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-menu-redesign-default-1.png"
-                alt="Mobile Order · Menu after carousel redesign"
-                role="button"
-                tabindex="0"
-                aria-label="Open enlarged menu mockup"
-              />
-            </div>
-          </div>
+        <span class="cs-compare-tag cs-compare-tag--before" aria-hidden="true">Before</span>
+        <span class="cs-compare-tag cs-compare-tag--after" aria-hidden="true">After</span>
+        <div class="cs-compare-divider" aria-hidden="true">
+          <span class="cs-compare-grip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="14 8 10 12 14 16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 8 14 12 10 16"/></svg>
+          </span>
         </div>
-        <figcaption>Menu · After (Carousel redesign)</figcaption>
-      </figure>
-    </div>
+      </div>
+      <figcaption>Menu redesign · drag to compare before / after</figcaption>
+    </figure>
 
     <div class="cs-outcome reveal">
       <div class="cs-outcome-label">Launch &amp; press</div>
@@ -476,46 +461,40 @@
       </div>
     </figure>
 
-    <div class="cs-img-pair reveal-group">
-      <figure>
-        <div class="ch1-concept-media" id="ch2-pickup-before-media">
-          <div class="ch1-carousel ch1-media-layer" id="ch2-pickup-before-carousel" aria-label="Pickup state before carousel" role="region">
-            <div class="ch1-carousel-viewport">
-              <img class="ch1-carousel-img" id="ch2-pickup-before-img" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-mvp-9-mockup.png" alt="Pickup state before · screen 1" role="button" tabindex="0" aria-label="Open enlarged mockup" />
-            </div>
-            <div class="ch1-carousel-controls">
-              <button type="button" class="ch1-carousel-btn" data-dir="prev" aria-label="Previous slide">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
-              </button>
-              <div class="ch1-carousel-dots" aria-hidden="true"></div>
-              <button type="button" class="ch1-carousel-btn" data-dir="next" aria-label="Next slide">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-              </button>
-            </div>
-          </div>
+    <figure class="cs-img reveal">
+      <div class="cs-compare cs-compare--carousel" style="--pos:50%; --before-scale:1.28" role="slider" tabindex="0"
+           aria-label="Compare the pickup flow before and after the redesign, screen by screen"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
+           data-base="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/"
+           data-pairs='[{"before":"mo-mvp-9-mockup.png","after":"mose-1.png","alt":"Pickup flow, screen 1"},{"before":"mo-mvp-10-mockup.png","after":"mose-2.png","alt":"Pickup flow, screen 2"},{"before":"mo-mvp-11-mockup.png","after":"mose-3.png","alt":"Pickup flow, screen 3"},{"before":"mo-mvp-12-mockup.png","after":"mose-5.png","alt":"Pickup flow, screen 4"}]'>
+        <img class="cs-compare-img cs-compare-after-img"
+             src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mose-1.png"
+             alt="Pickup flow, screen 1 — after redesign" draggable="false" />
+        <div class="cs-compare-before">
+          <img class="cs-compare-img cs-compare-before-img"
+               src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mo-mvp-9-mockup.png"
+               alt="Pickup flow, screen 1 — before redesign" draggable="false" />
         </div>
-        <figcaption>Pickup flow · Before</figcaption>
-      </figure>
-      <figure>
-        <div class="ch1-concept-media" id="ch2-pickup-after-media">
-          <div class="ch1-carousel ch1-media-layer" id="ch2-pickup-after-carousel" aria-label="Pickup state after carousel" role="region">
-            <div class="ch1-carousel-viewport">
-              <img class="ch1-carousel-img" id="ch2-pickup-after-img" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mose-1.png" alt="Pickup state after · screen 1" role="button" tabindex="0" aria-label="Open enlarged mockup" />
-            </div>
-            <div class="ch1-carousel-controls">
-              <button type="button" class="ch1-carousel-btn" data-dir="prev" aria-label="Previous slide">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
-              </button>
-              <div class="ch1-carousel-dots" aria-hidden="true"></div>
-              <button type="button" class="ch1-carousel-btn" data-dir="next" aria-label="Next slide">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-              </button>
-            </div>
-          </div>
+        <span class="cs-compare-tag cs-compare-tag--before" aria-hidden="true">Before</span>
+        <span class="cs-compare-tag cs-compare-tag--after" aria-hidden="true">After</span>
+        <div class="cs-compare-divider" aria-hidden="true">
+          <span class="cs-compare-grip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="14 8 10 12 14 16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 8 14 12 10 16"/></svg>
+          </span>
         </div>
-        <figcaption>Pickup flow · After</figcaption>
-      </figure>
-    </div>
+      </div>
+      <div class="ch1-carousel-controls cs-compare-nav">
+        <button type="button" class="ch1-carousel-btn" data-dir="prev" aria-label="Previous screen">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+        </button>
+        <div class="ch1-carousel-dots" aria-hidden="true"></div>
+        <button type="button" class="ch1-carousel-btn" data-dir="next" aria-label="Next screen">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+        </button>
+      </div>
+      <figcaption>Pickup flow · drag to compare before / after · 4 screens</figcaption>
+    </figure>
 
     <div class="cs-outcome reveal">
       <div class="cs-outcome-label">Launched Q1 2020, then COVID hit</div>
@@ -734,25 +713,8 @@ window.CS_CAROUSELS = {
       { src: 'mo-mvp-11-mockup.png', alt: 'Mobile Order MVP launch · screen 11' },
       { src: 'mo-mvp-12-mockup.png', alt: 'Mobile Order MVP launch · screen 12' },
       { src: 'mo-mvp-13-mockup.png', alt: 'Mobile Order MVP launch · screen 13' }
-    ]},
-    'ch2-pickup-before-carousel': { subtitle: 'Pickup flow · Before', slides: [
-      { src: 'mo-mvp-9-mockup.png',  alt: 'Pickup state before · screen 1' },
-      { src: 'mo-mvp-10-mockup.png', alt: 'Pickup state before — screen 2' },
-      { src: 'mo-mvp-11-mockup.png', alt: 'Pickup state before — screen 3' },
-      { src: 'mo-mvp-12-mockup.png', alt: 'Pickup state before — screen 4' }
-    ]},
-    'ch2-pickup-after-carousel': { subtitle: 'Pickup flow · After', slides: [
-      { src: 'mose-1.png', alt: 'Pickup state after · screen 1' },
-      { src: 'mose-2.png', alt: 'Pickup state after — screen 2' },
-      { src: 'mose-3.png', alt: 'Pickup state after — screen 3' },
-      { src: 'mose-4.png', alt: 'Pickup state after — screen 4' },
-      { src: 'mose-5.png', alt: 'Pickup state after — screen 5' }
     ]}
   },
-  pairs: [
-    { members: ['ch1-menu-before-media', 'ch1-menu-after-media'] },
-    { members: ['ch2-pickup-before-carousel', 'ch2-pickup-after-carousel'] }
-  ],
   tabbed: [{
     carousel: 'ch1-carousel',
     placeholder: 'ch1-concept-placeholder',
