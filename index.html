@@ -80,7 +80,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .about-intro{display:flex;flex-direction:column;position:relative}
 .about-intro .about-avatar{position:absolute;top:50%;left:0;transform:translateY(-50%);width:100%;margin:0} /* center photo against the full description column */
 .about-avatar{position:relative;aspect-ratio:1;max-width:320px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:visible}
-.about-avatar-inner{width:100%;height:100%;overflow:hidden;border-radius:var(--radius)}
+.about-avatar-inner{position:relative;width:100%;height:100%;overflow:hidden;border-radius:var(--radius)}
 .about-avatar-inner img{width:100%;height:100%;object-fit:cover;display:block}
 .resume-row{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
 .resume-btn{display:inline-flex;align-items:center;gap:.75rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(245,183,49,0.3);padding:.85rem 1.75rem;border-radius:var(--radius);transition:background .2s,border-color .2s,transform .2s var(--ease-out)}
@@ -97,7 +97,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 #work .work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem}
 .project-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.5rem}
 .project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:border-color .3s,transform .35s var(--ease-out),box-shadow .35s var(--ease-out),background .3s}
-.project-card:hover{border-color:var(--border-hover);transform:translateY(-6px);background:var(--bg-card-hover);box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 0 1px rgba(245,183,49,0.08)}
+.project-card:hover{border-color:var(--border-hover);transform:translateY(-16px) scale(1.02);background:var(--bg-card-hover);box-shadow:0 44px 72px rgba(0,0,0,0.92),0 20px 38px rgba(0,0,0,0.7),0 0 0 1px rgba(245,183,49,0.42),0 28px 58px rgba(245,183,49,0.2)}
 .project-card::after{content:'';position:absolute;inset:0;border-radius:var(--radius);box-shadow:inset 0 0 0 1px rgba(245,183,49,0);transition:box-shadow .35s;pointer-events:none}
 .project-card:hover::after{box-shadow:inset 0 0 0 1px rgba(245,183,49,0.12)}
 .project-card:nth-child(1){grid-column:span 6}
@@ -162,6 +162,8 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 /* cursor glare highlight (project cards + avatar) */
 .glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px 220px at var(--gx,50%) var(--gy,50%),rgba(255,255,255,0.16),transparent 60%);mix-blend-mode:screen;z-index:2;border-radius:var(--radius)}
 .about-avatar:hover .glare{opacity:1}
+/* the glare tracks the cursor — on touch devices there's nothing to track, so drop it */
+@media (hover: none), (pointer: coarse){.glare{display:none}}
 /* light bulb that flickers on (old-bulb style) when hovering the photo */
 .about-bulb{position:absolute;bottom:100%;left:37%;width:22%;height:auto;transform:translateX(-50%);margin-bottom:0.7rem;opacity:0;pointer-events:none;z-index:3;filter:drop-shadow(0 0 9px rgba(245,183,49,0.55));transition:opacity .3s var(--ease-out)}
 .about-avatar:hover .about-bulb{opacity:1} /* fallback fade when the JS flicker isn't running */
@@ -216,6 +218,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
     line-height:1.45;
     flex-wrap:wrap;
     align-items:flex-start;
+    margin-bottom:1.25rem;
     /* Longest phrases wrap to 2 lines at mobile widths; reserve 2 line-heights so swaps don’t jump layout */
     min-height:calc(1.45em * 2);
   }
@@ -225,6 +228,10 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   .contact-headline{font-size:2.5rem}
   #cursor-dot,#cursor-ring{display:none}
   body{cursor:auto}
+}
+@media(max-width:430px){
+  /* stack the hero buttons and centre "Say Hi" under "View Work" */
+  .hero-actions{flex-direction:column;align-items:center;gap:1.25rem}
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -270,8 +277,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
       <div class="section-label" aria-hidden="true"></div>
       <h2 class="section-title">About <em>Me</em></h2>
       <div class="about-avatar">
-        <div class="about-avatar-inner"><img src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Other/profile.jpg" alt="Lyon Huang" width="320" height="320" loading="lazy" decoding="async" /></div>
-        <div class="glare"></div>
+        <div class="about-avatar-inner"><img src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Other/profile.jpg" alt="Lyon Huang" width="320" height="320" loading="lazy" decoding="async" /><div class="glare"></div></div>
         <svg class="about-bulb" viewBox="0 0 64 76" fill="none" aria-hidden="true">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M26.2357 62.9527C27.0274 62.2508 26.673 60.1304 26.4796 59.0581C26.1853 57.4294 25.197 55.5581 24.1842 54.3322L22.6578 52.3331C22.4871 52.0792 22.3717 51.8948 22.2042 51.6554L19.3789 47.5538C17.2299 44.6296 15.7717 38.2572 16.1391 34.4628C16.2854 32.949 16.3066 31.8508 16.617 30.2771C17.1421 27.6246 18.6555 25.4962 20.0048 23.2367C20.5217 22.373 22.1067 20.8705 22.8724 20.3093C24.5175 19.1059 25.9139 18.8229 27.5769 17.9706C27.8678 17.8234 27.9134 17.6972 28.3523 17.5937C33.06 16.4874 36.4315 16.7058 40.702 18.8633C41.4384 19.2353 42.2447 19.6284 42.8884 20.1928C43.1355 20.4112 43.2948 20.4872 43.5257 20.691C43.7386 20.8802 43.9564 21.084 44.1791 21.2845L45.6032 23.2642C47.3751 26.2709 47.4938 26.0266 48.6203 29.5541C48.8284 30.2043 49.1876 30.5165 49.2819 31.2863C49.4559 32.7161 49.3437 34.2332 49.2088 35.6758C49.1616 36.1853 49.251 36.9503 49.1876 37.6523C48.9698 40.109 48.4382 42.8812 47.2938 45.0695L46.481 46.6432C46.0437 47.5667 45.2407 48.5679 44.6262 49.4396C44.132 50.1399 43.5192 50.6996 42.9713 51.3061C42.0724 52.3007 41.0027 53.2437 40.3508 54.468C40.055 55.0212 39.8242 55.4142 39.5332 55.9269C38.5448 57.6672 38.4749 59.7891 38.6017 61.8675C38.7025 63.4816 39.0179 62.5079 39.5673 63.095L39.7835 62.2993C39.9022 61.4922 38.4213 60.1353 40.7605 55.5646C41.2287 54.6492 41.1929 54.861 41.7407 54.1591L43.9125 51.5616C44.662 50.7109 45.4309 49.8585 46.0567 48.9382L47.827 45.9445C48.0708 45.4027 48.3618 44.7574 48.5358 44.2689C49.4689 41.6488 50.0118 39.4006 50.3597 36.5072C50.6344 34.2154 50.1776 31.1909 50.1874 30.9095C50.2768 28.4106 48.921 27.1006 48.4415 25.5253C48.2822 25.0029 48.3179 25.2066 48.0416 24.8039C47.7067 24.3187 47.445 23.7591 47.128 23.3354C45.9218 21.7115 45.2309 20.8673 43.698 19.6154C40.9523 17.3721 40.9848 18.0094 39.8957 17.3915C38.9317 16.8432 38.4034 16.8109 37.2801 16.4745C35.6025 15.9715 32.6439 15.6335 30.8297 15.8841C30.1973 15.9715 29.4561 16.1268 28.8513 16.2901C28.1182 16.4874 27.7443 16.73 27.1071 16.9257C26.2748 17.1845 26.0911 17.2508 25.3823 17.6002L23.7047 18.3086C23.152 18.5415 21.5199 19.8887 20.9834 20.3562C19.917 21.2845 19.0733 22.4911 18.2345 23.6249C17.516 24.5969 16.1944 27.3254 16.0595 28.5983C16.0123 29.0398 16.0757 29.1352 15.9489 29.6366C15.1719 32.6918 15.3751 37.5585 16.0302 40.5959C16.1066 40.9533 16.1424 41.2784 16.235 41.6504L17.056 44.3158C17.6932 46.4928 18.9075 47.9096 20.0389 49.7372C20.5152 50.5071 21.1183 50.9713 21.5475 51.7444L23.5681 54.4907C24.5061 55.7765 25.6554 57.9324 25.5644 59.6064C25.4945 60.8938 24.7776 62.9446 26.2357 62.9527Z" fill="var(--accent)"/>
           <path fill-rule="evenodd" clip-rule="evenodd" d="M31.7821 66.5239C31.787 66.3961 31.8585 66.4236 31.8877 66.5223C31.917 66.6177 31.7788 66.608 31.7821 66.5239ZM26.9443 69.5629C26.255 69.6729 25.9137 69.6325 25.556 69.922C25.6682 70.2891 25.6324 70.1985 26.6175 70.6433C27.8888 70.0886 29.8801 70.1888 31.3155 70.226C30.8474 70.5398 28.8658 70.7258 28.1716 70.7986C27.4238 70.8778 25.6015 70.7986 25.4731 71.6218C26.1152 72.0116 26.9589 71.824 27.7717 71.8321C27.3653 72.6812 27.4043 72.1038 28.5731 73.5271C28.8024 73.8036 29.2933 74.1578 29.7127 74.4328C31.6618 75.7154 34.201 75.3903 36.142 74.3083C36.4492 74.1352 36.5012 74.0188 36.7028 73.8473L37.2831 73.4009C37.7545 73.0645 38.0098 72.7847 37.9854 72.0925C37.262 72.0941 36.88 72.7879 35.838 73.6613C34.0124 75.1913 30.7661 74.0074 28.9942 72.6537C28.7211 72.4467 28.7666 72.5195 28.4902 72.2494C28.2301 71.9922 28.2838 72.0488 28.0074 71.879C28.6284 71.7269 30.5759 71.7334 31.2716 71.7755C32.473 71.8499 38.712 71.4213 39.2729 71.6008C39.6744 71.7286 40.0532 71.6089 40.3994 71.4245C40.3831 70.5091 39.8678 70.8552 39.0241 70.8697C36.8767 70.9086 36.0444 71.0379 33.4174 70.9862C33.7052 70.7808 33.9766 70.7759 34.3587 70.7549L37.1807 70.4557C37.722 70.3959 38.4763 70.2907 39.0193 70.2584C39.6646 70.2196 40.4612 70.3522 41.0513 70.2438C41.1553 69.9899 41.1374 69.9333 41.061 69.5969C39.2859 69.3624 32.8842 69.736 31.891 69.3559C32.1901 69.1812 34.5359 68.9224 35.0951 68.8513C36.4102 68.6831 37.418 68.7882 38.6828 68.8319L39.029 68.5537C39.4777 68.3192 39.9979 68.5488 39.9751 67.9553C39.2095 67.6285 33.0614 68.5634 29.4493 67.8986C29.0998 67.8339 28.999 67.8582 28.6593 67.855L28.0887 67.7693C28.7259 67.4943 33.2598 67.1029 34.3245 67.0269C34.8772 66.9881 35.3291 66.8344 35.8331 66.8085C36.4053 66.781 36.9629 66.794 37.5448 66.7487C39.7394 66.5789 39.9735 66.9913 40.1166 66.1826C39.5817 65.5454 38.7153 66.1131 37.0295 66.0015C36.4703 65.9643 33.819 65.9885 33.4987 65.843C33.8385 65.6602 36.3029 65.3788 36.8783 65.3044C38.7462 65.065 39.6728 65.2737 39.6939 64.2385C39.0729 63.9701 37.6619 64.2418 36.4069 64.3194C35.2219 64.3938 33.9734 64.5135 32.7639 64.4407C31.6081 64.3696 26.2729 63.9571 25.5446 64.203C25.5511 65.1313 26.4078 64.803 27.7555 64.8515C28.4415 64.8758 28.8739 64.9793 29.4575 64.9906L33.1931 65.1637C32.3202 65.3966 30.3012 65.3869 29.2364 65.492L25.5869 65.7265C25.0131 65.809 25.1204 65.9109 25.1643 66.1567C25.2455 66.5999 25.8145 66.4899 26.1591 66.4964C26.7769 66.5077 27.4287 66.3719 27.8693 66.4058L31.0717 66.718C30.0216 66.815 25.8503 67.4118 25.0537 67.7321L25.2797 68.4259C26.2648 68.6232 27.4499 68.4938 28.3358 68.4485C28.3716 68.4469 31.218 68.7882 31.2196 68.7898L26.9443 69.5629Z" fill="var(--accent)"/>
@@ -344,7 +350,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
       <div class="project-thumb"><div class="project-thumb-inner">
       </div><video class="project-thumb-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/videos/mobile-order-redesign.mp4"></video><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
       <div class="project-info">
-        <div class="project-client">Disney</div>
+        <div class="project-client">The Walt Disney Company</div>
         <h3 class="project-name">Disney Parks, Experiences and Products</h3>
         <p class="project-desc">Order ahead, skip the line</p>
         <div class="project-year">2017 - 2020</div>
