@@ -58,13 +58,13 @@ img{display:block;max-width:100%}
 .hero-cta:hover{background:var(--accent-dim);border-color:var(--accent);transform:translateY(-2px)}
 .hero-cta-text{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);transition:color .2s,gap .2s var(--ease-out)}
 .hero-cta-text:hover{color:var(--accent);gap:.85rem}
-.hero-scroll{display:flex;align-items:center;gap:.75rem;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);opacity:0;animation:fadeUp 1s 1.1s var(--ease-out) forwards;margin-top:auto}
-.hero-scroll-chevron{width:22px;height:22px;stroke:var(--accent);stroke-width:2;fill:none;animation:scrollBounce 1.8s var(--ease-in-out) infinite}
+/* positioning + fade-in only; the look comes from the shared .scroll-cue component */
+.hero-scroll{align-self:flex-start;margin-top:auto;opacity:0;animation:fadeUp 1s 1.1s var(--ease-out) forwards}
 
 /* shared section */
 section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .section-label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:1rem}
-.section-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent)}
+.section-label::before{content:'';display:block;width:24px;height:4px;background:var(--accent)}
 .section-title{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:1rem}
 .section-title em{font-style:italic;color:var(--accent)}
 .divider{width:100%;height:1px;background:var(--border);max-width:var(--max-w);margin:0 auto}
@@ -79,8 +79,8 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 #about .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:stretch}
 .about-intro{display:flex;flex-direction:column;position:relative}
 .about-intro .about-avatar{position:absolute;top:50%;left:0;transform:translateY(-50%);width:100%;margin:0} /* center photo against the full description column */
-.about-avatar{position:relative;aspect-ratio:1;max-width:320px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.about-avatar-inner{width:100%;height:100%;overflow:hidden}
+.about-avatar{position:relative;aspect-ratio:1;max-width:320px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:visible}
+.about-avatar-inner{width:100%;height:100%;overflow:hidden;border-radius:var(--radius)}
 .about-avatar-inner img{width:100%;height:100%;object-fit:cover;display:block}
 .resume-row{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
 .resume-btn{display:inline-flex;align-items:center;gap:.75rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(245,183,49,0.3);padding:.85rem 1.75rem;border-radius:var(--radius);transition:background .2s,border-color .2s,transform .2s var(--ease-out)}
@@ -160,8 +160,14 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .btn-arrow{width:.95em;height:.95em;flex:0 0 auto}
 
 /* cursor glare highlight (project cards + avatar) */
-.glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px 220px at var(--gx,50%) var(--gy,50%),rgba(255,255,255,0.16),transparent 60%);mix-blend-mode:screen;z-index:2}
+.glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px 220px at var(--gx,50%) var(--gy,50%),rgba(255,255,255,0.16),transparent 60%);mix-blend-mode:screen;z-index:2;border-radius:var(--radius)}
 .about-avatar:hover .glare{opacity:1}
+/* light bulb that flickers on (old-bulb style) when hovering the photo */
+.about-bulb{position:absolute;bottom:100%;left:37%;width:22%;height:auto;transform:translateX(-50%);margin-bottom:0.7rem;opacity:0;pointer-events:none;z-index:3;filter:drop-shadow(0 0 9px rgba(245,183,49,0.55));transition:opacity .3s var(--ease-out)}
+.about-avatar:hover .about-bulb{opacity:1} /* fallback fade when the JS flicker isn't running */
+@keyframes bulbFlicker{0%{opacity:0}6%{opacity:.55}9%{opacity:.05}16%{opacity:.75}20%{opacity:.15}30%{opacity:1}36%{opacity:.35}44%{opacity:1}50%{opacity:.6}60%{opacity:1}100%{opacity:1}}
+@keyframes bulbFlickerOut{0%{opacity:1}18%{opacity:.5}28%{opacity:.85}45%{opacity:.12}60%{opacity:.5}75%{opacity:.04}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.about-bulb{transition:opacity .2s}}
 
 /* impact counters (idea 02) */
 #about{padding-bottom:0}
@@ -184,7 +190,6 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .copy-spark{position:fixed;width:6px;height:6px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9997;will-change:transform,opacity}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(6px);opacity:1}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 
 @media(max-width:900px){
@@ -194,6 +199,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   #about .about-grid{grid-template-columns:1fr;gap:3rem}
   .about-intro .about-avatar{position:static;transform:none;width:auto;margin-top:2.5rem;margin-bottom:0}
   .about-avatar{max-width:240px}
+  .about-bulb{display:none} /* no room + touch (no hover) on small viewports */
   .project-grid{grid-template-columns:1fr}
   .project-card:nth-child(n){grid-column:span 1}
   footer{flex-direction:column;gap:1rem;text-align:center}
@@ -225,7 +231,6 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   .skills-grid .skill-tag:hover{transform:none;border-color:var(--accent)}
   .skills-grid .skill-tag:hover::after{animation:none;opacity:0}
   .copy-pop{animation:none}
-  .hero-scroll-chevron{animation:none}
 }
 </style>
 </head>
@@ -255,7 +260,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
       <a href="#contact" class="hero-cta-text">Say Hi<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
   </div>
-  <div class="hero-scroll"><svg class="hero-scroll-chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <a href="#about" class="hero-scroll scroll-cue" aria-label="Meet the human, scroll to About">Meet the human<span class="scroll-cue-arrow" aria-hidden="true"></span></a>
 </section>
 
 <div class="divider"></div>
@@ -268,6 +273,26 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
       <div class="about-avatar">
         <div class="about-avatar-inner"><img src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Other/profile.jpg" alt="Lyon Huang" width="320" height="320" loading="lazy" decoding="async" /></div>
         <div class="glare"></div>
+        <svg class="about-bulb" viewBox="0 0 64 76" fill="none" aria-hidden="true">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M26.2357 62.9527C27.0274 62.2508 26.673 60.1304 26.4796 59.0581C26.1853 57.4294 25.197 55.5581 24.1842 54.3322L22.6578 52.3331C22.4871 52.0792 22.3717 51.8948 22.2042 51.6554L19.3789 47.5538C17.2299 44.6296 15.7717 38.2572 16.1391 34.4628C16.2854 32.949 16.3066 31.8508 16.617 30.2771C17.1421 27.6246 18.6555 25.4962 20.0048 23.2367C20.5217 22.373 22.1067 20.8705 22.8724 20.3093C24.5175 19.1059 25.9139 18.8229 27.5769 17.9706C27.8678 17.8234 27.9134 17.6972 28.3523 17.5937C33.06 16.4874 36.4315 16.7058 40.702 18.8633C41.4384 19.2353 42.2447 19.6284 42.8884 20.1928C43.1355 20.4112 43.2948 20.4872 43.5257 20.691C43.7386 20.8802 43.9564 21.084 44.1791 21.2845L45.6032 23.2642C47.3751 26.2709 47.4938 26.0266 48.6203 29.5541C48.8284 30.2043 49.1876 30.5165 49.2819 31.2863C49.4559 32.7161 49.3437 34.2332 49.2088 35.6758C49.1616 36.1853 49.251 36.9503 49.1876 37.6523C48.9698 40.109 48.4382 42.8812 47.2938 45.0695L46.481 46.6432C46.0437 47.5667 45.2407 48.5679 44.6262 49.4396C44.132 50.1399 43.5192 50.6996 42.9713 51.3061C42.0724 52.3007 41.0027 53.2437 40.3508 54.468C40.055 55.0212 39.8242 55.4142 39.5332 55.9269C38.5448 57.6672 38.4749 59.7891 38.6017 61.8675C38.7025 63.4816 39.0179 62.5079 39.5673 63.095L39.7835 62.2993C39.9022 61.4922 38.4213 60.1353 40.7605 55.5646C41.2287 54.6492 41.1929 54.861 41.7407 54.1591L43.9125 51.5616C44.662 50.7109 45.4309 49.8585 46.0567 48.9382L47.827 45.9445C48.0708 45.4027 48.3618 44.7574 48.5358 44.2689C49.4689 41.6488 50.0118 39.4006 50.3597 36.5072C50.6344 34.2154 50.1776 31.1909 50.1874 30.9095C50.2768 28.4106 48.921 27.1006 48.4415 25.5253C48.2822 25.0029 48.3179 25.2066 48.0416 24.8039C47.7067 24.3187 47.445 23.7591 47.128 23.3354C45.9218 21.7115 45.2309 20.8673 43.698 19.6154C40.9523 17.3721 40.9848 18.0094 39.8957 17.3915C38.9317 16.8432 38.4034 16.8109 37.2801 16.4745C35.6025 15.9715 32.6439 15.6335 30.8297 15.8841C30.1973 15.9715 29.4561 16.1268 28.8513 16.2901C28.1182 16.4874 27.7443 16.73 27.1071 16.9257C26.2748 17.1845 26.0911 17.2508 25.3823 17.6002L23.7047 18.3086C23.152 18.5415 21.5199 19.8887 20.9834 20.3562C19.917 21.2845 19.0733 22.4911 18.2345 23.6249C17.516 24.5969 16.1944 27.3254 16.0595 28.5983C16.0123 29.0398 16.0757 29.1352 15.9489 29.6366C15.1719 32.6918 15.3751 37.5585 16.0302 40.5959C16.1066 40.9533 16.1424 41.2784 16.235 41.6504L17.056 44.3158C17.6932 46.4928 18.9075 47.9096 20.0389 49.7372C20.5152 50.5071 21.1183 50.9713 21.5475 51.7444L23.5681 54.4907C24.5061 55.7765 25.6554 57.9324 25.5644 59.6064C25.4945 60.8938 24.7776 62.9446 26.2357 62.9527Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M31.7821 66.5239C31.787 66.3961 31.8585 66.4236 31.8877 66.5223C31.917 66.6177 31.7788 66.608 31.7821 66.5239ZM26.9443 69.5629C26.255 69.6729 25.9137 69.6325 25.556 69.922C25.6682 70.2891 25.6324 70.1985 26.6175 70.6433C27.8888 70.0886 29.8801 70.1888 31.3155 70.226C30.8474 70.5398 28.8658 70.7258 28.1716 70.7986C27.4238 70.8778 25.6015 70.7986 25.4731 71.6218C26.1152 72.0116 26.9589 71.824 27.7717 71.8321C27.3653 72.6812 27.4043 72.1038 28.5731 73.5271C28.8024 73.8036 29.2933 74.1578 29.7127 74.4328C31.6618 75.7154 34.201 75.3903 36.142 74.3083C36.4492 74.1352 36.5012 74.0188 36.7028 73.8473L37.2831 73.4009C37.7545 73.0645 38.0098 72.7847 37.9854 72.0925C37.262 72.0941 36.88 72.7879 35.838 73.6613C34.0124 75.1913 30.7661 74.0074 28.9942 72.6537C28.7211 72.4467 28.7666 72.5195 28.4902 72.2494C28.2301 71.9922 28.2838 72.0488 28.0074 71.879C28.6284 71.7269 30.5759 71.7334 31.2716 71.7755C32.473 71.8499 38.712 71.4213 39.2729 71.6008C39.6744 71.7286 40.0532 71.6089 40.3994 71.4245C40.3831 70.5091 39.8678 70.8552 39.0241 70.8697C36.8767 70.9086 36.0444 71.0379 33.4174 70.9862C33.7052 70.7808 33.9766 70.7759 34.3587 70.7549L37.1807 70.4557C37.722 70.3959 38.4763 70.2907 39.0193 70.2584C39.6646 70.2196 40.4612 70.3522 41.0513 70.2438C41.1553 69.9899 41.1374 69.9333 41.061 69.5969C39.2859 69.3624 32.8842 69.736 31.891 69.3559C32.1901 69.1812 34.5359 68.9224 35.0951 68.8513C36.4102 68.6831 37.418 68.7882 38.6828 68.8319L39.029 68.5537C39.4777 68.3192 39.9979 68.5488 39.9751 67.9553C39.2095 67.6285 33.0614 68.5634 29.4493 67.8986C29.0998 67.8339 28.999 67.8582 28.6593 67.855L28.0887 67.7693C28.7259 67.4943 33.2598 67.1029 34.3245 67.0269C34.8772 66.9881 35.3291 66.8344 35.8331 66.8085C36.4053 66.781 36.9629 66.794 37.5448 66.7487C39.7394 66.5789 39.9735 66.9913 40.1166 66.1826C39.5817 65.5454 38.7153 66.1131 37.0295 66.0015C36.4703 65.9643 33.819 65.9885 33.4987 65.843C33.8385 65.6602 36.3029 65.3788 36.8783 65.3044C38.7462 65.065 39.6728 65.2737 39.6939 64.2385C39.0729 63.9701 37.6619 64.2418 36.4069 64.3194C35.2219 64.3938 33.9734 64.5135 32.7639 64.4407C31.6081 64.3696 26.2729 63.9571 25.5446 64.203C25.5511 65.1313 26.4078 64.803 27.7555 64.8515C28.4415 64.8758 28.8739 64.9793 29.4575 64.9906L33.1931 65.1637C32.3202 65.3966 30.3012 65.3869 29.2364 65.492L25.5869 65.7265C25.0131 65.809 25.1204 65.9109 25.1643 66.1567C25.2455 66.5999 25.8145 66.4899 26.1591 66.4964C26.7769 66.5077 27.4287 66.3719 27.8693 66.4058L31.0717 66.718C30.0216 66.815 25.8503 67.4118 25.0537 67.7321L25.2797 68.4259C26.2648 68.6232 27.4499 68.4938 28.3358 68.4485C28.3716 68.4469 31.218 68.7882 31.2196 68.7898L26.9443 69.5629Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M36.2591 45.4658C36.4054 44.8804 36.3631 44.7235 36.8605 44.6604C36.8167 44.9192 36.7972 44.9596 36.6622 45.1343C36.4672 45.3866 36.4915 45.33 36.2591 45.4658ZM33.9426 44.7267C33.9523 45.1359 34.0157 44.8626 33.8369 44.958L33.9426 44.7267ZM30.7158 45.1925C30.5776 44.9289 30.615 44.7364 31.0311 44.6733L30.7158 45.1925ZM29.1211 45.0421C28.939 44.6685 29.0284 44.6847 29.2348 44.5423C29.3243 44.7752 29.2982 44.8011 29.1211 45.0421ZM32.3462 45.0825C32.382 44.8124 32.3446 44.7025 32.6031 44.6103L32.3462 45.0825ZM33.3362 45.6761C32.9412 45.9866 32.2325 46.4444 32.5592 45.4998C32.7331 44.992 33.1737 45.0081 33.0566 44.2043C32.6193 43.8986 32.1658 44.0312 32.0406 44.1736C31.7903 44.4566 32.143 46.9069 30.9385 45.9042C30.9531 45.1424 31.9707 44.7882 31.1709 44.1008C30.6199 44.0604 30.4492 44.2302 30.2508 44.6523C30.0005 45.1893 30.2427 45.3397 30.2622 45.909C29.625 46.2778 29.6591 46.3716 29.3811 46.0885C28.8545 45.4464 30.4719 44.6345 29.4917 43.9245C29.0739 43.8355 28.674 44.1623 28.5862 44.5747C28.4594 45.178 29.0999 46.1581 28.1343 45.9802C27.8742 45.089 28.8707 44.7299 27.9831 44.0717C26.9281 44.2641 27.5735 45.3154 27.4288 46.0222C28.1912 46.4088 27.9295 46.6724 28.0937 47.6105L29.0073 53.1597C29.1828 54.5166 29.2885 55.7879 29.4315 57.1643C29.5047 57.8775 29.7372 60.4718 29.9631 60.9829L30.5662 60.7305C30.5483 60.1596 30.3419 59.6598 30.2671 59.0452C30.1923 58.4258 30.124 57.8031 30.0655 57.2112C29.942 55.9415 29.8331 54.7285 29.6851 53.4977C29.4917 51.8722 28.6009 47.6283 28.7016 46.3813C29.7339 46.3926 28.9861 47.19 30.5142 46.1678C31.1563 46.8438 31.5855 46.4816 32.0813 46.1775C32.317 46.3683 32.3658 46.4799 32.673 46.6837L33.4468 46.1694C34.1523 46.3263 33.6532 46.4136 34.5571 46.2163C35.048 46.1096 34.8107 46.4201 35.5649 46.281C35.6072 47.253 35.1488 48.948 34.9391 49.8796C34.7733 50.6075 33.8987 59.8167 33.9588 61.0281C34.4368 61.1414 34.427 61.0702 34.7619 60.8146C34.9245 59.4706 34.666 57.7222 34.9293 56.3378C35.1732 55.0487 35.1179 53.5818 35.4121 52.2927C35.5601 51.641 35.6088 50.8662 35.7031 50.2096C35.8007 49.5497 35.9778 48.9028 36.0445 48.2768C36.4346 44.6361 37.0524 45.6211 37.3108 45.0195C37.345 44.2544 37.0459 43.8226 36.3111 44.3369C35.8494 44.6604 35.9843 45.1828 35.7291 45.7117L35.2788 45.8006C35.3796 45.6195 35.8364 45.0324 35.8689 44.8836C35.9632 44.4518 35.6934 43.9504 35.1911 44.1202C34.4286 44.379 35.4349 45.668 33.9995 45.9042C34.0564 45.178 34.8757 44.8901 34.2254 44.0086C33.1997 44.007 33.476 44.8464 33.3362 45.6761Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M55.0882 57.1836C55.3483 57.2337 55.4085 57.3033 55.5922 57.4068C55.7938 57.5216 55.9352 57.5426 56.0506 57.74L55.0882 57.1836ZM54.3258 56.7113L54.9452 57.0315C54.6949 56.9814 54.5307 56.8278 54.3258 56.7113ZM50.4683 53.4426C49.2523 52.7811 49.3808 52.7083 48.3696 52.7197C48.381 53.0852 48.3501 52.8895 48.4655 53.1499L48.6346 53.4507C48.6427 53.4329 48.6655 53.5025 48.6817 53.5283C49.9676 54.0524 50.174 54.2626 51.112 54.9435L55.7434 57.8127C58.1216 58.9061 57.5575 59.0144 58.0322 59.2748C58.3183 58.9643 58.385 58.8931 58.3833 58.3659C57.3478 57.4488 57.1219 57.6041 56.0083 56.7501C55.4312 56.3086 53.5927 55.6455 52.1865 54.6847C51.9996 54.557 52.0793 54.5732 51.8582 54.447C50.704 53.7855 51.0633 53.7661 50.4683 53.4426Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M1.78955 48.5129C2.81368 48.8218 2.70151 48.5501 3.51594 48.2816C5.17568 47.7317 6.68424 47.122 8.3895 46.6772C8.95033 46.53 9.55831 46.4281 10.1029 46.2373C10.6475 46.0464 11.1742 45.8621 11.7366 45.7181C14.227 45.0809 14.9114 45.5434 14.4628 44.5439C13.7215 44.4986 11.6537 45.0728 10.984 45.3008C8.83491 46.0303 9.61195 45.7084 7.78478 46.1969C6.65498 46.4993 5.63248 46.7969 4.46529 47.0799C3.43954 47.3306 1.92285 47.3565 1.78955 48.5129Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M7.46619 60.2016C8.12456 60.5299 7.94574 60.1871 8.318 59.9768C8.48544 59.883 8.86095 59.7536 9.1113 59.6323C9.35514 59.5142 9.63149 59.3573 9.89321 59.2684C10.8897 58.9255 11.2522 58.5988 12.1739 58.0408L18.1269 54.6799C18.6064 54.4681 19.2697 54.1656 19.507 53.834C19.4745 53.8163 19.3396 53.758 19.325 53.7499L19.1884 53.661C18.9933 53.5397 19.0275 53.4054 18.6698 53.4766L13.32 56.569C12.7396 56.92 12.4503 57.2758 11.8472 57.5977C11.2571 57.913 10.9856 58.1751 10.3841 58.5098C9.89321 58.7848 9.26736 59.1244 8.76017 59.2927C8.32776 59.4366 7.34914 59.7067 7.46619 60.2016Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M33.7817 0.800634C33.6972 1.41362 33.8223 1.93764 33.7573 2.57327L33.1331 7.64047C32.9852 8.76616 33.0811 10.0536 32.9413 11.2035C32.7153 13.0554 32.4162 13.5342 33.2192 14.0566C33.7476 13.4128 33.5037 9.07831 33.7297 7.30568C33.8646 6.24469 33.9751 5.17399 34.0987 4.09844C34.1849 3.33828 34.5669 1.52521 34.5197 0.988249C34.3263 0.831364 34.032 0.640515 33.7817 0.800634Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.00812802 28.2052C0.256845 28.3734 2.30836 28.9557 2.83505 29.1287C3.76002 29.4312 4.86381 29.7272 5.75301 30.0781L9.98446 31.6421C10.4933 31.8491 10.9127 32.3036 11.2817 31.8783C11.2833 31.875 11.6572 31.7246 11.0769 31.3461C10.3502 30.8723 3.42189 28.7697 1.69876 27.9966C1.05502 27.7087 0.868072 27.547 0 27.6683L0.00812802 28.2052Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M47.9214 20.8656C48.4416 22.0495 49.9111 20.3804 50.7743 19.8693C51.158 19.6413 51.5985 19.389 51.9789 19.1431L53.1428 18.3765C53.6338 18.0741 55.6154 16.4955 56.4591 16.0135C56.8492 15.792 57.0053 16.0685 57.4864 15.0658C56.8329 15.1272 57.189 15.0787 56.5533 15.048C55.9015 15.7564 55.2967 16.1009 54.562 16.6168C53.5427 17.3349 52.3674 18.142 51.1645 18.6741C50.9239 18.7809 51.0848 18.6919 50.906 18.8472C50.88 18.8682 50.7369 19.0121 50.6605 19.0704L47.9214 20.8656Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17.2834 20.623C17.9986 20.5066 17.6182 20.6214 17.9271 20.0715C17.402 19.4197 17.2443 19.6672 16.6071 18.4768C16.4689 18.218 16.3535 18.1096 16.2072 17.8573C15.7683 17.1117 15.2465 16.5457 14.9392 16.0637C14.3947 15.2113 14.3914 15.386 14.0403 14.917L11.9855 11.8634C11.6458 11.3329 11.5352 11.0078 10.6704 11.1178C10.672 12.0009 11.5873 12.2192 12.4066 13.3691C13.8403 15.3795 15.1717 17.5872 16.4397 19.4407C16.5974 19.672 16.7112 19.8127 16.8705 20.0262C17.1078 20.3432 17.0249 20.4063 17.2834 20.623Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M51.5591 38.1019C51.9362 38.5435 52.0126 38.3785 52.4841 38.2151C52.8905 38.0744 53.2741 37.9483 53.6968 37.8351C55.7791 37.2771 56.2197 37.4307 57.8079 37.2754C58.2744 37.2302 58.6955 37.1137 59.1685 37.083C59.7034 37.0474 60.2057 37.0636 60.7649 37.0248C61.5891 36.9665 62.4766 37.1638 61.6736 36.187C61.0038 36.1514 59.7895 36.3972 59.0629 36.504C58.12 36.6431 57.1755 36.5929 56.2522 36.7563C55.3792 36.9115 54.3876 36.9083 53.622 37.0992C52.6401 37.345 51.7346 37.4986 51.5591 38.1019Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5796 24.0422C11.277 24.6277 11.0056 23.8659 11.8769 24.3172C12.1939 24.4805 12.493 24.605 12.8035 24.7636C14.1056 25.4283 15.2272 26.3728 15.0907 24.9447L14.2925 24.6503C12.6003 24.0454 13.6976 24.3819 12.545 23.6557C11.3502 22.9036 10.3878 22.3731 10.5796 24.0422Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M42.1357 14.8604C42.3227 15.2114 42.2609 15.1661 42.5535 15.3764C42.9713 15.1936 43.5224 14.089 44.2295 13.3579C44.488 13.091 44.6814 13.0894 44.9692 12.8436C45.0813 12.7126 44.9415 12.5961 45.1561 12.3551C45.1691 12.3406 45.2 12.3212 45.2146 12.3066C45.3723 12.1368 45.6861 11.7923 45.4308 11.5481C45.0862 11.2197 44.8424 11.6095 44.7188 11.8052C44.1174 12.7546 42.3048 14.4512 42.1357 14.8604Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M11.4898 51.2284C12.0604 51.45 12.0946 51.1864 12.4538 50.9535C13.252 50.4408 15.0077 50.1933 15.4482 49.8682C15.5977 48.2686 14.1949 50.0283 12.0133 50.1044C11.7288 50.7788 11.311 50.2645 11.4898 51.2284Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M54.7649 46.103C54.5276 45.7796 54.7145 45.9283 54.261 45.8006C52.7947 45.3881 51.925 44.5714 50.7529 44.7913L50.7903 45.4189C51.2097 45.5936 51.4617 45.5321 51.8941 45.6744L53.8643 46.4265C54.0253 46.5203 54.1537 46.6271 54.313 46.6643C54.669 46.75 54.669 46.6934 54.8641 46.5979C54.9551 46.4006 55.0624 46.8664 54.8917 46.3214C54.8917 46.3198 54.7747 46.1176 54.7649 46.103Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5138 37.6361L12.3594 37.5682C12.2228 37.5471 12.1968 37.5439 12.0505 37.5439C11.9172 37.5439 11.6734 37.5714 11.5303 37.5827C9.62188 37.738 9.05942 37.353 7.94263 37.5067C7.91337 38.3655 8.24012 38.0776 10.3436 38.2119C10.9858 38.2539 13.0828 38.7133 12.5138 37.6361Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M52.4955 29.3131C53.9049 29.47 54.7177 28.4155 56.0589 28.4834C56.5449 28.5077 56.8505 28.5335 56.8392 27.9319C56.0751 27.4386 55.3794 28.037 54.4983 28.2149C53.5896 28.3977 52.4159 28.4203 52.4955 29.3131Z" fill="var(--accent)"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M22.9927 13.3999L24.4053 16.7236C24.6605 17.2525 24.5728 17.5436 25.2035 17.3107C25.3807 16.5603 24.9759 16.7042 24.2899 15.1402C23.9323 14.3218 24.2119 13.0538 22.9927 13.3999Z" fill="var(--accent)"/>
+        </svg>
       </div>
     </div>
     <div class="about-text reveal">
@@ -467,7 +492,7 @@ var mx=window.mx=0, my=window.my=0;
   var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;
 
-  // ── eyebrow rule: draw → hold 500ms → collapse right
+  // ── eyebrow rule: draw → hold 300ms → collapse right
   var rule = document.querySelector('.hero-eyebrow-rule');
   if (rule) {
     var draw = rule.animate(
@@ -481,7 +506,7 @@ var mx=window.mx=0, my=window.my=0;
           [{ transform:'scaleX(1)' }, { transform:'scaleX(0)' }],
           { duration:700, easing:'cubic-bezier(0.16,1,0.3,1)', fill:'forwards' }
         );
-      }, 500);
+      }, 300);
     };
   }
 
@@ -720,6 +745,22 @@ var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       glare.style.setProperty('--gy',(py*100).toFixed(1)+'%');
     });
   });
+})();
+
+// BULB: flicker on when hovering the About photo, flicker out on leave (old-bulb style).
+// Driven from JS so the "off" flicker only plays on mouse-leave, never on load.
+(function(){
+  if(_reduced) return; // reduced-motion: CSS fades the bulb in/out on :hover instead
+  var av=document.querySelector('.about-avatar');
+  var bulb=av && av.querySelector('.about-bulb');
+  if(!bulb) return;
+  function play(name,dur){
+    bulb.style.animation='none';
+    void bulb.offsetWidth;            // force reflow so the animation restarts each time
+    bulb.style.animation=name+' '+dur+' ease-out forwards';
+  }
+  av.addEventListener('mouseenter',function(){ play('bulbFlicker','1.15s'); });
+  av.addEventListener('mouseleave',function(){ play('bulbFlickerOut','0.55s'); });
 })();
 
 // VIDEO ON HOVER: project card poster crossfades to that project's opening reel.

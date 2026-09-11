@@ -16,15 +16,15 @@
   // the back-to-top arrow is drawn in CSS (mask-based) so an orange fill can wipe up through it
   mount.innerHTML=''
     +'<footer>'
-    +  '<a class="footer-copy" href="'+home+'">&#169; '+year+' Lyon Huang</a>'
+    +  '<a class="footer-copy" href="'+home+'">&#169; '+year+' LYON HUANG</a>'
     +  '<div class="footer-links">'
-    +    '<a class="footer-back" href="#top">Back to top'
-    +      '<span class="footer-back-arrow" aria-hidden="true"></span>'
+    +    '<a class="scroll-cue scroll-cue--up" href="#top">Back to top'
+    +      '<span class="scroll-cue-arrow" aria-hidden="true"></span>'
     +    '</a>'
     +  '</div>'
     +'</footer>';
 
-  var back=mount.querySelector('.footer-back');
+  var back=mount.querySelector('.scroll-cue');
   if(back){
     back.addEventListener('click',function(e){
       e.preventDefault();
