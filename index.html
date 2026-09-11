@@ -109,7 +109,6 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .project-thumb-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;transition:opacity .45s var(--ease-out)}
 .project-card:hover .project-thumb-video{opacity:1}
 @media (prefers-reduced-motion:reduce){.project-thumb-video{display:none}}
-.project-thumb-label{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);position:absolute;bottom:1rem;left:1rem;z-index:3}
 .project-arrow{position:absolute;top:1rem;right:1rem;width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.7) rotate(-45deg);transition:opacity .25s,transform .3s var(--ease-out);z-index:3}
 .project-arrow svg{width:14px;height:14px;fill:none;stroke:#000;stroke-width:2}
 .project-card:hover .project-arrow{opacity:1;transform:scale(1) rotate(0)}
@@ -162,7 +161,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 
 /* cursor glare highlight (project cards + avatar) */
 .glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(220px 220px at var(--gx,50%) var(--gy,50%),rgba(255,255,255,0.16),transparent 60%);mix-blend-mode:screen;z-index:2}
-.project-card:hover .glare,.about-avatar:hover .glare{opacity:1}
+.about-avatar:hover .glare{opacity:1}
 
 /* impact counters (idea 02) */
 #about{padding-bottom:0}
@@ -307,8 +306,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 
     <a class="project-card" href="work/pluto.html">
       <div class="project-thumb"><div class="project-thumb-inner">
-        <span class="project-thumb-label">Pluto TV</span>
-      </div><video class="project-thumb-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Pluto/Work/Videos/PlutoTV-VOD-Converged-480.mp4"></video><div class="glare"></div><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
+      </div><video class="project-thumb-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Pluto/Work/Videos/PlutoTV-VOD-Converged-480.mp4"></video><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
       <div class="project-info">
         <div class="project-client">Paramount</div>
         <h3 class="project-name">Pluto TV</h3>
@@ -320,11 +318,10 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 
     <a class="project-card" href="work/disney.html">
       <div class="project-thumb"><div class="project-thumb-inner">
-        <span class="project-thumb-label">Disney Parks</span>
-      </div><video class="project-thumb-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/videos/mobile-order-redesign.mp4"></video><div class="glare"></div><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
+      </div><video class="project-thumb-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/videos/mobile-order-redesign.mp4"></video><div class="project-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg></div></div>
       <div class="project-info">
         <div class="project-client">Disney</div>
-        <h3 class="project-name">Disney</h3>
+        <h3 class="project-name">Disney Parks, Experiences and Products</h3>
         <p class="project-desc">Order ahead, skip the line</p>
         <div class="project-year">2017 - 2020</div>
         <div class="project-tags"><span class="project-tag">Case Study</span><span class="project-tag">Mobile</span><span class="project-tag">Hospitality</span></div>
@@ -710,10 +707,10 @@ var mx=window.mx=0, my=window.my=0;
 var _reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-// GLARE: cursor-tracked highlight on project cards + avatar
+// GLARE: cursor-tracked highlight on the About avatar
 (function(){
   if(_reduced||!_fine) return;
-  document.querySelectorAll('.project-card, .about-avatar').forEach(function(card){
+  document.querySelectorAll('.about-avatar').forEach(function(card){
     var glare=card.querySelector('.glare');
     if(!glare) return;
     card.addEventListener('mousemove',function(e){
