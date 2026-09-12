@@ -113,10 +113,26 @@
     });
   }
 
+  /* ── Carousel controls (prev + dots + next). Inert without JS — the dots are
+       JS-built and the buttons do nothing until wired here — so they're generated
+       rather than duplicated into every carousel's markup. The subtitle + first
+       <img> stay in the page HTML so the carousel still paints (and the image
+       still loads) before this deferred script runs. ── */
+  function buildControls(){
+    var c = document.createElement('div');
+    c.className = 'ch1-carousel-controls';
+    c.innerHTML =
+      '<button type="button" class="ch1-carousel-btn" data-dir="prev" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></button>' +
+      '<div class="ch1-carousel-dots" aria-hidden="true"></div>' +
+      '<button type="button" class="ch1-carousel-btn" data-dir="next" aria-label="Next slide"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>';
+    return c;
+  }
+
   /* ── Carousel: prev/next + dots + click-to-zoom. Slide set is swappable
        (setSlides) so tabbed concept galleries can share one instance. ── */
   function makeCarousel(root, slides, subtitle){
     var img   = root.querySelector('.ch1-carousel-img');
+    if (!root.querySelector('.ch1-carousel-controls')) root.appendChild(buildControls());
     var dotsC = root.querySelector('.ch1-carousel-dots');
     var prev  = root.querySelector('[data-dir="prev"]');
     var next  = root.querySelector('[data-dir="next"]');
