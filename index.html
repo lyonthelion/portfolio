@@ -97,11 +97,11 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 #work .work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem}
 .project-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.5rem}
 .project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;position:relative;transition:border-color .3s,transform .35s var(--ease-out),box-shadow .35s var(--ease-out),background .3s}
-.project-card:hover{border-color:var(--border-hover);transform:translateY(-10px) scale(1.01);background:var(--bg-card-hover);box-shadow:0 44px 72px rgba(0,0,0,0.92),0 20px 38px rgba(0,0,0,0.7),0 0 0 1px rgba(245,183,49,0.42),0 28px 58px rgba(245,183,49,0.2)}
+.project-card:hover{border-color:var(--border-hover);transform:translateY(-10px);background:var(--bg-card-hover);box-shadow:0 44px 72px rgba(0,0,0,0.92),0 20px 38px rgba(0,0,0,0.7),0 0 0 1px rgba(245,183,49,0.42),0 28px 58px rgba(245,183,49,0.2)}
 /* .reveal-group pins revealed children to transform:none at (0,3,0) specificity, which outranks
    the (0,2,0) .project-card:hover — re-assert the hover lift (and a snappy transition both ways) above it */
 .project-grid.in-view .project-card{transition:border-color .3s,transform .35s var(--ease-out),box-shadow .35s var(--ease-out),background .3s}
-.project-grid.in-view .project-card:hover{transform:translateY(-10px) scale(1.01)}
+.project-grid.in-view .project-card:hover{transform:translateY(-10px)}
 .project-card::after{content:'';position:absolute;inset:0;border-radius:var(--radius);box-shadow:inset 0 0 0 1px rgba(245,183,49,0);transition:box-shadow .35s;pointer-events:none}
 .project-card:hover::after{box-shadow:inset 0 0 0 1px rgba(245,183,49,0.12)}
 .project-card:nth-child(1){grid-column:span 6}
@@ -110,10 +110,10 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .project-thumb-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
 .project-card:nth-child(1) .project-thumb-inner{background:linear-gradient(to top,rgba(8,8,7,0.72) 0%,transparent 48%),url("https://pub-222dc106558343779b692e4bea526f78.r2.dev/Pluto/pluto-hero-splash-1.png") center/cover no-repeat}
 .project-card:nth-child(2) .project-thumb-inner{background:linear-gradient(to top,rgba(8,8,7,0.72) 0%,transparent 48%),url("https://pub-222dc106558343779b692e4bea526f78.r2.dev/Disney/Mobile%20Order/mose-cover-image-2-screens.png") center/cover no-repeat}
-.project-thumb-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;transition:opacity .45s var(--ease-out)}
+.project-thumb-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;pointer-events:none;transition:opacity .45s var(--ease-out)}
 .project-card:hover .project-thumb-video{opacity:1}
 @media (prefers-reduced-motion:reduce){.project-thumb-video{display:none}}
-.project-arrow{position:absolute;top:1rem;right:1rem;width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.7) rotate(-45deg);transition:opacity .25s,transform .3s var(--ease-out);z-index:3}
+.project-arrow{position:absolute;top:1rem;right:1rem;width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.7) rotate(-45deg);transition:opacity .25s,transform .3s var(--ease-out);z-index:3;pointer-events:none}
 .project-arrow svg{width:14px;height:14px;fill:none;stroke:#000;stroke-width:2}
 .project-card:hover .project-arrow{opacity:1;transform:scale(1) rotate(0)}
 .project-info{padding:1.5rem;display:flex;flex-direction:column;flex:1}
@@ -214,7 +214,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   /* Size the hero to the *visible* viewport (svh accounts for mobile browser
      chrome) and lift the scroll cue off the bottom edge, so it isn't pushed
      below the fold / clipped — where it read as a detached element. */
-  #hero{min-height:100svh}
+  #hero{min-height:100svh;padding-bottom:1.5rem}
   .hero-scroll{margin-bottom:1.75rem}
   .hero-name{font-size:3.5rem}
   .hero-role{
@@ -230,12 +230,14 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   .hero-role-typed{line-height:inherit}
   .hero-role-caret{white-space:nowrap}
   .contact-headline{font-size:2.5rem}
+  /* keep the email centred to the viewport on mobile regardless of its intrinsic width */
+  .contact-email{display:flex;width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
   #cursor-dot,#cursor-ring{display:none}
   body{cursor:auto}
 }
 @media(max-width:430px){
   /* stack the hero buttons and centre "Say Hi" under "View Work" */
-  .hero-actions{flex-direction:column;align-items:center;gap:1.25rem}
+  .hero-actions{flex-direction:column;align-items:center;gap:2rem}
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -404,7 +406,6 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 <section id="contact">
   <canvas id="contact-canvas"></canvas>
   <div id="contact-glow"></div>
-  <div class="section-label" style="justify-content:center">Let's connect</div>
   <h2 class="contact-headline reveal">Got a great<br>project? <em>Let's talk.</em></h2>
   <p class="contact-sub reveal">Always open to talk design, trade ideas, or hear what you're working on.<br><br>Don't be a stranger.</p>
   <a href="mailto:hi@lyonhuang.com" class="contact-email reveal" id="contact-email" data-copy="hi@lyonhuang.com">hi@lyonhuang.com<span class="copy-toast" id="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
