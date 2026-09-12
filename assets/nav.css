@@ -10,11 +10,15 @@ nav.scrolled{background:rgba(8,8,7,0.20);backdrop-filter:blur(12px);border-botto
 .nav-logo span{color:var(--accent)}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
 .nav-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--accent);transition:width .25s var(--ease-out)}
+/* underline wipes in from the left on hover and collapses out to the right on leave
+   (same scaleX treatment as the hero eyebrow rule), snappier since it's used a lot */
+/* --ul-origin is set by nav-active.js so the scroll-spy underline sweeps in the
+   scroll direction (down = left->right, up = right->left); hover keeps left->right */
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:100%;height:1.5px;background:var(--accent);transform:scaleX(0);transform-origin:var(--ul-origin,right center);transition:transform .2s var(--ease-out)}
 .nav-links a:hover{color:var(--text-primary)}
-.nav-links a:hover::after{width:100%}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left center}
 .nav-links a.is-active{color:var(--text-primary)}
-.nav-links a.is-active::after{width:100%}
+.nav-links a.is-active::after{transform:scaleX(1)}
 
 /* overflow menu: two-line toggle → X */
 .nav-toggle{display:none;position:relative;width:22px;height:16px;background:none;border:0;padding:0;cursor:none;z-index:210}

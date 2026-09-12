@@ -19,12 +19,30 @@
     });
   }
 
+  // scroll direction, so the active underline sweeps the way the page is moving
+  var lastY = window.scrollY;
+  var scrollDir = 'down';
+  function updateDir() {
+    var y = window.scrollY;
+    if (y > lastY) scrollDir = 'down';
+    else if (y < lastY) scrollDir = 'up';
+    lastY = y;
+  }
+
   function setActive(id) {
+    var incoming = nav.querySelector('.nav-links a[data-nav="' + id + '"]');
+    var outgoing = nav.querySelector('.nav-links a.is-active');
+    if (incoming === outgoing) return; // already active — don't re-trigger the wipe
+    // down => sweep left->right; up => sweep right->left.
+    // incoming draws in from that side; outgoing collapses toward the other so both read one way.
+    var inOrigin  = scrollDir === 'up' ? 'right center' : 'left center';
+    var outOrigin = scrollDir === 'up' ? 'left center'  : 'right center';
+    if (outgoing) outgoing.style.setProperty('--ul-origin', outOrigin);
     clearActive();
-    const a = nav.querySelector('.nav-links a[data-nav="' + id + '"]');
-    if (a) {
-      a.classList.add('is-active');
-      a.setAttribute('aria-current', 'location');
+    if (incoming) {
+      incoming.style.setProperty('--ul-origin', inOrigin);
+      incoming.classList.add('is-active');
+      incoming.setAttribute('aria-current', 'location');
     }
   }
 
@@ -64,6 +82,7 @@
 
   let ticking = false;
   function onScroll() {
+    updateDir();
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () {

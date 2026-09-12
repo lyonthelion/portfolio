@@ -33,15 +33,15 @@ img{display:block;max-width:100%}
 .hero-main{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
 #hero>*:not(#hero-canvas):not(#hero-glow){position:relative;z-index:1}
 .hero-eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .2s var(--ease-out) forwards}
-.hero-name{font-family:var(--font-display);font-size:clamp(4rem,9vw,9rem);line-height:.95;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:2rem;opacity:0;transform:translateY(24px);animation:fadeUp .9s .35s var(--ease-out) forwards}
-.hero-name em{font-style:italic;color:var(--accent)}
+.hero-name{font-family:var(--font-display);font-weight:700;font-size:clamp(4rem,9vw,9rem);line-height:.95;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:2rem;opacity:0;transform:translateY(24px);animation:fadeUp .9s .35s var(--ease-out) forwards}
+.hero-name em{font-style:normal;color:var(--accent)}
 /* eyebrow rule: draws in, holds, collapses (JS-driven, one-shot) */
-.hero-eyebrow{position:relative;width:fit-content;padding-bottom:.55rem}
-.hero-eyebrow-rule{position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--accent);opacity:.55;transform:scaleX(0);transform-origin:left center}
+.hero-eyebrow{position:relative;width:fit-content;padding-bottom:.4rem}
+.hero-eyebrow-rule{position:absolute;left:0;bottom:0;width:100%;height:1.5px;background:var(--accent);opacity:.55;transform:scaleX(0);transform-origin:left center}
 /* name: base layer + shape-field fill layer */
 .hero-name-wrap{position:relative;align-self:flex-start;margin-bottom:2rem;opacity:0;transform:translateY(24px);animation:fadeUp .9s .35s var(--ease-out) forwards}
 .hero-name-wrap .hero-name{margin-bottom:0;opacity:1;transform:none;animation:none}
-.hero-name-wrap .hero-name-fill{position:absolute;inset:0;color:transparent;background-clip:text;-webkit-background-clip:text;background-size:160% 200%;opacity:0;pointer-events:none;transition:opacity .35s linear,background-position .35s ease-out}
+.hero-name-wrap .hero-name-fill{position:absolute;inset:0 0 -.28em 0;color:transparent;background-clip:text;-webkit-background-clip:text;background-size:160% 200%;opacity:0;pointer-events:none;transition:opacity .35s linear,background-position .35s ease-out}
 .hero-name-wrap .hero-name-fill em{color:transparent}
 @media (prefers-reduced-motion:reduce){
   .hero-eyebrow-rule{display:none}
@@ -59,14 +59,14 @@ img{display:block;max-width:100%}
 .hero-cta-text{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);transition:color .2s,gap .2s var(--ease-out)}
 .hero-cta-text:hover{color:var(--accent);gap:.85rem}
 /* positioning + fade-in only; the look comes from the shared .scroll-cue component */
-.hero-scroll{align-self:flex-start;margin-top:auto;opacity:0;animation:fadeUp 1s 1.1s var(--ease-out) forwards}
+.hero-scroll{align-self:center;flex-direction:column;margin-top:auto;opacity:0;animation:fadeUp 1s 1.1s var(--ease-out) forwards}
 
 /* shared section */
 section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 .section-label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:1rem}
 .section-label::before{content:'';display:block;width:24px;height:4px;background:var(--accent)}
 .section-title{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:1rem}
-.section-title em{font-style:italic;color:var(--accent)}
+.section-title em{font-style:normal;color:var(--accent)}
 .divider{width:100%;height:1px;background:var(--border);max-width:var(--max-w);margin:0 auto}
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
 .reveal.in-view{opacity:1;transform:none}
@@ -151,7 +151,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 #contact-canvas.visible,#contact-glow.visible{opacity:1}
 #contact>*:not(#contact-canvas):not(#contact-glow){position:relative;z-index:1}
 .contact-headline{font-family:var(--font-display);font-size:clamp(3rem,6vw,6rem);line-height:1;letter-spacing:-.025em;color:var(--text-primary);margin-bottom:1.5rem}
-.contact-headline em{font-style:italic;color:var(--accent)}
+.contact-headline em{font-style:normal;color:var(--accent)}
 .contact-sub{font-size:1rem;color:var(--text-secondary);margin-bottom:3rem;max-width:400px;margin-left:auto;margin-right:auto}
 .contact-email{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--font-display);font-style:italic;font-size:clamp(1.2rem,3vw,2rem);color:var(--text-primary);border-bottom:1px solid rgba(245,183,49,0.3);padding-bottom:.25rem;transition:color .2s,border-color .2s}
 .contact-email:hover{color:var(--accent);border-color:var(--accent)}
@@ -379,22 +379,22 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
       <button type="button" class="skills-filter" data-cat="systems" aria-pressed="false">Systems</button>
     </div>
     <div class="skills-grid" id="skills-grid" role="list">
-      <span class="skill-tag" role="listitem" data-cat="design">Figma</span>
+      <span class="skill-tag" role="listitem" data-cat="systems">Accessibility</span>
       <span class="skill-tag" role="listitem" data-cat="design">Adobe Creative Suite</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">Agentic Design</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">AI Prototyping</span>
       <span class="skill-tag" role="listitem" data-cat="ai">Claude</span>
       <span class="skill-tag" role="listitem" data-cat="ai">Cursor</span>
-      <span class="skill-tag" role="listitem" data-cat="design">Wireframes</span>
-      <span class="skill-tag" role="listitem" data-cat="ai">AI Prototyping</span>
-      <span class="skill-tag" role="listitem" data-cat="design">Prototyping</span>
-      <span class="skill-tag" role="listitem" data-cat="research">UX Research</span>
-      <span class="skill-tag" role="listitem" data-cat="research">User Testing</span>
-      <span class="skill-tag" role="listitem" data-cat="research systems">Information Architecture</span>
-      <span class="skill-tag" role="listitem" data-cat="design">Visual Design</span>
-      <span class="skill-tag" role="listitem" data-cat="design">Interaction Design</span>
-      <span class="skill-tag" role="listitem" data-cat="ai">Agentic Design</span>
-      <span class="skill-tag" role="listitem" data-cat="ai">Generative AI</span>
-      <span class="skill-tag" role="listitem" data-cat="systems">Accessibility</span>
       <span class="skill-tag" role="listitem" data-cat="systems">Design Systems</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Figma</span>
+      <span class="skill-tag" role="listitem" data-cat="ai">Generative AI</span>
+      <span class="skill-tag" role="listitem" data-cat="research systems">Information Architecture</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Interaction Design</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Prototyping</span>
+      <span class="skill-tag" role="listitem" data-cat="research">User Testing</span>
+      <span class="skill-tag" role="listitem" data-cat="research">UX Research</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Visual Design</span>
+      <span class="skill-tag" role="listitem" data-cat="design">Wireframes</span>
     </div>
   </div>
 </section>
