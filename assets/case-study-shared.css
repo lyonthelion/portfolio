@@ -20,7 +20,7 @@ body {
   font-weight: 300;
   line-height: 1.75;
   overflow-x: hidden;
-  cursor: none;
+  /* cursor: none is set in assets/base.css */
 }
 img { display: block; max-width: 100%; border-radius: var(--radius); }
 
