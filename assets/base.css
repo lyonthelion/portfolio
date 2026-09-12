@@ -42,3 +42,8 @@ h1,h2,h3,h4,h5,h6{font-weight:700}
 #cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(245,183,49,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s var(--ease-out),height .3s var(--ease-out),border-color .2s}
 body.cursor-hover #cursor-dot{width:14px;height:14px}
 body.cursor-hover #cursor-ring{width:54px;height:54px;border-color:var(--accent)}
+
+/* ── BUTTON ARROW ── */
+/* Crisp inline SVG arrow glyph shared by the index CTA/resume/LinkedIn buttons
+   and the case-study link buttons (DM/Space Mono's arrow glyphs render small/misaligned). */
+.btn-arrow{width:.95em;height:.95em;flex:0 0 auto}

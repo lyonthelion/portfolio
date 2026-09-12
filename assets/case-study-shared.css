@@ -607,8 +607,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
    variant drops it, for the TOC label and sub-section labels within a chapter. */
 .cs-section-label--sub::before { display: none; }
 
-/* Button arrow glyph (shared with the index CTA/resume buttons). */
-.btn-arrow { width: .95em; height: .95em; flex: 0 0 auto; }
+/* .btn-arrow now lives in assets/base.css (shared with the index buttons). */
 
 /* Overview hero video (match app UI white; video fills inset width) */
 .cs-img.cs-img--hero-video { background: #fff; }
