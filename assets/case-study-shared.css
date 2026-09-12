@@ -359,12 +359,31 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 
 /* ── NEXT PROJECT FOOTER ── */
 .cs-next {
-  border-top: 1px solid var(--border);
-  max-width: var(--max-w-wide); margin: 0 auto;
-  padding: 5rem 3rem 7rem;
+  position: relative;
+  overflow: hidden;
+  /* full-bleed banner; symmetric padding so the label/title sit dead-centre */
+  padding: 6rem 3rem;
   display: flex; justify-content: center; align-items: center;
   text-align: center;
+  /* next project's hero image (set per page via --next-img) */
+  background-color: var(--bg);
+  background-image: var(--next-img);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
+/* dark scrim over the image so the amber label + white title stay legible */
+.cs-next::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    var(--grain-tile) 0 0 / 300px 300px repeat,
+    radial-gradient(ellipse 90% 80% at 50% 50%, rgba(8,8,7,0.80) 0%, rgba(8,8,7,0.62) 55%, rgba(8,8,7,0.5) 100%);
+  transition: opacity .4s var(--ease-out);
+}
+.cs-next > div { position: relative; z-index: 1; }
+/* on hover, ease the scrim back so the next project's image comes forward a touch */
+.cs-next:has(.cs-next-link:hover)::before { opacity: .72; }
 .cs-next-label {
   font-family: var(--font-mono); font-size: .72rem;
   letter-spacing: .2em; text-transform: uppercase; color: var(--accent);
@@ -398,7 +417,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   .cs-stats { grid-template-columns: 1fr; }
   .cs-stat { border-right: none; border-bottom: 1px solid var(--border); }
   .cs-stat:last-child { border-bottom: none; }
-  .cs-next { padding: 4rem 1.5rem 5rem; }
+  .cs-next { padding: 4.5rem 1.5rem; }
 }
 @media (max-width: 600px) {
   .nav-links { gap: 1.5rem; }

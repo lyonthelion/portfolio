@@ -13,6 +13,8 @@ footer{
   max-width:var(--max-w-wide, var(--max-w));margin:0 auto;
 }
 .footer-copy{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-muted);transition:color .2s}
+/* Space Mono draws © small & high (superscript-like); scale it to cap height and drop it onto the baseline */
+.footer-c{display:inline-block;font-size:1.4em;line-height:1;transform:translateY(0.3em)}
 .footer-copy:hover{color:var(--accent)}
 .footer-links{display:flex;align-items:center;gap:1.75rem}
 /* ── SHARED SCROLL CUE ──

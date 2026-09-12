@@ -16,7 +16,7 @@
   // the back-to-top arrow is drawn in CSS (mask-based) so an orange fill can wipe up through it
   mount.innerHTML=''
     +'<footer>'
-    +  '<a class="footer-copy" href="'+home+'">&#169; '+year+' LYON HUANG</a>'
+    +  '<a class="footer-copy" href="'+home+'"><span class="footer-c">&#169;</span> '+year+' LYON HUANG</a>'
     +  '<div class="footer-links">'
     +    '<a class="scroll-cue scroll-cue--up" href="#top">Back to top'
     +      '<span class="scroll-cue-arrow" aria-hidden="true"></span>'
