@@ -315,6 +315,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   font-family: var(--font-display); font-style: italic;
   font-size: clamp(2rem, 4vw, 3rem); color: var(--accent);
   line-height: 1;
+  font-variant-numeric: lining-nums; /* uniform digit heights (Cormorant defaults to old-style) */
 }
 .cs-stat .stat-note {
   font-family: var(--font-mono); font-size: .8rem;
@@ -469,6 +470,9 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   color: var(--accent);
   text-align: left;
   padding-top: .6rem;
+  /* Cormorant Garamond defaults to old-style figures (uneven digit heights);
+     force lining figures so the numeral reads as one clean block */
+  font-variant-numeric: lining-nums;
 }
 
 /* eyebrow now sits on a rule that runs to the measure edge */
