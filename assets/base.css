@@ -42,6 +42,12 @@ h1,h2,h3,h4,h5,h6{font-weight:700}
 #cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(245,183,49,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s var(--ease-out),height .3s var(--ease-out),border-color .2s}
 body.cursor-hover #cursor-dot{width:14px;height:14px}
 body.cursor-hover #cursor-ring{width:54px;height:54px;border-color:var(--accent)}
+/* small screens are touch: drop the custom cursor and restore the native one
+   (was duplicated in index.html and case-study-shared.css) */
+@media(max-width:600px){
+  #cursor-dot,#cursor-ring{display:none}
+  body{cursor:auto}
+}
 
 /* ── BUTTON ARROW ── */
 /* Crisp inline SVG arrow glyph shared by the index CTA/resume/LinkedIn buttons
