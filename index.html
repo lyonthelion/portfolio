@@ -16,6 +16,7 @@
 <script src="assets/nav.js" defer></script>
 <script src="assets/nav-active.js" defer></script>
 <script src="assets/footer.js" defer></script>
+<script src="assets/countup.js" defer></script>
 <!-- Vercel Web Analytics (static-HTML integration; served by Vercel on deploy) -->
 <script defer src="/_vercel/insights/script.js"></script>
 <style>
@@ -763,25 +764,8 @@ var _fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   });
 })();
 
-// IMPACT COUNTERS: count up on scroll into view (idea 02)
-(function(){
-  var nums=[].slice.call(document.querySelectorAll('.impact-num'));
-  if(!nums.length) return;
-  // resolve any auto-counting stats (e.g. years since a start year) to a concrete data-to
-  nums.forEach(function(n){ var s=n.getAttribute('data-since'); if(s){ n.setAttribute('data-to', Math.max(1, new Date().getFullYear()-(+s))); } });
-  function fmt(n){ return n>=1000 ? n.toLocaleString() : ''+n; }
-  function run(n){
-    var to=+n.getAttribute('data-to'), suf=n.getAttribute('data-suffix')||'', dur=1500, t0=performance.now();
-    (function step(t){
-      var p=Math.min((t-t0)/dur,1), e=1-Math.pow(1-p,3);
-      n.textContent=fmt(Math.round(to*e))+suf;
-      if(p<1) requestAnimationFrame(step);
-    })(performance.now());
-  }
-  if(_reduced){ nums.forEach(function(n){n.textContent=fmt(+n.getAttribute('data-to'))+(n.getAttribute('data-suffix')||'');}); return; }
-  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){run(en.target);io.unobserve(en.target);}});},{threshold:.5});
-  nums.forEach(function(n){io.observe(n);});
-})();
+// IMPACT COUNTERS now live in the shared assets/countup.js (idea 02)
+// (same engine drives the case-study stat bar).
 
 // EASTER EGG: click the logo 5× → boba & paws rain (idea 04)
 // Delegated on document: the logo is injected by nav.js after this script runs.
