@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Shared icon sprite, referenced via <use href="assets/icons.svg#id">.
+       #arrow: the right-pointing line arrow used on every CTA / link button
+       (was duplicated inline in index.html + the case-study pages). Geometry is
+       in a 0 0 24 24 box; stroke uses currentColor so it inherits the button's
+       colour and hover state. Each host <svg class="btn-arrow"> keeps its own
+       viewBox="0 0 24 24". -->
+  <symbol id="arrow" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12"/>
+    <polyline points="12 5 19 12 12 19"/>
+  </symbol>
+</svg>
