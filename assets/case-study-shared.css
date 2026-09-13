@@ -394,6 +394,7 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
   font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.4rem);
   color: var(--text-primary); transition: color .2s;
 }
+.cs-next-link { display: inline-block; padding: 1.5rem 3rem; border-radius: var(--radius); } /* enlarge the tap target around the label + title */
 .cs-next-link:hover .cs-next-title { color: var(--accent); }
 
 /* ── PAGE FOOTER — now shared via assets/footer.css + assets/footer.js (injected into #site-footer) ── */
@@ -756,7 +757,8 @@ img { display: block; max-width: 100%; border-radius: var(--radius); }
 .ch1-carousel { background: var(--bg-card); display: flex; flex-direction: column; }
 /* carousels laid out in a pair have no .cs-img wrapper, so give them the same
    framed stroke as the standalone (.cs-img-wrapped) carousels on the page */
-.cs-img-pair .ch1-carousel {
+.cs-img-pair .ch1-carousel,
+.cs-img-pair .ch1-concept-media.pl-single { /* single image has no .ch1-carousel wrapper — give it the same stroke */
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
