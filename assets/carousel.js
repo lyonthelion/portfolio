@@ -96,7 +96,8 @@
     LB.dots = root.querySelector('.ch1-lightbox-dots');
     LB.navs = [LB.prev, LB.next];
 
-    root.addEventListener('click', function(e){ if (e.target === root) lbClose(); });
+    var swiped = false; // set when a touch moves far enough to count as a swipe, so it doesn't also close
+    root.addEventListener('click', function(e){ if (swiped) { swiped = false; return; } if (e.target === root) lbClose(); });
     LB.close.addEventListener('click', lbClose);
     LB.prev.addEventListener('click', function(e){ e.stopPropagation(); lbGo(st.idx - 1); });
     LB.next.addEventListener('click', function(e){ e.stopPropagation(); lbGo(st.idx + 1); });
@@ -111,6 +112,24 @@
       else if (e.key === 'ArrowLeft'  && st.slides.length > 1) { e.preventDefault(); lbGo(st.idx - 1); }
       else if (e.key === 'ArrowRight' && st.slides.length > 1) { e.preventDefault(); lbGo(st.idx + 1); }
     });
+
+    // Touch swipe: left = next, right = prev (mobile fullscreen gallery)
+    var tX = 0, tY = 0, tT = 0;
+    root.addEventListener('touchstart', function(e){
+      if (e.touches.length !== 1) return;
+      tX = e.touches[0].clientX; tY = e.touches[0].clientY; tT = Date.now(); swiped = false;
+    }, { passive: true });
+    root.addEventListener('touchmove', function(e){
+      if (e.touches.length === 1 && Math.abs(e.touches[0].clientX - tX) > 10) swiped = true;
+    }, { passive: true });
+    root.addEventListener('touchend', function(e){
+      if (st.slides.length < 2) return;
+      var t = e.changedTouches[0];
+      var dx = t.clientX - tX, dy = t.clientY - tY, dt = Date.now() - tT;
+      if (dt < 800 && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        lbGo(dx < 0 ? st.idx + 1 : st.idx - 1);
+      }
+    }, { passive: true });
   }
 
   /* ── Carousel controls (prev + dots + next). Inert without JS — the dots are
