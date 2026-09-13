@@ -30,7 +30,7 @@ img{display:block;max-width:100%}
 #hero-glow{position:fixed;top:0;left:0;width:100vw;height:100vh;background:radial-gradient(ellipse 72% 62% at 16% 74%,rgba(245,183,49,0.06) 0%,transparent 100%),radial-gradient(ellipse 48% 38% at 80% 28%,rgba(245,183,49,0.028) 0%,transparent 100%);pointer-events:none;z-index:0;transition:opacity .1s linear}
 
 /* hero */
-#hero{min-height:100vh;display:flex;flex-direction:column;padding:0 3rem 5.5rem;position:relative}
+#hero{min-height:100vh;display:flex;flex-direction:column;padding:0 3rem 3rem;position:relative}
 .hero-main{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
 #hero>*:not(#hero-canvas):not(#hero-glow){position:relative;z-index:1}
 .hero-eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;opacity:0;transform:translateY(16px);animation:fadeUp .8s .2s var(--ease-out) forwards}
@@ -64,9 +64,7 @@ img{display:block;max-width:100%}
 
 /* shared section */
 section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
-.section-label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:1rem}
-.section-label::before{content:'';display:block;width:24px;height:4px;background:var(--accent)}
-.section-title{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:1rem}
+.section-title{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;letter-spacing:-.02em;color:var(--text-primary)}
 .section-title em{font-style:normal;color:var(--accent)}
 .divider{width:100%;height:1px;background:var(--border);max-width:var(--max-w);margin:0 auto}
 /* .reveal / .reveal-group now live in assets/base.css; distances set via --reveal-y / --reveal-group-y above */
@@ -195,7 +193,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 
 @media(max-width:900px){
   nav,nav.scrolled{padding:1.1rem 2rem}
-  #hero{padding:0 2rem 5rem}
+  #hero{padding:0 2rem 3rem}
   section{padding:5rem 2rem}
   #about .about-grid{grid-template-columns:1fr;gap:3rem}
   .about-intro .about-avatar{position:static;transform:none;width:auto;margin-top:2.5rem;margin-bottom:0}
@@ -263,7 +261,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
     <p class="hero-tagline">I design consumer products at scale: mobile apps, streaming platforms, and hospitality digital experiences.</p>
     <div class="hero-actions">
       <a href="#work" class="hero-cta">View Work</a>
-      <a href="#contact" class="hero-cta-text">Say Hi<svg class="btn-arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+      <a href="#contact" class="hero-cta-text">Say Hi<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
   </div>
   <a href="#about" class="hero-scroll scroll-cue" aria-label="Meet the human, scroll to About">Meet the human<span class="scroll-cue-arrow" aria-hidden="true"></span></a>
@@ -274,8 +272,15 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 <section id="about">
   <div class="about-grid">
     <div class="about-intro reveal">
-      <div class="section-label" aria-hidden="true"></div>
-      <h2 class="section-title">About <em>Me</em></h2>
+      <div class="section-head">
+        <span class="section-cube" aria-hidden="true">
+          <svg viewBox="0 0 16 16">
+            <rect class="section-cube-outline" x="1" y="1" width="14" height="14" pathLength="56"/>
+            <rect class="section-cube-fill" x="1" y="1" width="14" height="14"/>
+          </svg>
+        </span>
+        <h2 class="section-title">About <em>Me</em></h2>
+      </div>
       <div class="about-avatar">
         <div class="about-avatar-inner"><img src="https://pub-222dc106558343779b692e4bea526f78.r2.dev/Other/profile.jpg" alt="Lyon Huang" width="320" height="320" loading="lazy" decoding="async" /><div class="glare"></div></div>
         <svg class="about-bulb" viewBox="0 0 64 76" fill="none" aria-hidden="true">
@@ -311,7 +316,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
         <p>My work has ranged from streaming platforms to theme-park apps, tiny features to full platform convergence. Most of what I'm proud of came out of working closely with the teams around me. Lately I've been heads-down on cross-platform and design-system updates, plus getting sharper with AI prototyping.</p>
       </div>
       <div class="resume-row">
-        <a href="https://drive.google.com/file/d/1MvmpHLzYLWzH1L3VaeXqGhEyqR0yp_MD/view?usp=sharing" class="resume-btn" target="_blank" rel="noopener">Resume<svg class="btn-arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+        <a href="https://drive.google.com/file/d/1MvmpHLzYLWzH1L3VaeXqGhEyqR0yp_MD/view?usp=sharing" class="resume-btn" target="_blank" rel="noopener">Resume<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
     </div>
   </div>
@@ -328,8 +333,15 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 <section id="work">
   <div class="work-header reveal">
     <div>
-      <div class="section-label" aria-hidden="true"></div>
-      <h2 class="section-title">Featured <em>Work</em></h2>
+      <div class="section-head">
+        <span class="section-cube" aria-hidden="true">
+          <svg viewBox="0 0 16 16">
+            <rect class="section-cube-outline" x="1" y="1" width="14" height="14" pathLength="56"/>
+            <rect class="section-cube-fill" x="1" y="1" width="14" height="14"/>
+          </svg>
+        </span>
+        <h2 class="section-title">Featured <em>Work</em></h2>
+      </div>
     </div>
   </div>
   <div class="project-grid reveal-group">
@@ -342,7 +354,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
         <h3 class="project-name">Pluto TV</h3>
         <p class="project-desc">Free TV for everyone</p>
         <div class="project-year">2021 - Present</div>
-        <div class="project-tags"><span class="project-tag">Case Study</span><span class="project-tag">CTV</span><span class="project-tag">Streaming</span></div>
+        <div class="project-tags"><span class="project-tag">CTV</span><span class="project-tag">iOS</span><span class="project-tag">Android</span><span class="project-tag">Web</span></div>
       </div>
     </a>
 
@@ -354,7 +366,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
         <h3 class="project-name">Disney Parks, Experiences and Products</h3>
         <p class="project-desc">Order ahead, skip the line</p>
         <div class="project-year">2017 - 2020</div>
-        <div class="project-tags"><span class="project-tag">Case Study</span><span class="project-tag">Mobile</span><span class="project-tag">Hospitality</span></div>
+        <div class="project-tags"><span class="project-tag">iOS</span><span class="project-tag">Android</span><span class="project-tag">Web</span></div>
       </div>
     </a>
 
@@ -364,8 +376,15 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
 <div class="divider"></div>
 
 <section id="skills">
-  <div class="section-label" aria-hidden="true"></div>
-  <h2 class="section-title reveal">Tools and <em>Skills</em></h2>
+  <div class="section-head reveal">
+    <span class="section-cube" aria-hidden="true">
+      <svg viewBox="0 0 16 16">
+        <rect class="section-cube-outline" x="1" y="1" width="14" height="14" pathLength="56"/>
+        <rect class="section-cube-fill" x="1" y="1" width="14" height="14"/>
+      </svg>
+    </span>
+    <h2 class="section-title">Tools and <em>Skills</em></h2>
+  </div>
   <div class="skills-wrap reveal-group">
     <div class="skills-filters" id="skills-filters" role="group" aria-label="Filter skills by category">
       <button type="button" class="skills-filter is-active" data-cat="all" aria-pressed="true">All</button>
@@ -404,7 +423,7 @@ section{max-width:var(--max-w);margin:0 auto;padding:7rem 3rem}
   <p class="contact-sub reveal">Always open to talk design, trade ideas, or hear what you're working on.<br><br>Don't be a stranger.</p>
   <a href="mailto:hi@lyonhuang.com" class="contact-email reveal" id="contact-email" data-copy="hi@lyonhuang.com">hi@lyonhuang.com<span class="copy-toast" id="copy-toast" aria-hidden="true">Email Copied &#10003;</span></a>
   <div class="contact-socials reveal-group">
-    <a href="https://www.linkedin.com/in/lyonhuang" class="linkedin-btn" target="_blank" rel="noopener">LinkedIn<svg class="btn-arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#arrow"/></svg></a>
+    <a href="https://www.linkedin.com/in/lyonhuang" class="linkedin-btn" target="_blank" rel="noopener">LinkedIn<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
   </div>
 </section>
 
